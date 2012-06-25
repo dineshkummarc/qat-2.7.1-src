@@ -1,0 +1,68 @@
+#################################################
+# @(#)file    timeout_test.qash
+# @(#)author  webhiker
+# @(#)version 1.2
+# @(#)date    00/12/13
+#################################################
+
+###############################################################
+# Set up details for this test
+###############################################################
+qat.test.name="timeout_trace_test"
+qat.test.author="WebHiker"
+qat.test.description="This test will recieve the trace files from a process which has not yet completed"
+qat.test.buginfo=""
+qat.test.keywords="fail"
+
+###############################################################
+
+###############################################################
+# set up default paths and settings
+###############################################################
+QAT_ROOT=qat.qash.path+file.separator+".."+file.separator+".."+file.separator+"settings"
+INCLUDE QAT_ROOT+file.separator+"default.qinc"
+INCLUDE QAT_ROOT+file.separator+"zips.qinc"
+###############################################################
+
+agent_test_class  = "qa.negative_tests.TimeOutTest"
+agent_test_params = "-dummy dummy_value"
+agent_index       = 1
+
+overall_result ? 0
+###############################################################
+# check the agent count expected for that test
+###############################################################
+CALLFUNCTION(CHECK_AGENT_COUNT, qat.agent.count, agent_index);
+ 
+###############################################################
+# Set up the required agents
+###############################################################
+this_agent_tmp_dir = ("agent"+agent_index+"_tmp_dir")
+SETAGENT(agent_id, ("agent"+agent_index+".name"), ("agent"+agent_index+".port"), this_agent_tmp_dir);
+
+###############################################################
+# Launch the agent on agent agent_index
+###############################################################
+CALLFUNCTION (STARTAGENTTRACETEST, agent_index, agent_id, negative_tests_zip, agent_test_class, agent_test_params)
+
+###############################################################
+# stop the agent and retrieve it's status
+###############################################################
+CALLFUNCTION (STOPAGENTTRACETEST, agent_index, agent_id)
+
+###############################################################
+# Clean up the agents themselves now
+###############################################################
+DELAGENT(agent_id);
+
+###############################################################
+# report result only if all the tests did not fail
+###############################################################
+IF (agent_cmd_result==0)
+	THEN 
+		PRINT "The command did not fail as expected :"+agent_cmd_result
+		overall_result = 1
+END
+
+###############################################################
+REPORTSTATUS(overall_result)

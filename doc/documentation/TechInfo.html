@@ -1,0 +1,275 @@
+<!DOCTYPE doctype PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="GENERATOR"
+ content="Mozilla/4.7 [en] (X11; I; SunOS 5.9 sun4u) [Netscape]">
+  <meta name="Author" content="webhiker">
+  <meta name="Description" content="QAT Tool technology outline">
+  <title>QAT Tool technology outline</title>
+</head>
+<body text="#000000" bgcolor="#ffffff" link="#0000ee" vlink="#551a8b"
+ alink="#ff0000">
+<h1 style="font-family: helvetica,arial,sans-serif;"> QAT Tool
+Technology Outline</h1>
+<ul style="font-family: helvetica,arial,sans-serif;">
+  <ul>
+&nbsp;
+  </ul>
+</ul>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="Introduction"></a>Introduction</h2>
+<span style="font-family: helvetica,arial,sans-serif;"> This document
+will attempt to describe the technology used to solve certain problems
+encountered during the testing of distributed applications. The
+application Quality Agent Tester (QAT) will be used extensively in this
+discussion to illustrate the various points, since it is an
+implementation of the technology under patent consideration, as well as
+proof the technology is feasible! </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;">&nbsp; </span>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="Technology Overview"></a>Technology Overview</h2>
+<span style="font-family: helvetica,arial,sans-serif;"> Developing test
+suites is becoming more and more complex as the need to test on
+multiple platforms, multiple architectues, and multiple software
+releases increases. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;">Each additional
+component increases exponentially the amount of time required to run
+each test component on all possible permutations of hardware &amp;
+software scenarios being tested. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;">This technology
+attempts to facilitate the distribution of tests by centralising the
+tests to a single machine, and distributing the tests to simple agents
+running on the target machines to be tested. It also solves the problem
+of having to install - reinstall the test machines each time one of the
+above variables changes. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;">&nbsp; </span>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="Why was this technology developed?"></a>Why was this technology
+developed?</h2>
+<span style="font-family: helvetica,arial,sans-serif;"> First of all,
+lets imagine a theoretical product XFtp. Let us assume the product is a
+non-graphical, command-line driven product used for ftp access between
+any two machines running the XFtp software. Lets also assume the
+marketing department decides to release a Solaris, Windows NT and Win95
+version. </span>
+<p style="font-family: helvetica,arial,sans-serif;">To completely
+validate the product, we need to run our test suite on the following
+architectures : <br>
+Solaris (Intel) <br>
+Solaris (Sparc) <br>
+Windows NT (Intel) <br>
+Windows NT (Alpha) <br>
+Windows 95 </p>
+<p style="font-family: helvetica,arial,sans-serif;">Now since our
+product is communicating between two machines, we need to confirm it
+interoperates between any combination of the above architectures. <br>
+So we have the following combinations : <br>
+&nbsp;
+<table border="1" nosave="">
+  <tbody>
+    <tr>
+      <td><br>
+      </td>
+      <td><b>Solaris Intel</b></td>
+      <td><b>Solaris Sparc</b></td>
+      <td><b>Windows NT Intel</b></td>
+      <td><b>Windows NT Alpha</b></td>
+      <td><b>Windows 95</b></td>
+    </tr>
+    <tr>
+      <td><b>Solaris</b> <b>Intel</b></td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+    </tr>
+    <tr>
+      <td><b>Solaris Sparc</b></td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+    </tr>
+    <tr>
+      <td><b>Windows NT Intel</b></td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+    </tr>
+    <tr>
+      <td><b>Windows NT Alpha</b></td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+    </tr>
+    <tr>
+      <td><b>Windows 95</b></td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
+    </tr>
+  </tbody>
+</table>
+</p>
+<p style="font-family: helvetica,arial,sans-serif;">To further
+complicate our lives, we assume XFtp is written in Java, so we need to
+test it on Java 2 and Java 1.1.8. This nicely increases our test
+combinations from 25 to 50. <br>
+It soon becomes clear that as new variables are added, the number of
+test combinations spirals rapidly out of control. It gets MUCH worse
+when you are testing real distributed software running on multiple
+machines. We currently run our tests on 16 different machines! (If we
+limit ourselves to Solaris Intel and Solaris Sparc, this still gives 20
+922 789 888 000 combinations!) Clearly some automation of this process
+would be a good idea. </p>
+<p style="font-family: helvetica,arial,sans-serif;">This is still only
+half the problem. Each machine has to be installed with the software to
+be tested. With the engineering department sometimes delivering new
+versions 2 or three times a week, this also gets to be a very time
+consuming process. <br>
+&nbsp; </p>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="How does this technology solve these problems?"></a>How does
+this technology solve these problems?</h2>
+<span style="font-family: helvetica,arial,sans-serif;"> The way to solve
+the above problems is to abtract the process of running the test on a
+machine. So from a testers point of view, there is one test suite,
+which we execute, and then get the results for further analysis. The
+specifics of the machine on which the test will be run is completely
+hidden, and is neccesary for running the test. How do we do this? </span>
+<p style="font-family: helvetica,arial,sans-serif;">Step one is to
+write your each test case in a platform independant way. To do this, we
+developed a simple scripting language, very similar to C-shell,
+although it could be implemented as any language you want. All
+references to platform specific items are delayed by referring to one
+or more configuration files. A configuration is then built up for each
+test based on the architecture and operating system of the target
+machine. </p>
+<p style="font-family: helvetica,arial,sans-serif;">So instead of
+directly executing a command within the test, we refer to variables
+which will only be defined at the time of running the test. For
+example, to start a Java Virtual Machine, instead of using : </p>
+<p style="font-family: helvetica,arial,sans-serif;"><font
+ color="#3333ff">execute("c:\jdk1.2\bin\java.exe TestCaseClass")</font> </p>
+<p style="font-family: helvetica,arial,sans-serif;">we would use : </p>
+<p style="font-family: helvetica,arial,sans-serif;"><font
+ color="#3366ff">JAVA_CMD=JAVA_CMD_AGENTNAME</font> <br>
+<font color="#3366ff">execute(JAVA_CMD+"TestCaseClass")</font> </p>
+<p style="font-family: helvetica,arial,sans-serif;">In this way, we
+don't care at the test level what type of machine the test will run on.
+Somewhere higher up in the configuration hierarchy we might have a file
+which defines these values as : </p>
+<p style="font-family: helvetica,arial,sans-serif;"><font
+ color="#3366ff">IF (AGENT1_OS=="WindowsNT")</font> <br>
+<font color="#3366ff">&nbsp;&nbsp;&nbsp;
+JAVA_CMD_AGENTNAME="c:\jdk1.2\bin\java.exe"</font> <br>
+<font color="#3366ff">ELSE</font> <br>
+<font color="#3366ff">&nbsp;&nbsp;&nbsp;
+JAVA_CMD_AGENTNAME="/usr/bin/java"</font> </p>
+<p style="font-family: helvetica,arial,sans-serif;">The second, and
+possible more important step, is to transfer the test to whatever
+machine we want to run it on (agent). <br>
+This was achieved by developing a relatively stupid agent that can
+respond to a limited set of requests from the harness via TCP sockets.
+Some examples are GETFILE, SENDFILE, DELFILE, EXECUTE etc. The test
+script running on the harness may then use this command set to build up
+a desired environment on the agent. We are able to transfer files,
+unzip files, delete files, set environment variables, and any of the
+other good things we need to run a test. Once the test is run, a result
+is decided on, and sent back to the harness for processing. <br>
+Since the agent is written in Java, it runs on any architecture
+supporting a JVM, included restricted ones running pJava, kJava nad
+various other slimmed down versions. </p>
+<p style="font-family: helvetica,arial,sans-serif;">The data flow
+outline is presented in Figure 1 : <br>
+<img src="images/Architecture.png" height="480" width="640"> <br>
+&nbsp; <br>
+&nbsp; </p>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="Architecture"></a>Architecture</h2>
+<span style="font-family: helvetica,arial,sans-serif;"> To execute a
+properly written set of tests, residing on the harness, all one needs
+to do is configure the platform specific elements of each supported
+agent machine architecture. These values typically don't change after
+initial set up of the system. The harness then allows selection of the
+agent permutations, and since the agents can be queried, we can
+detectjust prior to running, what the destination machine setup needs
+to be, and send the corresponding commands comprising our test case to
+this agent. </span><br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;">So changing a
+test combination from running NT-Solaris to Solaris-Solaris now just
+involves clicking on the agents you want to run the test on - the rest
+is automatic. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;">Furthermore, the
+file transfer facility allows the application which is to be tested, to
+be sent to the agent machine as well, meaning you now no longer need to
+re-install the agent machine with each new release of software to be
+tested. Since the agent-client communication is connectionless, even
+rebooting the machine is allowed - as long as your agent automatically
+restarts during the bootup process. </span>
+<p style="font-family: helvetica,arial,sans-serif;">Enter the QAT Tool.
+It is a test harness which centralises all the tests onto the platform
+of your choice(it's 100% Pure Java), and all you need to do is run a
+simple agent on your test machine, which listens on a TCP socket for
+commands from the Harness. <br>
+Tests are written in the form of a specially designed scripting
+language, but this may be redefined as per user needs by overriding the
+parser interface. <br>
+The tests have available to them, a limited, but powerfull set of
+commands which may be run on an agent machine, such as sending and
+recieveing files, starting, stopping and killing processes etc. All
+output of the test running on the agent is stored, and sent back to the
+harness if requested. <br>
+So all tests, associated files, and other bits and pieces used to run
+the suite are stored locally on a single machine, and are sent to the
+agent machine as required. <br>
+All that is required to run ANY test suite on ANY machine, is a Java
+Virtual Machine running the QAT Agent. It is also possible to get the
+agent to update itself when new software is available, meaning once a
+machine is running the agent, it need never be reconfigured. <br>
+&nbsp; </p>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="System Requirements"></a>System Requirements</h2>
+<span style="font-family: helvetica,arial,sans-serif;"> The test
+scripting language has been named QASH - for details on the syntax and
+available commands, see the document </span><a href="QASHSyntax.html"
+ style="font-family: helvetica,arial,sans-serif;">QASH Syntax</a><span
+ style="font-family: helvetica,arial,sans-serif;">. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;">The harness
+provides a class called ParserInterface which allows users to define
+their own shell script parser for use with the tool. In other words,
+the technology is independant of the actual scripting language used. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;">The QAT tool is
+written in 100% pure java. The GUI makes use of the Swing classes, but
+the agent does not use any gui controls at all. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;">For details on
+configuring the tool to run the examples tests, see the </span><a
+ href="QuickStartGuide.html"
+ style="font-family: helvetica,arial,sans-serif;">Quick Start Guide</a><span
+ style="font-family: helvetica,arial,sans-serif;">. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;">A User manual
+for the harness is currently under development, but the unfinished
+version may be viewed here :</span><a href="QASHHarness.html"
+ style="font-family: helvetica,arial,sans-serif;">UserManual</a><span
+ style="font-family: helvetica,arial,sans-serif;">. </span>
+</body>
+</html>

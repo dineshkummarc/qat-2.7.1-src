@@ -1,0 +1,53 @@
+#################################################
+# @(#)file    generic_client_server.qinc
+# @(#)author  webhiker
+# @(#)version 1.2
+# @(#)date    00/12/01
+#################################################
+overall_result ? 0
+
+###############################################################
+# check the agent count expected for that test
+###############################################################
+CALLFUNCTION(CHECK_AGENT_COUNT, qat.agent.count, agent_index);
+ 
+connect_port = 7654
+server_host = agent1.name
+
+agent_test_params = "-server_host "+server_host+" -server_port "+connect_port+" -client_port "+connect_port
+
+###############################################################
+# Set up the required agents
+###############################################################
+this_agent_tmp_dir = ("agent"+1+"_tmp_dir")
+SETAGENT(server_id, ("agent"+1+".name"), ("agent"+1+".port"), this_agent_tmp_dir);
+
+###############################################################
+# Launch the server on the first agent
+###############################################################
+CALLFUNCTION (STARTSERVER, 1, server_id, client_server_zip, agent_test_class, agent_test_params+" -test_name start_server")
+
+FOR I = 2 TO qat.agent.count DO
+	this_agent_tmp_dir = ("agent"+I+"_tmp_dir")
+	SETAGENT(agent_id,  ("agent"+I+".name"), ("agent"+I+".port"), this_agent_tmp_dir);
+	CALLFUNCTION (STARTAGENT, I, agent_id, client_server_zip, agent_test_class, agent_test_params+" -test_name start_client")
+	CALLFUNCTION (STOPAGENT,  I, agent_id)
+	DELAGENT(agent_id)
+	###############################################################
+	# report result only if all the tests passed
+	###############################################################
+	IF (overall_result==0)
+		THEN overall_result = agent_cmd_result
+	END
+END
+
+###############################################################
+# stop the agent and retrieve it's status
+###############################################################
+CALLFUNCTION (STOPSERVER, 1, server_id)
+
+###############################################################
+# Clean up the agents themselves now
+###############################################################
+DELAGENT(server_id);
+

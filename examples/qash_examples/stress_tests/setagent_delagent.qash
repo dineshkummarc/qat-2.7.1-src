@@ -1,0 +1,40 @@
+#################################################
+# @(#)file    pass_test_all_agents.qash
+# @(#)author  webhiker
+# @(#)version 1.2
+# @(#)date    00/12/13
+#################################################
+
+###############################################################
+# Set up details for this test
+###############################################################
+qat.test.name="setagent_delagent"
+qat.test.author="WebHiker"
+qat.test.description="This test just does a loop of setagent - delagent calls to check for any problems or memory leaks in the parser or agent"
+qat.test.buginfo=""
+qat.test.keywords="stress"
+
+
+###############################################################
+# set up default paths and settings
+###############################################################
+QAT_ROOT=qat.qash.path+file.separator+".."+file.separator+"settings"
+INCLUDE QAT_ROOT+file.separator+"default.qinc"
+INCLUDE QAT_ROOT+file.separator+"zips.qinc"
+###############################################################
+
+###############################################################
+# start of the test
+###############################################################
+PRINT "Will use stress level="+stress_level
+FOR I = 1 TO stress_level DO
+	FOR J = 1 TO qat.agent.count DO
+		agent_index = J
+		agent_tmp_dir = ("agent"+agent_index+"_tmp_dir")
+		agent_name = ("agent"+agent_index+".name")
+		agent_port = ("agent"+agent_index+".port")
+		SETAGENT(agent_id, agent_name, agent_port, agent_tmp_dir);
+		DELAGENT(agent_id);
+	END
+END
+REPORTSTATUS(0)

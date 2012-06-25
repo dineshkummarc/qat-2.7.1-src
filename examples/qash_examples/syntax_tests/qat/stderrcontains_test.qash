@@ -1,0 +1,34 @@
+#################################################
+# @(#)file    stderrcontains_test.qash
+# @(#)author  webhiker
+# @(#)version 1.2
+# @(#)date    00/12/13
+#################################################
+
+###############################################################
+# Set up details for this test
+###############################################################
+qat.test.name="stderrcontains_test"
+qat.test.author="WebHiker"
+qat.test.description="This test verifies the STDERRCONTAINS command of the QASHParser"
+qat.test.buginfo=""
+qat.test.keywords="pass"
+
+###############################################################
+
+###############################################################
+# set up default paths and settings
+###############################################################
+QAT_ROOT=qat.qash.path+file.separator+".."+file.separator+".."+file.separator+"settings"
+INCLUDE QAT_ROOT+file.separator+"default.qinc"
+INCLUDE QAT_ROOT+file.separator+"zips.qinc"
+###############################################################
+
+agent_test_class  = "qa.syntax_tests.SyntaxTest"
+agent_test_params = "-dummy dummy_value"
+agent_index       = 1
+agent_test_key    = "STDERRCONTAINS"
+INCLUDE qat.qash.path+file.separator+"generic_syntax_tests.qinc"
+
+###############################################################
+REPORTSTATUS(syntax_result)

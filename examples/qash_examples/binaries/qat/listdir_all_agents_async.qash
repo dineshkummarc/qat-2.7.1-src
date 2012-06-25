@@ -1,0 +1,135 @@
+#################################################
+# @(#)file    listdir_all_agents_async.qash
+# @(#)author  webhiker
+# @(#)version 1.2
+# @(#)date    03/01/24
+#################################################
+
+###############################################################
+# Set up details for this test
+###############################################################
+qat.test.name="listdir_all_agents_asynchronous"
+qat.test.author="WebHiker"
+qat.test.description="This will execute a binary command which will list the contents of an arbitrary agent. The tests are run asynchronously, i.e. they are sent to all the agents and started, and then only do we check for the results on each agent."
+qat.test.buginfo=""
+qat.test.keywords="pass"
+
+###############################################################
+
+###############################################################
+# set up default paths and settings
+###############################################################
+QAT_ROOT=qat.qash.path+file.separator+".."+file.separator+".."+file.separator+"settings"
+INCLUDE QAT_ROOT+file.separator+"default.qinc"
+INCLUDE QAT_ROOT+file.separator+"zips.qinc"
+###############################################################
+
+agent_test_class  = "qa.positive_tests.PassTest"
+agent_test_params = "-dummy dummy_value"
+
+#################################################################
+# STARTBINARY on agent i
+#################################################################
+FUNCTION(STARTBINARY, i, agent_id, zip_file, agent_class, agent_cmd_args)
+	bin_agent_arch = ("agent"+i+".os.architecture")
+	bin_agent_os   = ("agent"+i+".os.name")
+
+	IF ((bin_agent_os=="Windows 2000")|(bin_agent_os=="Windows NT"))
+		THEN 
+			PATH="C:\\WINNT\\system32;C:\\WINNT";
+			SETPROP(agent_id, PATH);
+			agent_args            =  "/C dir ."
+			agent_cmd             =  "C:\\WINNT\\system32\\cmd"
+	END
+	IF (bin_agent_os=="Windows XP")
+		THEN 
+			PATH="C:\\WINDOWS\\system32;C:\\WINNT";
+			SETPROP(agent_id, PATH);
+			agent_args            =  "/C dir ."
+			agent_cmd             =  "cmd"
+	END
+	IF ((bin_agent_os=="SunOS")|(bin_agent_os=="Linux"))
+		THEN 
+			agent_args            =  "."
+			agent_cmd             =  "/usr/bin/ls"
+	END
+
+	execute_cmd           = agent_cmd+" "+agent_args;
+
+	# start the agent
+	CMDSTART(agent_id, "agent_cmd_id"+i, execute_cmd, default_agent_timeout);
+
+	PRINT "START on AGENT " + i + " DONE !"
+
+ENDFUNCTION
+
+#################################################################
+# STOPBINARY on agent i
+#################################################################
+FUNCTION(STOPBINARY, i, agent_id)
+
+	PRINT "STOP AGENT on AGENT " + i
+
+	# retrieve it's exit value
+	CMDSTATUS("agent_cmd_id"+i, agent_cmd_result);
+
+	# retrieve it's stdout/stderr traces
+	CMDGETTRACE("agent_cmd_id"+i);
+
+	# clean it's traces off the agent
+	CMDCLEAN("agent_cmd_id"+i);
+
+ENDFUNCTION
+
+# This loop sets up all the agents, and starts the test on each of them
+FOR I = 1 TO qat.agent.count DO
+	agent_index = I
+	overall_result ? 0
+
+	###############################################################
+	# check the agent count expected for that test
+	###############################################################
+	CALLFUNCTION(CHECK_AGENT_COUNT, qat.agent.count, agent_index);
+ 
+	###############################################################
+	# Set up the required agents
+	###############################################################
+	this_agent_tmp_dir = ("agent"+agent_index+"_tmp_dir");
+
+	SETAGENT((I+"agent_id"), ("agent"+agent_index+".name"), ("agent"+agent_index+".port"), this_agent_tmp_dir);
+
+	this_agent_id = (I+"agent_id")
+
+	###############################################################
+	# Launch the agent on agent agent_index
+	###############################################################
+	CALLFUNCTION (STARTBINARY, agent_index, this_agent_id, positive_tests_zip, agent_test_class, agent_test_params)
+END
+
+# This loop checks the result of each test, and then cleans up the tests and agents
+FOR I = 1 TO qat.agent.count DO
+	agent_index = I
+	overall_result ? 0
+	this_agent_id = (I+"agent_id")
+
+	###############################################################
+	# stop the agent and retrieve it's status
+	###############################################################
+	CALLFUNCTION (STOPBINARY, agent_index, this_agent_id)
+
+	###############################################################
+	# Clean up the agents themselves now
+	###############################################################
+	DELAGENT(this_agent_id);
+
+	###############################################################
+	# report result only if all the tests passed
+	###############################################################
+	IF (overall_result==0)
+		THEN overall_result = agent_cmd_result
+	END
+
+END
+
+###############################################################
+REPORTSTATUS(overall_result)

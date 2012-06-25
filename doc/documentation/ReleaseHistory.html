@@ -1,0 +1,1618 @@
+<!DOCTYPE doctype PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="GENERATOR"
+ content="Mozilla/4.7 [en] (X11; I; SunOS 5.9 sun4u) [Netscape]">
+  <meta name="Author" content="webhiker">
+  <meta name="Description" content="Documents changes between versions">
+  <title>Release History</title>
+</head>
+<body text="#000000" bgcolor="#ffffff" link="#0000ee" vlink="#551a8b"
+ alink="#ff0000">
+<table cols="1"
+ style="width: 100%; background-color: rgb(102, 102, 153); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr>
+      <td>
+      <h1> QAT Release history</h1>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h1 style="font-family: helvetica,arial,sans-serif;"></h1>
+<span style="font-family: helvetica,arial,sans-serif;"> This file
+documents the changes between releases of the </span><b
+ style="font-family: helvetica,arial,sans-serif;">QAT</b><span
+ style="font-family: helvetica,arial,sans-serif;"> tool.</span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<br style="font-family: helvetica,arial,sans-serif;">
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.7.0"></a>Version 2.7.0 - released January
+2003</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2 style="font-family: helvetica,arial,sans-serif;"> </h2>
+<h2 style="font-family: helvetica,arial,sans-serif;"> </h2>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.6.9"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4>None found</h4>
+    <blockquote>So far so good.....<br>
+    </blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.6.9"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4>New XML test syntax available</h4>
+    <blockquote>There is now a new test syntaxt, QAXML, which will be
+the focus for all new QAT development.<br>
+Allows much more concise parsing of test files, far less ambiguity etc.
+However, is still under development, and I recommend using it in
+conjunction with QASH tests. The harness allows QASH and QAXML to exist
+in the same workspace, allowing you to migrate only new tests as
+neccesary.<br>
+    </blockquote>
+  </blockquote>
+  <h3> <a name="Known Issues/Bugs"></a><u>Known Issues/Bugs</u></h3>
+  <blockquote>
+    <h4> JDK1.3 on linux has a critical bug in Runtime.exec(...)</h4>
+    <blockquote>It is currently not possible to retrieve the exit value
+of a launched process unless you are in the same Thread as whoever made
+a call to exec(), which is not the case for our agent. So we cannot
+accurately determine if a process is running, finished etc - should be
+fixed in the next release.</blockquote>
+    <h4> Native agent multithreading</h4>
+    <blockquote>The native agent has trouble running multithreaded on
+Chorus and Linux systems, for reasons as yet unknown. Seems to work fine
+on Solaris.</blockquote>
+  </blockquote>
+  <h3> <a name="Request for enhancement"></a><u>Request for enhancement</u></h3>
+  <blockquote>
+    <h4> Notepad save/exit check</h4>
+    <blockquote>Prompt the user to save a file if it was modified
+before allowing an exit of the Notepad editor.</blockquote>
+    <h4> Slimming down the agent</h4>
+    <blockquote>Plan to provide a smaller separate agent.jar file
+containing exclusively the classes required by the Agent, and which runs
+on limited VM's such as pJava and kJava if possible. This will be
+investigated once their final class structure is known. There will
+hopefully be no changes in agent functionality<br>
+      <br>
+    </blockquote>
+  </blockquote>
+</blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;"> </h2>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.6.9"></a>Version 2.6.9 - released August
+2002</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2 style="font-family: helvetica,arial,sans-serif;"> </h2>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.6.9"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4>None found</h4>
+    <blockquote>So far so good.....<br>
+    </blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.6.9"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4>Replace GNUmakefiles with Ant</h4>
+    <blockquote>The cranky old GNUmakefiles have been replaced by Any
+build files, allowing more flexibility and speed in compiling the
+workspace. We no provide a "binary" delivery, containing only the
+required jars and documentation, and a source distribution containing
+all the project sources as well.</blockquote>
+  </blockquote>
+</blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;"> </h2>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.6.8"></a>Version 2.6.8 - released June 2001</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.6.8"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> BlockView java.lang.ArrayIndexOutOfBoundsException</h4>
+    <blockquote>The folowing exception randomly occurs : <br>
+Exception occurred during event dispatching: <br>
+java.lang.ArrayIndexOutOfBoundsException <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at
+javax.swing.text.html.BlockView.layoutMinorAxis(BlockView.java:220) <br>
+A bug has been logged against the JDK for this, however it seems to
+cause no real problems.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.6.8"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Documentation updated</h4>
+    <blockquote>The documentation has been updated to cover all of the
+features of the QAT system.</blockquote>
+  </blockquote>
+  <blockquote>
+    <blockquote></blockquote>
+  </blockquote>
+  <blockquote>
+    <blockquote></blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.6.7"></a>Version 2.6.7 - released June 2001</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.6.7"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> OutOfMemory while generating the HTML Report</h4>
+    <blockquote>Note that some verbose tests can easily generate output
+files 10 megs big or more...</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.6.7"></a><u>Features added</u></h3>
+  <blockquote>
+    <blockquote>None.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.6.6"></a>Version 2.6.6</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.6.6"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> Saving to a read-only file gives dialog on error</h4>
+    <blockquote>If you try to edit/save a read-only file, and dialog
+will now pop-up indicating the error. Previously a message was written
+to stdout.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.6.6"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Changed Jar file name</h4>
+    <blockquote>The jar file has changed from qa_tester.jar to qat.jar,
+and each release will be suffixed with the version number. <br>
+eg. This release is in qat2.6.6.jar, and qat.jar links to this file.</blockquote>
+    <h4> GUI Project Properties added</h4>
+    <blockquote>You can now specify GUI properties whch will be
+configurable as GUI components in the Edit Project window. <br>
+Currently supported are <br>
+qat.project.guiproperty.checkbox..XXX <br>
+qat.project.guiproperty.textfield.XXX <br>
+qat.project.guiproperty.combobox.XXX&nbsp; ;
+qat.project.guiproperty.combobox.XXX.values
+      <p>The following&nbsp; are examples of these properties: </p>
+      <p><i>CheckBox:</i> <br>
+qat.project.guiproperty.checkbox.DEBUG_COMPONENT=false </p>
+      <p><i>TextField:</i> <br>
+qat.project.guiproperty.textfield.JDMK_RELEASE=4.3 </p>
+      <p><i>ComboBox:</i> <br>
+qat.project.guiproperty.combobox.withDEBUG=YES <br>
+qat.project.guiproperty.combobox.withDEBUG.values=YES,NO</p>
+    </blockquote>
+    <h4> Changed all images to .png</h4>
+    <blockquote>The GUI now uses only .png images instead of the
+mixture of jpg and gif, in solidarity with the opensource boycott of LZW
+compression  patent restrictions imposed by UNISYS. This however limits
+useage of JDK1.3  and later, since PNG files are not supported in
+JDK1.2.x.</blockquote>
+    <h4> Improved agent discovery</h4>
+    <blockquote>The agents previously all did a multicast reply all at
+once, so network flooding may have resulted in some responses being
+lost. Now each response is randomly sent within a short time-frame, to
+limit the number of responses which might clash.</blockquote>
+    <h4> Added parser command trace</h4>
+    <blockquote>The command currently being processed by the QASHParser
+is now displayed in real time in the QAT status bar. Currently the
+information is fairly basic, but may be improved to include more detail
+at a later stage.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.6.5"></a>Version 2.6.5</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.6.5"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> Viewing mixed mode output generates NullPointerException</h4>
+    <blockquote>If your some of your trace output is in Html format,
+and some in plain text, viewing one after the other used to generate a
+Swing NullPointer exception due to a Swing bug.&nbsp; Finally a
+workaround has been found.</blockquote>
+    <h4> Html Report traces being lost</h4>
+    <blockquote>The html report generated files names which were often
+longer than 256 characters, and lightweight operating systems like
+Solaris can not handle this, so some traces were lost. There is now a
+new algorithm for allocating file names, which makes use of the
+(hopefully unique) hashcode for each test path.</blockquote>
+    <h4> Interrupting runs was a bit buggy</h4>
+    <blockquote>Sometimes interrupting a started test run did not
+cleanly kill the child processes - hopefully this has now been resolved.
+It was caused  by combination of threading issues, as well as the
+recently introduced AUTOCLEAN command.</blockquote>
+    <h4> Less threads required per execute command</h4>
+    <blockquote>Each Exec request previously launched a new Thread. Now
+the ExecProcess object re-uses the current Thread context since we know
+a new  thread is started to handle each agent request. Need to look out
+for synchro  issues arising as a result of this change.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.6.5"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> New layout</h4>
+    <blockquote>The layout has been re-designed to minimise clicks to
+get to relevant information. Less dependant on the right-click menu now.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.6.4"></a>Version 2.6.4</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.6.4"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> Html Report</h4>
+    <blockquote>Various changes in the Html report generation to simply
+and improve the imformation presented.</blockquote>
+    <h4> Command-line interface keyword selecting bug</h4>
+    <blockquote>There was a bug in the keyword selection when using the
+command-line interface and using only th e"-keyword" option..</blockquote>
+    <h4> Less threads required per execute command</h4>
+    <blockquote>Each Exec request previously launched a new Thread. Now
+the ExecProcess object re-uses the current Thread context since we know
+a new  thread is started to handle each agent request. Need to look out
+for synchro  issues arising as a result of this change.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.6.4"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Added new QASH command : DAEMONSTART</h4>
+    <blockquote>There is now a new command which is used to launch
+daemon processes. No trace may be recovered from such a process, nor may
+it be killed or stopped, since the functionality is undefined for
+daemon processes. (see  the <a href="QASHSyntax.html#DAEMONSTART">QASH
+Syntax</a> for details).</blockquote>
+    <h4> Modified QASH command : CMDSTOP</h4>
+    <blockquote>There is a new form of the command which allows you to
+retrieve the status of the process if it has already exited: <br>
+      <b>CMDSTOP(process_id, status);</b> <br>
+will return the exit value of the process, or a negative value if the
+process had to be killed. <br>
+(see the <a href="QASHSyntax.html#DAEMONSTART">QASH Syntax</a> for
+details).</blockquote>
+    <h4> Added new test state :PENDING</h4>
+    <blockquote>There is now a new test state, pending, which occurs if
+a test failed, but contains non-null bug information.Further revised
+naming of internal QAT variables</blockquote>
+    <blockquote>The variables KEYWORDS -&gt; qat.test.keywords,
+TEST_DESCRIPTION-&gt;qat.test.description <br>
+New variables introduced :
+      <ul>
+        <li> qat.test.author</li>
+        <li> qat.test.buginfo</li>
+      </ul>
+    </blockquote>
+    <h4> Added new test state :PENDING</h4>
+    <blockquote>There is now a new test state, pending, which occurs if
+a test failed, but contains non-null bug information.</blockquote>
+  </blockquote>
+</blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;"> </h2>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.6.3"></a>Version 2.6.3</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.6.3"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> Html Report</h4>
+    <blockquote>Various changes in the Html report generation to simply
+and improve the imformation presented.</blockquote>
+    <h4> Command-line interface keyword selecting bug</h4>
+    <blockquote>There was a bug in the keyword selection when using the
+command-line interface and using only th e"-keyword" option..</blockquote>
+    <h4> Less threads required per execute command</h4>
+    <blockquote>Each Exec request previously launched a new Thread. Now
+the ExecProcess object re-uses the current Thread context since we know
+a new  thread is started to handle each agent request. Need to look out
+for synchro  issues arising as a result of this change.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.6.3"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Added new QASH command : DAEMONSTART</h4>
+    <blockquote>There is now a new command which is used to launch
+daemon processes. No trace may be recovered from such a process, nor may
+it be killed or stopped, since the functionality is undefined for
+daemon processes. (see  the <a href="QASHSyntax.html#DAEMONSTART">QASH
+Syntax</a> for details).</blockquote>
+    <h4> Added new test state :PENDING</h4>
+    <blockquote>There is now a new test state, pending, which occurs if
+a test failed, but contains non-null bug information.Further revised
+naming of internal QAT variables</blockquote>
+    <blockquote>The variables KEYWORDS -&gt; qat.test.keywords,
+TEST_DESCRIPTION-&gt;qat.test.description <br>
+New variables introduced :
+      <ul>
+        <li> qat.test.author</li>
+        <li> qat.test.buginfo</li>
+      </ul>
+    </blockquote>
+    <h4> Added new test state :PENDING</h4>
+    <blockquote>There is now a new test state, pending, which occurs if
+a test failed, but contains non-null bug information.</blockquote>
+  </blockquote>
+</blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;">
+<hr width="100%"></h2>
+<h2 style="font-family: helvetica,arial,sans-serif;"> </h2>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.6.2"></a>Version 2.6.2</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.6.1"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> Html Report</h4>
+    <blockquote>There was a problem in the link generation of the Html
+report, caused by not using the URLEncoder routines for special
+characters. All should now be working fine. Many cosmetic changes have
+been made to improve the report appearance.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.6.1"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Completely revised naming of QAT variables</h4>
+    <blockquote>The QAT internal and system variables have undergone
+major renaming to allow new requested functionality to be implemented.
+The following  naming changes will need to be made to remove parsing
+errors: <br>
+TESTPATH -&gt; <b>qat.project.path</b> <br>
+AGENT_COUNT - &gt; <b>qat.agent.count</b> <br>
+AGENT1_NAME -&gt; <b>agent1.name</b> <br>
+AGENT1_PORT -&gt; <b>agent1.port</b> <br>
+AGENT1_ARCH - &gt; <b>agent1.os.architecture</b> <br>
+AGENT1_OSNAME -&gt; <b>agent1.os.name</b>
+      <p>Two new variables have been introduced : </p>
+      <blockquote><b>qat.qash.filepath </b>- The path to the file
+currently being parsed. <br>
+        <b>qat.qash.path</b>&nbsp;&nbsp;&nbsp;&nbsp; - The path to the
+root directory of the file currently being parsed.</blockquote>
+      <p><br>
+Your old project settings will automatically be converted to use the
+new naming schema, however you will need to manually change all your
+test scripts. As a result of this, versioning has been introduced for
+the &lt;project&gt;.prj as well as the &lt;project&gt;.ser files. <br>
+The QAT remains backwardly compatible, but deprecation warnings will be
+printed if you continue to use the old syntax. Support for the old
+syntax will be terminated in version 2.6.5. <br>
+&nbsp;</p>
+    </blockquote>
+    <h4> Added GETTRACEPATHS(...) command</h4>
+    <blockquote>A new QASH command has been added
+GETTRACEPATHS(agent_id, envtrace, stdouttrace, stderrtrace) which allows
+you to retrieve the exact paths of the output being generated by a
+process started on the agent, and relative to the agent. Please note,
+due to this change, you need to use the same version of agent (2.6.x or
+higher) to make use of this new command.</blockquote>
+    <h4> Commandline interface improved</h4>
+    <blockquote>The commandline interface has been revised, with some
+renaming changes (see the <a
+ href="QASHSyntax.html#FUNCTION%28FUNCTION_NAME%29">QASH  Syntax</a> for
+details).</blockquote>
+    <h4> Parser bug</h4>
+    <blockquote>There was a small problem if you forgot to add an "END"
+to an "IF" statement, which caused an OutOfMemory exception, now gives a
+useful  error message instead.</blockquote>
+    <h4> New project option</h4>
+    <blockquote>Allow the user to create a new, blank project template
+with no predefined settings.</blockquote>
+  </blockquote>
+</blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <br>
+</h2>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.5.8"></a>Version 2.5.8</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.5.7"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> QASHParser improvements</h4>
+    <blockquote>Better error reporting for some syntax errors. Uses
+less static variables to accomadate new multiple instance mode QAT.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.5.7"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> New QASHParser commands :ENVTRACECONTAINS, STDOUTCONTAINS,
+STDERRCONTAINS</h4>
+    <blockquote>You can now perform a string check on traces recieved
+from the agents to verify a string exists in one of the output files.
+See the <a href="QASHSyntax.html#FUNCTION%28FUNCTION_NAME%29">QASH
+Syntax</a> for details.</blockquote>
+  </blockquote>
+</blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;"> </h2>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.5.7"></a>Version 2.5.7 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.5.7"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> QASHParser improvements</h4>
+    <blockquote>Better error reporting for some syntax errors. Uses
+less static variables to accomadate new multiple instance mode QAT.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.5.7"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Allow searching of command traces</h4>
+    <blockquote>You can now search through command traces via using the
+provided search facility of the TraceOutputViewer.</blockquote>
+    <h4> Reworked all the examples</h4>
+    <blockquote>The examples have been completely revised to provide a
+basis test suite which will be run for each QAT delivery. It will
+eventually exercise all functionality of the QAT, and could serve as a
+basis for a workspace structure for new users.</blockquote>
+    <h4> Expand tree/Collapse tree behaviour</h4>
+    <blockquote>There are now two seperate buttons for expanding and
+collapsing tree nodes in the QAT gui. The tree will be
+expanded/collapsed one level at a time.</blockquote>
+    <h4> New autoclean functionality</h4>
+    <blockquote>Previously, when calling the REPORTSTATUS command, the
+parser immediately halts parsing of the QASH files, so it was possible
+to get into a situation where you didn't correctly clean started
+commands, and agents. By calling AUTOCLEAN_ON, the parser will
+automatically clean up any leftover stuff immediately after the call to
+REPORTSTATUS. This functionality is disabled by default, or can be
+manually disabled by calling AUTOCLEAN_OFF.</blockquote>
+    <h4> New commandline mode for QAT</h4>
+    <blockquote>It is now possible to launch QAT in commandline mode,
+allowing keyword test selection, as well as generation of html test
+reports. For details, please read the relevant section in the <a
+ href="QuickStartGuide.html#Running%20tests%20via%20the%20commandline%20interface">Quick
+Start Guide</a>.</blockquote>
+    <h4> Multiple Qat instances now supported</h4>
+    <blockquote>It is now possible to launch more than one instance of
+Qat, each session acting independantly of the others, and each session
+will be saved independantly. Running several Qat gui's in the same Java
+Virtual Machine allows great savings in memory space when you need to
+run several projects simultaneously. Single instance useage should be
+unaffected.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.5.6"></a>Version 2.5.6 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.5.6"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> Agent no longer uses home directory for temporary files</h4>
+    <blockquote>Before Java 2, there was no facility for creating
+temporary files. The File.createTempFile() function is now used if the
+agent is launched  with a Java 2 JVM, so it no longer uses ~/.qat/agent
+directory to store temporary trace files. Launching the agent with an
+earlier version of the JVM will revert to the old behaviour.</blockquote>
+    <h4> Html report generator bug</h4>
+    <blockquote>The Html report generator was not updated to ignore
+Save/Load project options of the Html interface, and it caused you to
+load and save  a project each time a report was generated, causing
+interesting side-effects.</blockquote>
+    <h4> Native agent - many bugs fixed</h4>
+    <blockquote>Native agent now uses Standard template library string
+classes, and far fewer pointers. Code has been cleaned up significantly.
+Runs large  tests suites now with no difficulty, so approaching
+stability levels of java agent.</blockquote>
+    <h4> QASHParser improvements</h4>
+    <blockquote>Finally cleaned up the parser to correctly cache
+properties files. Works much faster now as well, and should provide
+basis for more speed-enhancements in the future.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.5.6"></a>Features added</h3>
+  <blockquote>
+    <h4> Menu icons</h4>
+    <blockquote>More menu icons have been added to increase useability.
+Added toolbar access to reparse tests.</blockquote>
+    <h4> Added look and feel settings</h4>
+    <blockquote>You can now select between supported look and feels for
+you particular platform, instead of defaulting to the Metal L&amp;F as
+was done previously. Use the project properties editor to select. Your
+selection is saved on a per-project basis.</blockquote>
+    <h4> Agent can run again in JVM 1.1.8</h4>
+    <blockquote>The java agent should be able to run with Java 1.1.8,
+although it has not been heavily tested.</blockquote>
+    <h4> New test detail option in QAT GUI</h4>
+    <blockquote>New functionality now allows you to view author
+information and a brief description of each test.</blockquote>
+    <h4> Test sorting changes</h4>
+    <blockquote>Tests are now better sorted alphabetically than
+previously.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.5.5"></a>Version 2.5.5 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.5.5"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> Native Agent core dump resolved</h4>
+    <blockquote>Most of the native agent segmentation faults have now
+been resolved. There is still an issue with a core dump everytime any
+exception is thrown, but this is an unavoidable bug in libC from Sun.</blockquote>
+    <h4> QICTestFinder/QASHTestFinder did not ignore "deleted_files"
+directories of SCCS workspaces</h4>
+    <blockquote>These directories will now be ignored, in addition to
+paths containing "SCCS"</blockquote>
+    <h4> Agent Info editor modified</h4>
+    <blockquote>You can now multi-select agents to delete,refresh, kill
+etc.</blockquote>
+    <h4> QICTestFinder and QICParser renamed</h4>
+    <blockquote>They are now named QASHTestFinder and QASHParser for
+consistency. Every project using the old names will be automatically
+changed to use the new names, so the change will be transparent.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.5.5"></a>Features added</h3>
+  <blockquote>
+    <h4> Discovery added to native agent</h4>
+    <blockquote>The native agent can now handle discovery requests from
+the QAT harness. This will only be available if it is compiled in
+multi-threaded mode, since the discovery needs to run in a seperate
+thread. So it probably  won't be useable on the Chorus system for a
+while.</blockquote>
+  </blockquote>
+</blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;"> </h2>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.5.4"></a>Version 2.5.4 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.5.4"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> Native Agent ZIPCLEAN problem</h4>
+    <blockquote>The native agent would, with certain zip files, not
+fully be able to clean all files which where unzipped, which resulted in
+not being  able to properly clean up the unzipped files, and the agent
+tmp directory.</blockquote>
+    <h4> Native agent SETAGENT problem</h4>
+    <blockquote>Previously, calling SETAGENT with a non-existing tmp
+directory paramter, it crashed, and the directories needed to be created
+by hand. These directories will all be created automatically now if
+they don't previously  exist.</blockquote>
+    <h4> Increased parsing speed</h4>
+    <blockquote>QICParser classes now does much less string searching
+due to an improved algorthmn in all loop types (FOR, WHILE, REPEAT etc).</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.5.4"></a>Features added</h3>
+  <blockquote>
+    <h4> New FUNCTION definition possible for QASH scripts</h4>
+    <blockquote>You can now define functions in your qash scripts to
+improve code re-use and readability. See the <a
+ href="QASHSyntax.html#FUNCTION%28FUNCTION_NAME%29">QASH Syntax.</a>
+guide for details on useage.
+      <h4> </h4>
+    </blockquote>
+    <h4> Discovery service</h4>
+    <blockquote>You can now discover agents on your network by using
+the "Discover agents" button in the "Edit agents" dialog. It will
+automatically fill in any discovered agents, or update existing agents
+if already defined.  Currently not implemented for native agents - will
+be in next release if I learn how to code UDP sockets in C++.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.5.3"></a>Version 2.5.3 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.5.3"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> Parser output always updated</h4>
+    <blockquote>Previously, when running tests, as each test completed,
+it was updated/reloaded into the ParserOutput window. Now it will only
+be updated if it is currently selected. Hopefully this may be the source
+of the out of memory problems experienced when running a long time with
+large trace outputs being genereated by the agents.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.5.3"></a>Features added</h3>
+  <blockquote>
+    <h4> GUI layout re-arranged</h4>
+    <blockquote>It now reflects more usefull information, including
+test run times, detailed progress bar etc.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.5.2"></a>Version 2.5.2 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.5.2"></a><u>Bugs/Issues Fixed</u></h3>
+  <h3> <a name="Features added 2.5.2"></a>Features added</h3>
+  <blockquote>
+    <h4> Added Chorus plugin interface for Chorus</h4>
+    <blockquote>There is now a Chorus plugin included in the jar file
+which allows remote connection to a Chorus machine. It can be enabled by
+adding  the plugin : <b>qat.plugins.chorus.ChorusPlugin</b> to the
+project properties.</blockquote>
+    <h4> Fixed many C++ agent bugs</h4>
+    <blockquote>The agent was pretty unstable, and lots of memory leaks
+and threading problems have now been resolved. Please report any
+re-creatable crashes so I can debug them.</blockquote>
+    <h4> Added console server functionality to the C++ agent</h4>
+    <blockquote>The C++ agent now also allows a Console server
+connection to be created.</blockquote>
+    <h4> Kill command included in the QAT-Agent protocol</h4>
+    <blockquote>There is a new command which allows the QAT to cause
+the agent to commit suicide. See the QASh Syntax file for details.</blockquote>
+  </blockquote>
+</blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <br>
+</h2>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.5.1"></a>Version 2.5.1 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.5.1"></a><u>Bugs/Issues Fixed</u></h3>
+  <h3> <a name="Features added 2.5.1"></a>Features added</h3>
+  <blockquote>
+    <h4> Added plugin interface to QAT</h4>
+    <blockquote>Interfaces to allow plugin development have been put in
+place. This allows the QAT GUI to be fine tuned to specific project
+requirements, while keeping the QAT itself as a generic test tool.
+Plugins are stored on a per-project basis, and are configured using the
+Project Properties edit dialog.</blockquote>
+    <h4> Added console connection functionality to the QAT gui</h4>
+    <blockquote>The QAT nows allows you to connect to the console of
+any defined agent, and monitor in real time all the traces and requests
+it is processing. Each connected QAT can define it's own debug level,
+specified in the Project Properties edit dialog.</blockquote>
+    <h4> Added console server functionality to the agent</h4>
+    <blockquote>It is now possible to connect to running agents and
+recieve their console output, from the QAT GUI. Each session can specify
+it's own  unique debug level, and new options have been included in the
+edit project  window to fine-tune the console window buffer size and
+debug level. Porting  of this functionality to the C++ version of the
+agent is underway, and will be very usefull for agents running on
+machines with no or limited consoles. <br>
+Furthermore, the agents' console output may now be duplicated to
+whoever wants to see it, so multiple users may all see and use the same
+agent console. Each connection may define it's own debug level.</blockquote>
+    <h4> CHECKAGENT more detailed now</h4>
+    <blockquote><b>CHECKAGENT</b> now sets all the Java properties
+prefixed with the name of the agent. <br>
+So for example if on our agent we have os.name="Solaris", after a call
+to <b>CHECKAGENT(AGENT1_NAME,AGENT1_PORT) </b>we can access :<i>zulu.os.name="Solaris"</i></blockquote>
+    <h4> QICTestFinder modified to work with SCCS</h4>
+    <blockquote>File checked in with SCCS will now no longer appear in
+the test tree as tests. Any file containing "SCCS" in the directory path
+will  effectively be ignored for testing purposes.</blockquote>
+  </blockquote>
+</blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;"> </h2>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.5.0"></a>Version 2.5.0 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.5"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> Repainting problems</h4>
+    <blockquote>Calls to paintImmediately(getVisibleRect()); have been
+replaced by calls to repaint(), because very buggy painting behaviour
+was exhibited  during test runs. Probably a Swing bug - no time to debug
+it deeply, so just replaced calls - works much better now.</blockquote>
+    <h4> Small memory leak fixed</h4>
+    <blockquote>QAT ran out of memory after continued useage for
+several weeks - I was forgetting to delete the TestObject from internal
+list after call to CMDCLEAN(...), so <br>
+after a couple of thousand test runs, it bombs with an Out of Memory
+error. Thanks goodness I implemented the "Autosave" option!</blockquote>
+    <h4> Small bug in CHECKFILE</h4>
+    <blockquote>The VFile introduced a small bug in the CHECKFILE
+command, causing it to report false results, but it is now fixed.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.5"></a>Features added</h3>
+  <blockquote>
+    <h4> Agent ported to C++</h4>
+    <blockquote>The agent was ported into POSIX compliant C++ to allow
+generation of agents for OS's not currently supported by Java, as well
+as for the constraint we have on Chorus, where only one JVM instance may
+be run at a time. Slight modification was made to the communication
+between the harness and the agent to allow the C++ agent to recieve
+Java objects such as Strings, ints etc coming down the line. This means
+that QAT and it's agents must all be running V2.5 or later. I'd suggest
+upgrading of all your qa_tester.jar archives lying around, else you'll
+wonder why your agents have stopped working. The agent source/binary is
+not included inthe delivery zip - if anybody wants it, just send me a
+mail <a href="mailto:webhiker@free.fr">webhiker@free.fr</a> and I'll
+pass it along.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.4.6"></a>Version 2.4.6 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.4.6"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> Keyword selection</h4>
+    <blockquote>Previously it tried to load the trace files for every
+test selected by the keyword expression - quite a long process. Now the
+selection  listneners are suspended while tests are selected.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.4.6"></a>Features added</h3>
+  <blockquote>
+    <h4> Http interface extended</h4>
+    <blockquote>Can now load/save projects via the http interface as
+well</blockquote>
+    <h4> Statistics pane added</h4>
+    <blockquote>There is now a third tabbed pane which shows test
+totals for the current run/project, as well as a running VM memory
+display to show  any possible memory problems.</blockquote>
+  </blockquote>
+</blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;"> </h2>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.4.5"></a>Version 2.4.5 - released February
+2000 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.4.5"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> Repainting better</h4>
+    <blockquote>When repasrsing selected tests, the underlying windows
+was not correctly refreshed. This is now fixed. It still doesn't update
+when reloading all the tests off disk.</blockquote>
+    <h4> Separators inside string constants</h4>
+    <blockquote>The following code : <br>
+      <font color="#000099">TOTO=" +Test "</font> <br>
+      <font color="#000099">OPTIONS="-Djava.compiler=none"</font> <br>
+used to cause problems in the parser, since it currently didn't't check
+if separators are contained within string quotes or not. This is now
+fixed if using the QICParser. The bug remains in the QASHParser.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.4.5"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Added new parser qat.qicparser.QICParser</h4>
+    <blockquote>Uses the new StreamTokenizer class from Java 2, and
+allows much more strict syntax control, and better parse speed. This
+will be the  basis for a new syntax allowing functions with return
+values. <br>
+The entire parsing process was rewritten to ensure minimal string
+operations so the entire process is now completely Token based, and
+where possible, StringBuffer classes were used to minimise memory
+requirements of String objects. Error reporting should be slightly more
+accurate than previously. <br>
+To use the new parser, simply edit the project properties and change "<i>qat.qashparser.QASHParser</i>"
+to "<i>qat.qicparser.QICParser"</i>. Change also "<i>qat.qashparser.QASHTestFinder</i>"
+to "<i>qat.qicparser.QICTestFinder</i>". <br>
+Select OK, and it will reparse all the tests with the new parser. The
+parse speed is improved by several orders of magnitude. <br>
+Note: all special characters now need to be escaped, eg "<i>c:\tmp</i>"
+needs to be "<i>c:\\tmp</i>" as it is for <i>java.util.Properties</i>
+files.</blockquote>
+  </blockquote>
+</blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;"> </h2>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.4.4"></a>Version 2.4.4 - released December
+1999 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.4.4"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> None</h4>
+    <blockquote>None</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.4.4"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Added Html adaptor for remote manipulation of the QAT</h4>
+    <blockquote>It is now possible to connect to the QAT via a browser,
+and perform rudimentary functions such as starting/stoppping tests, and
+browsing  the test results.</blockquote>
+    <h4> Added "Generate Html Report" option</h4>
+    <blockquote>It is now possible to generate a browsable HTML report
+of the project for archiving test runs. This function works in
+conjuntion with  the Html adaptor.</blockquote>
+  </blockquote>
+</blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;"> </h2>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.4.3"></a>Version 2.4.3</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.4.3"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> Multi-client agents</h4>
+    <blockquote>Agents can now manage multiple agents simultaneously.
+Interrupting test runs will only kill agents started by the harness
+requesting the kill,  so agents can be shared amongst multiple
+harnesses. It's suggested you make use of the newly added RANDOM command
+to ensure each SETAGENT command uses a unique offset to prevent
+interference and overwriting common files. <br>
+Previously, interrupting a test run would kill ALL processes running on
+the agent.</blockquote>
+    <h4> Project properties stripped a bit too much</h4>
+    <blockquote>To present a simple project properties window, all
+agent variables were deleted before presenting it to the user for
+editing, but in effect, all variables "AGENT*" were removed, and then
+replaced after the user finished editing. Instead, now only
+"AGENT*NAME", "AGENT*PORT", "AGENT*OS" and "AGENT*ARCH" are removed,
+allowing users to define their own variables starting with "AGENT" in
+the project properties.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.4.3"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Added RANDOM function to QASH script</h4>
+    <blockquote>There is now a RANDOM function available in the QASH
+script to generate random positive integers. See <a
+ href="QASHSyntax.html#RANDOM%28RID%29">QASH Syntax.</a></blockquote>
+    <h4> New "Reset Status" project option</h4>
+    <blockquote>If the option is set, all selected tests will be set to
+status NOTRUN before the first test starts executing.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.4.2"></a>Version 2.4.2 - released November
+1999 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.4.2"></a><u>Bugs/Issues Fixed</u></h3>
+&nbsp;
+  <blockquote>
+    <blockquote>
+      <h4> Fixed elusive memory leak</h4>
+      <blockquote>There was a mysterious memory leak which occurred if
+you ran a single test over and over again, but not when running many
+tests in a test run. This has been traced, as now corrected, so we
+should have no more "Out of memory" errors occurring on the QAT tool.</blockquote>
+      <h4> Agent is now completely asynchronous</h4>
+      <blockquote>The agent can now handle multiple requests
+simultaneously from several harnesses. Each request from the harness is
+handled in a new thread context. It allows blocked processes to be
+killed a lot easier, and improves the buggy behavior of stopping a
+running test. This was also achieved by changing some synchronous
+methods to asynchronous on the QAT harness side.</blockquote>
+      <h4> Tests now don't block when being interrupted</h4>
+      <blockquote>Tests could not be nicely interrupted due to socket
+blocking problems - this seems to have been nicely resolved now.</blockquote>
+      <h4> KILLALL done during eval mode</h4>
+      <blockquote>Under certain circumstances, when re-parsing tests a
+KILLALL request was sent to the agents.</blockquote>
+      <h4> New packaging for QASHParser</h4>
+      <blockquote>Re-packaged QASHParser and QASHTestfinder to
+qat.qashparser package.</blockquote>
+      <h4> Implemented the "New project" menu option</h4>
+      <blockquote>You can now create a new blank project by using the
+system menu option.</blockquote>
+      <h4> Removed the "View trace files in test tree" option</h4>
+      <blockquote>With the improved trace viewing system, it is no
+longer necessary to view the trace files as nodes in the test tree, so
+this option has been removed. This has the added benefit of simplifying
+much of the code, and reducing memory overhead due to fewer needed
+icons.</blockquote>
+      <h4> Uses default Swing folder icons</h4>
+      <blockquote>The default swing icons are used for all tree icons
+except the TestSpecification nodes, which are required to indicate
+differences between the test states of passed, failed etc.</blockquote>
+      <h4> Test nodes not always sorted</h4>
+      <blockquote>If tests were reloaded from within a node on the
+tree, via the right click menu, they were not sorted. They are now
+sorted correctly.</blockquote>
+      <h4> QASHParser SLEEP command not interruptable</h4>
+      <blockquote>There was previously no way to interrupt a SLEEP(X)
+command except by waiting for it to finish, sometimes causing the
+Harness to block  when a test was stopped. It can now be stopped
+immediately.</blockquote>
+    </blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.4.2"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Auto save function</h4>
+    <blockquote>There is now a project option to auto save the test
+tree after each test result becomes known, which is useful in the event
+of sudden  QAT death due to power failure etc.</blockquote>
+    <h4> Trace files cleared when reloading tests</h4>
+    <blockquote>The *.trace, *.stdout and *.stderr files created for
+each Test node are now deleted each time the tests are reparsed off the
+disk. The was no way previously, to clear these files.</blockquote>
+    <h4> Added Import/Export menu options</h4>
+    <blockquote>These new options allow you to save all files
+associated with a project to a location other than the <i>user.home</i>
+(Export), and also to load all associated files from an arbitrary
+location to <i>user.home</i> (Import).</blockquote>
+    <h4> Added more detailed agent information</h4>
+    <blockquote>The environment for each CMDSTART command is recorded
+with a lot more detail than before, now including os, os version,
+architecture etc.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.4.1"></a>Version 2.4.1</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.4.1"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <blockquote>
+      <h4> Nothing</h4>
+      <blockquote>Nothing</blockquote>
+    </blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.4.1"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Keyword/Parser Output window can be resized now</h4>
+    <blockquote>The parser output and keyword tabbed pane is now a
+JSplitPane, and can be removed entirely, or resized as needed. The
+settings are saved  between sessions.</blockquote>
+    <h4> Packaged properly now</h4>
+    <blockquote>The classes are all packaged within <b>qat.agent.*,</b> <b>qat.common.*,qat.parser.*</b>
+and <b>qat.gui.*,</b> with the exception of the utility wrapper classes <i>Qat.class,Agent.class,</i>
+and the default parser classes <i>QASHParser.class</i> and <i>QASHTestFinder.qash</i>.<br>
+Required complete rewrite of the Makefiles.</blockquote>
+    <h4> "Save project as" includes status bar</h4>
+    <blockquote>Previously, when saving a large project, when the tools
+was copying all the stdout/stderr trace files, it appeared as if the
+tools had hung, now a lovely status bar makes the wait a little easier.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.4.0"></a>Version 2.4.0 - released October
+1999 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.4"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <blockquote>
+      <h4> Printing caused ClassCastException</h4>
+      <blockquote>Was calling getAllNodes instead of getAllTestNodes to
+retrieve tree nodes for printing.</blockquote>
+      <h4> Stopping a test run left the node in "running" state</h4>
+      <blockquote>The node is now returned to an UNRESOLVED state if it
+is interrupted.</blockquote>
+      <h4> Memory leakage problems</h4>
+      <blockquote>A memory leakage problem was caused by a swing bug
+workaround, and made really bad by the new active viewers attached to
+all the test tree nodes. This problem has been fixed, and memory useage
+seems stable at about 60MB - still a lot, but it seems to be a Swing
+problem, not QAT problem.</blockquote>
+      <h4> "localhost" replaced by actual host name</h4>
+      <blockquote>Adding an agent defaulted the agent name to
+"localhost", but this only has meaning on the harness machine. Lots of
+the test scripts  use this value to sent to the agent machines etc, so
+now the actual hostname  is supplied by deefault.</blockquote>
+      <h4> CMDSTOP syntax handling differed slightly from CMDSTATUS</h4>
+      <blockquote>Forms like CMDSTATUS(Agent+x+s) were handled by the
+CMDSTATUS command, but rejected by the CMDSTOP command. They now exhibit
+similar behaviour.</blockquote>
+    </blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.4"></a><u>Features added</u></h3>
+  <blockquote>
+    <blockquote>
+      <h4> Timer run</h4>
+      <blockquote>You can now schedule a test run in the future. This
+feature is pretty ugly right now, but is functional. It might be
+expanded a little  more if the functionality proves to be usefull.</blockquote>
+      <h4> Test Node updated after a test run</h4>
+      <blockquote>Previously, a test was only visually updated during a
+test re-parse, or from the initial test parse. Now the node is updated
+after each test run to reflect any dynamic keyword, testname, include
+file and command status changes that may have occurred. The disadvantage
+of this approach is that a serious test failure early on might cause
+some problems such as undefined test name etc.</blockquote>
+      <h4> Parser output incorporated into main window</h4>
+      <blockquote>The keyword panel and parser output viewer have now
+been incorporated into the same panel through use of a JTabbedPane to
+reduce multiple window confusion.</blockquote>
+      <h4> Reload tests from specific directories only</h4>
+      <blockquote>You can now reload tests off disk for specific
+directories using the right-click menu.</blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.3.9"></a>Version 2.3.9 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.3.9"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <blockquote>
+      <h4> Trace filename generation centralised</h4>
+      <blockquote>Calculation of the trace file name is now performed
+exclusively by the TestSpecification object to reduce code duplication.</blockquote>
+    </blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.3.9"></a><u>Features added</u></h3>
+  <blockquote>
+    <blockquote>
+      <h4> Live TraceViewer and ParserViewer objects</h4>
+      <blockquote>These viewers are now automatically updated each time
+the TestTreenode changes.</blockquote>
+      <h4> NodeMenu uses AbstractAction instead of listeners</h4>
+      <blockquote>Change was made to simplify the event mechanism, and
+remove code duplication.</blockquote>
+      <h4> Compare results adjusted</h4>
+      <blockquote>Work has started on making this functionality a
+little better.</blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;"> </h2>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.3.8"></a>Version 2.3.8</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.3.8"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> QASH Properties cacheing side-effect</h4>
+    <blockquote>Previously properties files which were included were
+cached in memory, so they were only loaded once during the lifetime of
+the QASHParser  object. The problem is if you edit a properties file,
+this changed will never be reflected until you relaunch the JVM to
+create a new QASHParser object, since it will always use the static one
+in memory. Now the cache list is refreshed for every QASH file parsed,
+which should fix the behaviour. Slight performance loss will result from
+having to read a properties file each time between succesive QASH
+parses.</blockquote>
+    <h4> Parser output sometimes not found</h4>
+    <blockquote>The method used to calculate a filename to store the
+parser output has been improved. In some cases it did not work properly.</blockquote>
+    <h4> Graphics object not properly disposed</h4>
+    <blockquote>The StatusWindow object did not explictly call
+dispose() when forcing a paint. This is now explicitly called to ensure
+the resources  are properly freed.</blockquote>
+    <h4> SaveAs menu option did not save serialized tree</h4>
+    <blockquote>Using the "Save As" menu option did not explicitly save
+a serialized version of the currently loaded project. This is now saved
+by default as well.</blockquote>
+    <h4> QASH parser bugs</h4>
+    <blockquote>Several parser bugs were fixed. Several more were
+created by the fixes, and these have now been fixed.</blockquote>
+    <blockquote>&nbsp;</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.3.8"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Test tree is sorted</h4>
+    <blockquote>The children of each node in the test tree are now
+lexicographically sorted by TEST_NAME.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.3.7"></a>Version 2.3.7</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.3.7"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> QASH syntax error</h4>
+    <blockquote>If a variable was defined with the same characters as a
+predefined keyword, such as SLEEP_KANGO, it was treated as a keyword
+followed by illegal  characters. This has now been fixed.</blockquote>
+    <h4> ZIPSEND strengthened</h4>
+    <blockquote>Trying to do a ZIPSEND of a non-existent file was not
+properly handled, and left the agent in a bad state. It now fails a lot
+more gracefully,  and the agent is never contacted.</blockquote>
+    <h4> Modified syntax slightly</h4>
+    <blockquote>The CMDSTART, CMDSTATUS and CMDSTOP can now take a
+complex ID variable for use in loops. Previously this was not possible
+because the syntax requires that the variable be non-defined before use.
+So forms such as STARTCMD(AgentID, "CommandID_"+I, ....) are now
+allowed.</blockquote>
+    <h4> TraceViewer class sometimes lost trace files</h4>
+    <blockquote>The TraceViewer class sometimes indicated a trace file
+was not found, even though it exists, due to a missing else which
+over-wrote the text while the background thread loaded the file.</blockquote>
+    <blockquote>&nbsp;</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.3.7"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Compare results functionality</h4>
+    <blockquote>You can now compare the results of two different test
+runs, and it will list any matching tests by result. This first
+implementation is quite rudimentary, but it will be fluffed out a bit as
+the RFE's come in.</blockquote>
+  </blockquote>
+  <blockquote>
+    <blockquote>&nbsp;</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.3.5"></a>Version 2.3.5 - released August
+1999 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.3.5"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> Solaris Production release JVM bug in JEditorPane</h4>
+    <blockquote>The TraceViewer object now has a workaround for a bug
+in the JEditorPane class which prevents autosensing of the content type
+when loading a non-html page.</blockquote>
+    <h4> QAT System variable name change</h4>
+    <blockquote>The variable NB_OF_MACHINES has been changed to
+AGENT_COUNT to be more consistent and intuitive.</blockquote>
+    <h4> Trace Viewer clearing problem</h4>
+    <blockquote>If an attempt to view a non-existent trace was made,
+the trace viewer displayed the previous traces instead. The relevant
+windows are now cleared properly regardless.</blockquote>
+    <h4> SLEEP command handled incorrectly</h4>
+    <blockquote>The SLEEP command was processed even during evaluation
+mode (ie when parsing the file without running it) causing long delays
+in the parse time for the tests.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.3.5"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Added syntax highlighting</h4>
+    <blockquote>Allows you to select syntax highlighting for when you
+edit the script files, or the include files of a test.</blockquote>
+    <h4> Parser trace saved</h4>
+    <blockquote>The parser output is now viewable from the GUI, since
+it is possible to open the harness without a console window using the
+-jar option.  Also limited agent traces are available for each executed
+command on the agent.</blockquote>
+    <h4> Expand tree tool button</h4>
+    <blockquote>A new button has been added to the tool bar to allow
+instant expansion of all tree nodes</blockquote>
+    <h4> New right-click tree menu option</h4>
+    <blockquote>Added a menu option to allow parsing of single files
+via the right-click tree node menu, as well as allowing the parsing of
+any selected  tests. A new system menu item was added for this as well.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.3.4"></a>Version 2.3.4</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.3.4"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> DELFILELOCAL command</h4>
+    <blockquote>Was never in evaluation mode - file was always deleted,
+else error generated. Now fixed.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.3.4"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Added CHECKAGENT command</h4>
+    <blockquote>Allows you to check if an agent exists or not. See <a
+ href="QASHSyntax.html#CHECKAGENT">QASH Syntax</a>&nbsp; for more
+details.</blockquote>
+    <h4> Serialization cleaned up</h4>
+    <blockquote>Previously, any changes to the TestSpecification class
+resulted in incompatible serialized versions of the test tree, and
+furthermore, the entire JTree object and Nodes etc were saved during the
+serialization process. Now only the tree root is aved, and the
+writeObject method of TestSpecification has been over-ridden to allow
+backward-compatibility for future versions of this class. <br>
+Current saved trees will now be much smaller, and loading thus faster.</blockquote>
+    <h4> Added MoveUp and MoveDown buttons to Edit Agents window</h4>
+    <blockquote>This allows agents to be easily moved up or down in the
+agent list for quick re-ordering of agents.</blockquote>
+    <h4> ParserInterface modified to allow saving and viewing of traces</h4>
+    <blockquote>The parser output is now saved to file, and is viewable
+via the right-click node menu. If called via the commandline interface,
+it defaults to standard output. Added ViewOutput option to right-click
+menu.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.3.3"></a>Version 2.3.3 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.3.3"></a><u>Bugs/Issues Fixed</u></h3>
+  <blockquote>
+    <h4> QASHParser messages</h4>
+    <blockquote>Message output for unresolved errors was refined a bit.
+Also only one error per qash file is reported now, since the rest are
+usually spurious errors.</blockquote>
+    <h4> Agent methods synchronized</h4>
+    <blockquote>Some strange behaviour was noted for the first test run
+by the agent after it was started. This seems to have disappeared by
+making all the agent methods synchronized.</blockquote>
+    <h4> StatusWindow repaint problem</h4>
+    <blockquote>When displaying a Status window during a project
+save/load, the contents of the window were never painted correctly due
+to a bug in the Swing classes. This has now been worked around.</blockquote>
+    <h4> Right-click menu disabled</h4>
+    <blockquote>The right-click test menu disabled the "Run selected
+tests" option when right clicking over a non-test object. This menu item
+is now never disabled. The other menu items will be enabled/disabled
+depending on the clicked context.</blockquote>
+    <h4> Repaint problem when loading new project</h4>
+    <blockquote>The test tree was not properly repainting after loading
+a previously saved project. Now it is properly validated and repainted.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.3.3"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Clear Keyword History</h4>
+    <blockquote>Added a button to clear the keyword history, which
+otherwise just builds up each time a new keyword expression is applied.
+Also trimmed  a bit of code fluff found in this section.</blockquote>
+    <h4> Added TestFinderInterface</h4>
+    <blockquote>This allows users to define their own class which
+decides what files get passed to the parser, and are considered as
+distinct tests. This now completes the functionality allowing users to
+freely re-define their  own Parser and TestFinder implementations.</blockquote>
+    <h4> TraceViewer class added</h4>
+    <blockquote>Instead of the right-click test menu showing separate
+stdout and stderr traces for each corresponding CMDTRACE command, there
+is no only one entry per available trace. It is also viewed through a
+special TraceViewer now, and also includes environment information for
+the process trace being viewed, the time it was run on the agent, and
+the time it was recieved from the agent by the harness. <br>
+Furthermore, the content of the trace files is autodetected - if it
+contains valid HTML 3.2 format, the output will be displayed as HTML,
+inculding links etc which can be followed.</blockquote>
+    <h4> "Running" state introduced</h4>
+    <blockquote>Tests can now be one of five states Passed, Failed,
+Unresolved, NotRun and Running. This allows one to visually follow the
+test run progress  through the test tree as the "Running" icon is
+displayed for each test being executed on the agent.</blockquote>
+    <h4> NotePad line numbers</h4>
+    <blockquote>The Notepad class used to edit files now includes line
+number information for easy cross-reference to syntax errors reported by
+the harness.</blockquote>
+    <h4> GUI Layout changed</h4>
+    <blockquote>I've changed the GUI layout to try and make it more
+user-feely-touchy.</blockquote>
+    <h4> Screen size &amp; position saved</h4>
+    <blockquote>The last screen size &amp; position will be saved and
+re-used for subsequent sessions. The first time it will default to
+640x480 centered  in the middle of the screen. These values are stored
+in the &lt;qa_tester&gt;/harness/session.properties  file for anybody
+wanting to hack them by hand.</blockquote>
+    <h4> Added CHECKFILE command to QASH syntax</h4>
+    <blockquote>You can now check for the existence of a file on the
+agent. See the <a href="QASHSyntax.html#CHECKFILE">QASh syntax </a>document
+for more details.</blockquote>
+    <h4> Command line interface added</h4>
+    <blockquote>For the real sickos, I have added a commandline
+interface to the tool, which runs single or groups of tests. For details
+on the commandline  syntax, see the Quick Start Guide section on <a
+ href="QuickStartGuide.html#Running%20tests%20via%20the%20commandline%20interface">Command
+Line running.</a></blockquote>
+    <h4> Status Bar improved</h4>
+    <blockquote>The status bar will now reflect the totalled state of
+all tests in the test tree. During a test run it will indicate the
+current progress  with relation to number of selected tests. <br>
+It now also includes the number of tests not run.</blockquote>
+  </blockquote>
+</blockquote>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.3.2"></a>Version 2.3.2 - releasedJune 1999</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <h3> <a name="Bugs Fixed 2.3.2"></a><u>Bugs/Issues Fixed</u></h3>
+</blockquote>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <blockquote>
+    <h4> No cut &amp; paste in Edit Project window</h4>
+    <blockquote>You can now use the keys Control-X, Control-C and
+Control-V to Cut, Copy and Paste respectively from <br>
+all textfield/text areas.</blockquote>
+    <h4> Null pointer exception when first run</h4>
+    <blockquote>The first time it is run, there was an init problem if
+no default project and session properties were found. This bug was
+introduced in version 2.3.2 first release.</blockquote>
+    <h4> No error message if try to run tests with none selected</h4>
+    <blockquote>You will now get a nag window if you try this.</blockquote>
+    <h4> Repaint problem</h4>
+  </blockquote>
+</blockquote>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <blockquote>
+    <blockquote>Nodes were not correctly repainted after each test was
+completed, due to a bug in the algorithm for traversing the test tree</blockquote>
+    <h4> "Parent QAT not set" problem</h4>
+    <blockquote>In some situations the PopMenu had no handle to the
+parent harness, and so was not able to call it's test run methods.</blockquote>
+    <h4> No way to actively stop a process</h4>
+    <blockquote>Previous version had no way to stop a command except by
+timing out (not good for, eg http servers) <br>
+Now implemented is a CMDSTOP and SLEEP function, which allows better
+control over process starting and stopping.</blockquote>
+    <h4> Corrupt/Unsupported tree handling</h4>
+    <blockquote>Trying to load a previously serialized tree not
+compatible with the QAT tool was not handled correctly. Now the tree is
+manually re-parsed  if it can not be de-serialized.</blockquote>
+    <h4> Save Project As was broken</h4>
+    <blockquote>The method used to calculate whether the selected
+project name already had a ".prj" suffix or not checked for the last '.'
+character in the string, but if the user omitted this character, it
+would find the '.' in the harness base dir ".qat/agent" and use this.
+Now it checks that the fourth last character is a '.' to determine
+whether it has a file extension  or not.</blockquote>
+    <h4> Internal parser modifications</h4>
+    <blockquote>The QASHParser was modified in some sections to lower
+the BigO complexity of some of the loops, as well as streamlining the
+token reading  process.</blockquote>
+    <h4> Added test root system variable</h4>
+    <blockquote>Include a new QAT system variable called <b>TESTPATH</b>
+which will allow the qash tests to know where they are located. It
+corresponds directly to the value used in the project settings window
+for "Test directory"  path.</blockquote>
+  </blockquote>
+  <h3> <a name="Features added 2.3.2"></a><u>Features added</u></h3>
+  <blockquote>
+    <h4> Miscellaneous</h4>
+  </blockquote>
+</blockquote>
+<ul style="font-family: helvetica,arial,sans-serif;">
+  <ul>
+    <ul>
+      <li> toolbar button to run selected tests</li>
+      <li> Notepad class updated to allow cut and paste via system
+clipboard</li>
+      <li> included version information in the About box</li>
+    </ul>
+    <h4> Implemented the QASH syntax as an Interface</h4>
+    <ul>
+The QAT harness now uses a generic interface ParserInterface to allow
+users to write custom shell parsers instead of only using the QASHParser
+syntax. This means people can implement their own style of syntax as
+they require, and simply plug it into the harness. It is selectable as
+a Project setting.
+    </ul>
+    <h4> Random file transfer functions</h4>
+    <ul>
+You can now transfer arbitrary files to and from the agent via the <b><a
+ href="QASHSyntax.html#GETFILE">GETFILE</a></b> and <b><a
+ href="QASHSyntax.html#SENDFILE">SENDFILE</a></b> commands. <br>
+You can also delete these files locally or on the agent by calling the <b><a
+ href="QASHSyntax.html#DELFILE_LOCAL">DELFILE_LOCAL</a></b> and <b><a
+ href="QASHSyntax.html#DELFILE_REMOTE">DELFILE_REMOTE</a></b> commands
+to ensure correctly written tests don't leave files lying around all
+over the place.
+    </ul>
+  </ul>
+</ul>
+<table cols="1"
+ style="width: 100%; background-color: rgb(255, 204, 0); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3><a name="Version_2.3.0"></a>Version 2.3.0 - released February
+2000 </h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2 style="font-family: helvetica,arial,sans-serif;"></h2>
+<blockquote style="font-family: helvetica,arial,sans-serif;">This was
+the initial public release of the new QASH Harness. Prior to this it
+was only in use by members of the inner circle.<br>
+</blockquote>
+</body>
+</html>

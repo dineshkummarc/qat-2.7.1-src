@@ -1,0 +1,179 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.51 [en] (X11; I; SunOS 5.7 sun4m) [Netscape]">
+   <meta name="Author" content="webhiker">
+   <meta name="Description" content="User manula for the QAT Harness">
+   <title>QAT Harness User Manual</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+
+<h1>
+QAT Harness User Manual</h1>
+
+<center>
+<h1>
+<font color="#FF0000">!!!!!!!!!!!!!!!! UNDER&nbsp;CONSTRUCTION !!!!!!!!!!!!!!!!</font></h1></center>
+
+<table BORDER NOSAVE >
+<tr NOSAVE>
+<td NOSAVE>
+<center>Author</center>
+</td>
+
+<td>
+<center>webhiker, <a href="mailto:webhiker@free.fr">webhiker</a></center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center>Version</center>
+</td>
+
+<td>
+<center>2.3.2</center>
+</td>
+</tr>
+</table>
+
+<br>&nbsp;
+<ol>
+<li>
+<a href="#System Menu">System Menu</a></li>
+
+<li>
+Toolbar</li>
+
+<li>
+Test Tree</li>
+
+<li>
+Test Selection</li>
+
+<li>
+StatusBar</li>
+
+<li>
+Project settings</li>
+</ol>
+
+<h3>
+<a NAME="System Menu"></a>System Menu</h3>
+The system menu allows access to commands for saving, loading and renaming
+projects, running tests, printing reports, and showing version information.
+<blockquote>
+<h4>
+File</h4>
+</blockquote>
+
+<ol>
+<ol>
+<li>
+<b>Run selected tests</b></li>
+
+<br>This will run all tests currently selected in the test tree. If a directory
+is selected, but closed (ie no children showing), all the tests contained
+in this subdirectory will be run. If a selected directory is open and selected,
+only selected tests in this directory will be executed.
+<li>
+<b>Stop current run</b></li>
+
+<br>This will halt the current test run, or give an error message if no
+tests are currently running. The tests currently running may block if it
+is waiting for a <b>GETSTATUS</b> command result, when the corresponding
+process is blocked and no timeout was set when calling the <b>CMD_START</b>
+command.
+<li>
+<b>Select all tests</b></li>
+
+<br>This will select all the tests in the test tree, expanding all nodes
+to make the tests visible as well. Another way to select all the tests
+is to make sure the root node is closed and selected, and then select the
+"Run selected tests" command.
+<li>
+<b>Re-parse the tests</b></li>
+
+<br>The test files are parsed by the relevant ParserInterface only when
+a new test directory is selected, or project properties which affect the
+parsing of tests, has changed. A serialized version og the parsed test
+is used to store keyword, name, output etc. information for displaying
+in the test tree. Calling the re-parse command will force the GUI to reload
+the tests and re-parse in case changes were made to the disk versions.
+When a test is run, it always uses the disk version, so re-parsing tests
+is only neccesary to reflect changes to GUI visible parameters of a test,
+such as available output trace files, include file changes etc.
+<li>
+<b>Load,, Save, Save project As</b></li>
+
+<br>These methods are responsible for saving and loading the various run
+combinations you've set up.
+<br>A saved project includes all run results for each test, the parsed
+values for each test, the output trace files for each process started by
+a test, as well as the parser output for each test.
+<li>
+<b>Exit</b></li>
+
+<br>This will exit the GUI harness. The current project will be saved automatically.\</ol>
+
+<h4>
+Edit</h4>
+
+<ol>
+<li>
+<b>Edit project</b></li>
+
+<br>This allows access to the project settings. The following values may
+be adjusted :
+<br>&nbsp;
+<table BORDER NOSAVE >
+<tr NOSAVE>
+<td NOSAVE>Project properties</td>
+
+<td>These are any default values which are passed to the Parser when parsing
+the test files, and executing the test files.</td>
+</tr>
+
+<tr>
+<td>Display output trace files in the test tree</td>
+
+<td>If selected, the viewable stdout and stderr traces for each test will
+be visible as child nodes of the test node. If not selected, they may be
+viewed via the right click pop-up menu.</td>
+</tr>
+
+<tr>
+<td>Parser class name</td>
+
+<td>For use if a user has defined their own class implementing the ParserInterface</td>
+</tr>
+
+<tr>
+<td>Test finder class name</td>
+
+<td>For use if the user has defined their own TestFinderInterface class.</td>
+</tr>
+
+<tr>
+<td>Test directory path</td>
+
+<td>The root from which to search for test files.</td>
+</tr>
+
+<tr>
+<td>Re-use trace viewer window</td>
+
+<td>If selected, all trace view requests will appear in the same TraceViewer
+window. If not selected, a&nbsp; new TraceViewer window will pop-up for
+each view requested.</td>
+</tr>
+</table>
+
+<li>
+<b>Edit agent settings</b></li>
+</ol>
+</ol>
+
+</body>
+</html>

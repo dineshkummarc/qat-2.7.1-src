@@ -1,0 +1,15 @@
+#################################################
+# @(#)file   zips.qinc
+# @(#)author  webhiker
+# @(#)version 1.19
+# @(#)date   00/12/26
+#################################################
+node_root          = qat.qash.path + file.separator + ".." + file.separator
+
+###############################################################
+# This is a list of all the zips a test may send to the agent
+###############################################################
+positive_tests_zip = node_root + "positive_tests" + file.separator + "zip" + file.separator + "positive_tests.zip"
+syntax_tests_zip   = node_root + "syntax_tests"   + file.separator + "zip" + file.separator + "syntax_tests.zip"
+negative_tests_zip = node_root + "negative_tests" + file.separator + "zip" + file.separator + "negative_tests.zip"
+client_server_zip  = node_root + "client_server"  + file.separator + "zip" + file.separator + "client_server.zip"

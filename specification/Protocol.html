@@ -1,0 +1,582 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.5 [en] (X11; I; SunOS 5.6 sun4m) [Netscape]">
+   <meta name="Author" content="webhiker">
+   <meta name="Description" content="This specifies the protocol the agent and harness must followto execute and kill tests.">
+   <title>Harness-Agent Communication Protocol Specification</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#990066" alink="#FF0000">
+
+<h1>
+Harness- Agent Communication Protocol</h1>
+<i>Author: </i>webhiker, November 1998
+<br>
+<hr WIDTH="100%">
+<br>The harness and <a href="/usr/project/pqa/new_tools/qa_tester/src/agent/Agent.java">agent</a>
+will communicate via a simple TCP/IP <i><tt>java.net.Socket</tt></i> connection.
+<br>The agent will continually monitor the port, and respond to action
+requests as they are recieved.
+<br>Every action request recieved by the agent will be followed by a processing
+signal, indicate the action is being done, and a finished signal, indicating
+the action has been completed.
+<p>These constant codes are defined in the class <i><tt><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html">ProtocolConstants</a></tt></i>.
+<br>Other useful common classes and such are :
+<blockquote>
+<blockquote><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/Utils.html">Utils</a>
+<br><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/Agent.html">Agent</a>
+<br><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ReaderThread.html">ReaderThread</a>
+<br><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ExecProcess.html">ExecProcess</a>
+<br><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a></blockquote>
+</blockquote>
+
+<p><br>The following text outlines all possible communication between agent
+and harness:
+<br>
+<hr WIDTH="100%">
+<h3>
+TestObject Transfer</h3>
+Send a TestObject and a zip file to the agent, where the files will be
+expanded.
+<br>To start execution of this TestObject, you need to send a TestObject
+Execution message.
+<br>Harness:
+<ul>
+<li>
+sends an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_TESTOBJECT_TRANSFER">ACTION_TESTOBJECT_TRANSFER</a></b>
+request</li>
+
+<li>
+sends a <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a>
+object</li>
+
+<li>
+sends a Long value indicating the size of the following zip file</li>
+
+<li>
+sends the byte stream of the file corresponding to the <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a></li>
+
+<br>This file will be in the format of <tt>java.util.zip.ZipFile</tt>.
+<li>
+waits for <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_PROCESSING</a></b>response
+from&nbsp; the agent</li>
+
+<li>
+if the code recieved is not <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b>,
+then re-send the file or fail the test (**** to be decided ****)</li>
+</ul>
+Agent
+<ul>
+<li>
+recieves an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_TESTOBJECT_TRANSFER">ACTION_TESTOBJECT_TRANSFER</a></b>
+request from the harness</li>
+
+<li>
+reads a <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a>
+object</li>
+
+<li>
+reads a long value corresponding to the length of the zip file about to
+be sent</li>
+
+<li>
+reads a ZipFile stream corresponding to this <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a></li>
+
+<li>
+sends a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_PROCESSING</a></b>
+signal to the harness</li>
+
+<li>
+unzips the file it recieved</li>
+
+<li>
+if any errors occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINSHED_ERROR">RESPONSE_FINISHED_ERROR</a></b>
+code is sent to the harness</li>
+
+<li>
+if no errors occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b>
+code is sent to the harness</li>
+</ul>
+
+<hr WIDTH="100%">
+<h3>
+TestObject Execution</h3>
+This starts the execution of a TestObject on the agent machine.
+<br>It is the same as using a TestObject transfer method, but no zip file
+is sent, and the TestObject is executed.
+<p>Harness:
+<ul>
+<li>
+sends an <b>ACTION_TESTOBJECT_EXECUTE</b> request</li>
+
+<li>
+sends a <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a>
+object</li>
+
+<li>
+waits for <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_PROCESSING</a></b>response
+from&nbsp; the agent</li>
+
+<li>
+when the test is completed, get a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b></li>
+</ul>
+Agent
+<ul>
+<li>
+recieves an <b>ACTION_TESTOBJECT_EXECUTE</b> request from the harness</li>
+
+<li>
+reads a <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a>
+object</li>
+
+<li>
+sends a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_PROCESSING</a></b>
+signal to the harness</li>
+
+<li>
+if any errors occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINSHED_ERROR">RESPONSE_FINISHED_ERROR</a></b>
+code is sent to the harness</li>
+
+<li>
+if no errors occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b>
+code is sent to the harness</li>
+</ul>
+
+<hr WIDTH="100%">
+<h3>
+TestObject Exit Code</h3>
+This requests the agent get the return code of the corresponding TestObject.
+<br>A call of this type will block until such time as the process started
+by a call to TestObject execute exits. If the TestObject is not currently
+running, a failure is assumed.
+<br>This call automatically "stops" the TestObject as well, closing and
+flushing all it's output streams.
+<p>Harness:
+<ul>
+<li>
+sends an <b>ACTION_GETINFO_EXITCODE</b> request</li>
+
+<li>
+sends a <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a>
+object</li>
+
+<li>
+waits for <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_PROCESSING</a></b>response
+from&nbsp; the agent</li>
+
+<li>
+waits for TestObject return code, sent&nbsp; by&nbsp; the agent</li>
+
+<li>
+when the test is completed, get a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b></li>
+</ul>
+Agent
+<ul>
+<li>
+recieves an <b>ACTION_GETINFO_EXITCODE</b> request from the harness</li>
+
+<li>
+reads a <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a>
+object</li>
+
+<li>
+sends a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_PROCESSING</a></b>
+signal to the harness</li>
+
+<li>
+sends the return code of the corresponding process&nbsp;&nbsp; to the harness,
+waiting if it's not ready, and returning non-zero if it was not running
+at all.</li>
+
+<li>
+if no errors occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b>
+code is sent to the harness</li>
+</ul>
+
+<hr WIDTH="100%">
+<h3>
+TestObject Kill</h3>
+This allows a specific TestObject running on the agent to be killed, if
+it is found to be running.
+<p>Harness:
+<ul>
+<li>
+sends an <b>ACTION_KILL_TESTOBJECT</b> request</li>
+
+<li>
+sends a <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a>
+object</li>
+
+<li>
+waits for <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_PROCESSING</a></b>response
+from&nbsp; the agent</li>
+
+<li>
+when the test is completed, get a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b></li>
+</ul>
+Agent
+<ul>
+<li>
+recieves an <b>ACTION_KILL_TEST_OBJECT</b> request from the harness</li>
+
+<li>
+reads a <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a>
+object</li>
+
+<li>
+sends a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_PROCESSING</a></b>
+signal to the harness</li>
+
+<li>
+if any errors occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINSHED_ERROR">RESPONSE_FINISHED_ERROR</a></b>
+code is sent to the harness</li>
+
+<li>
+if no errors occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b>
+code is sent to the harness</li>
+</ul>
+
+<hr WIDTH="100%">
+<h3>
+Kill All TestObjects</h3>
+This kills ANY TestObjects found to be running on the agent.
+<p>Harness:
+<ul>
+<li>
+sends an <b>ACTION_KILL_ALL</b> request</li>
+
+<li>
+waits for <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_PROCESSING</a></b>response
+from&nbsp; the agent</li>
+
+<li>
+when the test is completed, get a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b></li>
+</ul>
+Agent
+<ul>
+<li>
+recieves an <b>ACTION_KILL_ALL</b> request from the harness</li>
+
+<li>
+sends a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_PROCESSING</a></b>
+signal to the harness</li>
+
+<li>
+if any errors occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINSHED_ERROR">RESPONSE_FINISHED_ERROR</a></b>
+code is sent to the harness</li>
+
+<br>if no errors occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b>
+code is sent to the harness</ul>
+
+<hr WIDTH="100%">
+<h3>
+Kill Agent</h3>
+This kills the agent, and therefore all the tests started by the agent.
+<p>Harness:
+<ul>
+<li>
+sends an <b>ACTION_KILL_AGENT</b> request</li>
+
+<li>
+waits for <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_PROCESSING</a></b>response
+from&nbsp; the agent</li>
+
+<li>
+when the test is completed, get a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b></li>
+</ul>
+Agent
+<ul>
+<li>
+recieves an <b>ACTION_KILL_AGENT </b>request from the harness</li>
+
+<li>
+sends a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_PROCESSING</a></b>
+signal to the harness</li>
+
+<li>
+if any errors occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINSHED_ERROR">RESPONSE_FINISHED_ERROR</a></b>
+code is sent to the harness</li>
+
+<br>if no errors occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b>
+code is sent to the harness</ul>
+
+<hr WIDTH="100%">
+<br>&nbsp;
+<h3>
+TestObject Cleaning</h3>
+This deletes all/any files related to this TestObject (ie any files sent
+over in a TestObject transfer message).
+<p>Harness:
+<ul>
+<li>
+sends an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_TESTOBJECT_CLEAN">ACTION_TESTOBJECT_CLEAN</a></b>
+request</li>
+
+<li>
+sends a <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a>
+object</li>
+
+<li>
+waits for <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_PROCESSING</a></b>response
+from&nbsp; the agent</li>
+
+<li>
+waits for code recieved <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b>
+or if errors occurred <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINSHED_ERROR">RESPONSE_FINISHED_ERROR</a></b></li>
+</ul>
+Agent
+<ul>
+<li>
+recieves an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_TESTOBJECT_CLEAN">ACTION_TESTOBJECT_CLEAN</a></b>
+request from the harness</li>
+
+<li>
+reads a <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a>
+object</li>
+
+<li>
+sends a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_PROCESSING</a></b>
+signal to the harness</li>
+
+<li>
+cleans all files associated with the recieved <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a></li>
+
+<li>
+if any errors occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINSHED_ERROR">RESPONSE_FINISHED_ERROR</a></b>
+code is sent to the harness</li>
+
+<li>
+if no errors occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b>
+code is sent to the harness</li>
+</ul>
+
+<hr WIDTH="100%">
+<br>&nbsp;
+<h3>
+Agent Operating System Information</h3>
+This allows the harness to query the operating system the agent is running
+on.
+<p>Harness:
+<ul>
+<li>
+sends an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_GETINFO_OS">ACTION_GETINFO_OS</a></b>request</li>
+
+<li>
+recieves a String object with this information</li>
+</ul>
+Agent
+<ul>
+<li>
+recieves an <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_GETINFO_OS"><b>ACTION_GETINFO_OS</b>&nbsp;</a>
+request from the harness</li>
+
+<li>
+writes a String object with this information</li>
+
+<br>&nbsp;</ul>
+
+<hr WIDTH="100%">
+<br>&nbsp;
+<h3>
+Agent System Architecture Information</h3>
+This allows the harness to query the system architecture the agent is running
+on.
+<p>Harness:
+<ul>
+<li>
+sends an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_GETINFO_ARCH">ACTION_GETINFO_ARCH</a></b>
+request</li>
+
+<li>
+recieves a String object with this information</li>
+</ul>
+Agent
+<ul>
+<li>
+recieves an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_GETINFO_ARCH">ACTION_GETINFO_ARCH</a></b>request
+from the harness</li>
+
+<br>writes a String object with this information</ul>
+
+<hr WIDTH="100%">
+<h3>
+TestObject GetStdOut</h3>
+This allows the harness to get the standard output of any executed TestObject
+<p>Harness:
+<ul>
+<li>
+sends an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_GETINFO_ARCH">ACTION_GETINFO_STDOUT</a></b>request</li>
+
+<li>
+sends a <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a>
+object</li>
+
+<li>
+reads a long value corresponding to the length of the file about to be
+sent</li>
+
+<li>
+reads this number of bytes from the socket stream</li>
+
+<li>
+waits for code recieved <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b>
+or if errors occurred <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINSHED_ERROR">RESPONSE_FINISHED_ERROR</a></b></li>
+</ul>
+Agent
+<ul>
+<li>
+recieves an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_GETINFO_ARCH">ACTION_GETINFO_STDOUT</a></b>request
+from the harness</li>
+
+<li>
+reads a&nbsp; <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a>
+object</li>
+
+<li>
+sends a Long value corresponding to the size of the file about to be sent</li>
+
+<li>
+sends the bytes of the requested file</li>
+
+<li>
+send <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b>
+if no errors were detected, else sends <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINSHED_ERROR">RESPONSE_FINISHED_ERROR</a></b></li>
+</ul>
+
+<hr WIDTH="100%">
+<h3>
+TestObject GetStdErr</h3>
+
+<ul>This allows the harness to get the standard error output of any executed
+TestObject
+<p>Harness:
+<ul>
+<li>
+sends an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_GETINFO_ARCH">ACTION_GETINFO_STDERR</a></b>
+request</li>
+
+<li>
+sends a <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a>
+object</li>
+
+<li>
+reads a long value corresponding to the length of the file about to be
+sent</li>
+
+<li>
+reads this number of bytes from the socket stream</li>
+
+<li>
+waits for code recieved <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b>
+or if errors occurred <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINSHED_ERROR">RESPONSE_FINISHED_ERROR</a></b></li>
+</ul>
+Agent
+<ul>
+<li>
+recieves an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_GETINFO_ARCH">ACTION_GETINFO_STDERR</a></b>
+request from the harness</li>
+
+<li>
+reads a&nbsp; <a href="/usr/project/pqa/new_tools/qa_tester/specification/api/TestObject.html">TestObject</a>
+object</li>
+
+<li>
+sends a Long value corresponding to the size of the file about to be sent</li>
+
+<li>
+sends the bytes of the requested file</li>
+
+<br>send <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINISHED_OK">RESPONSE_FINSHED_OK</a></b>
+if no errors were detected, else sends <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_FINSHED_ERROR">RESPONSE_FINISHED_ERROR</a></b></ul>
+</ul>
+
+<hr WIDTH="100%">
+<h3>
+Get Arbitrary File</h3>
+This allows the harness to recieve an arbitrary file from the agent.
+<p>Harness:
+<ul>
+<li>
+sends an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_GETINFO_ARCH">ACTION_GETINFO_FILE</a></b>
+request</li>
+
+<li>
+send a String object with the name of the desired file</li>
+
+<li>
+recieves a Long value indicating the size of the file to be sent</li>
+
+<li>
+recieves the byte stream of the file</li>
+
+<li>
+reads a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_FINISHED_OK</a></b>
+response from the agent or if an error occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_FINISHED_ERROR</a></b></li>
+</ul>
+Agent
+<ul>
+<li>
+recieves an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_GETINFO_ARCH">ACTION_GETINFO_FILE</a></b>
+request from the harness</li>
+
+<li>
+recieves a String object containing the name of the file to send</li>
+
+<li>
+sends a Long value corresponding to the number of bytes to be sent</li>
+
+<li>
+sends the byte stream of the requested file</li>
+
+<li>
+sends a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_FINISHED_OK</a></b>
+message to the harness, or&nbsp; if <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_FINISHED_ERROR</a></b>
+an error occurred.</li>
+</ul>
+
+<hr WIDTH="100%">
+<h3>
+Send Arbitrary File</h3>
+This allows the harness to recieve an arbitrary file from the agent.
+<p>Harness:
+<ul>
+<li>
+sends an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_GETINFO_ARCH">ACTION_SENDINFO_FILE</a></b>
+request</li>
+
+<li>
+send a String object with the name of the desired file</li>
+
+<li>
+recieves a Long value indicating the size of the file to be sent</li>
+
+<li>
+recieves the byte stream of the file</li>
+
+<li>
+reads a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_FINISHED_OK</a></b>
+response from the agent or if an error occurred, a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_FINISHED_ERROR</a></b></li>
+</ul>
+Agent
+<ul>
+<li>
+recieves an <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#ACTION_GETINFO_ARCH">ACTION_SENDINFO_FILE</a></b>
+request from the harness</li>
+
+<li>
+recieves a String object containing the name of the file to send</li>
+
+<li>
+sends a Long value corresponding to the number of bytes to be sent</li>
+
+<li>
+sends the byte stream of the requested file</li>
+
+<br>sends a <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_FINISHED_OK</a></b>
+message to the harness, or&nbsp; if <b><a href="/usr/project/pqa/new_tools/qa_tester/specification/api/ProtocolConstants.html#RESPONSE_PROCESSING">RESPONSE_FINISHED_ERROR</a></b>
+an error occurred.</ul>
+
+<hr WIDTH="100%">
+</body>
+</html>

@@ -1,0 +1,81 @@
+#################################################
+# @(#)file    pass_test_all_agents_async.qash
+# @(#)author  webhiker
+# @(#)version 1.2
+# @(#)date    00/12/13
+#################################################
+
+###############################################################
+# Set up details for this test
+###############################################################
+qat.test.name="pass_all_agents_asynchronous"
+qat.test.author="WebHiker"
+qat.test.description="This is a simple test which will always return a positive result, and is run on all defined agents. The tests are sent to all the agents and started, and then only do we check for the results on each agent."
+qat.test.buginfo=""
+qat.test.keywords="pass"
+
+###############################################################
+
+###############################################################
+# set up default paths and settings
+###############################################################
+QAT_ROOT=qat.qash.path+file.separator+".."+file.separator+".."+file.separator+"settings"
+INCLUDE QAT_ROOT+file.separator+"default.qinc"
+INCLUDE QAT_ROOT+file.separator+"zips.qinc"
+###############################################################
+
+agent_test_class  = "qa.positive_tests.PassTest"
+agent_test_params = "-dummy dummy_value"
+
+# This loop sets up all the agents, and starts the test on each of them
+FOR I = 1 TO qat.agent.count DO
+	agent_index = I
+	overall_result ? 0
+
+	###############################################################
+	# check the agent count expected for that test
+	###############################################################
+	CALLFUNCTION(CHECK_AGENT_COUNT, qat.agent.count, agent_index);
+ 
+	###############################################################
+	# Set up the required agents
+	###############################################################
+	this_agent_tmp_dir = ("agent"+agent_index+"_tmp_dir");
+
+	SETAGENT((I+"agent_id"), ("agent"+agent_index+".name"), ("agent"+agent_index+".port"), this_agent_tmp_dir);
+
+	this_agent_id = (I+"agent_id")
+
+	###############################################################
+	# Launch the agent on agent agent_index
+	###############################################################
+	CALLFUNCTION (STARTAGENT, agent_index, this_agent_id, positive_tests_zip, agent_test_class, agent_test_params)
+END
+
+# This loop checks the result of each test, and then cleans up the tests and agents
+FOR I = 1 TO qat.agent.count DO
+	agent_index = I
+	overall_result ? 0
+	this_agent_id = (I+"agent_id")
+
+	###############################################################
+	# stop the agent and retrieve it's status
+	###############################################################
+	CALLFUNCTION (STOPAGENT, agent_index, this_agent_id)
+
+	###############################################################
+	# Clean up the agents themselves now
+	###############################################################
+	DELAGENT(this_agent_id);
+
+	###############################################################
+	# report result only if all the tests passed
+	###############################################################
+	IF (overall_result==0)
+		THEN overall_result = agent_cmd_result
+	END
+
+END
+
+###############################################################
+REPORTSTATUS(overall_result)

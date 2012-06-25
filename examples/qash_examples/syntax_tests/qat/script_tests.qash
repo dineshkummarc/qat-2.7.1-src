@@ -1,0 +1,80 @@
+#################################################
+# @(#)file    script_tests.qash
+# @(#)author  webhiker
+# @(#)version 1.2
+# @(#)date    2001/02/14
+#################################################
+
+###############################################################
+# Set up details for this test
+###############################################################
+qat.test.name="script_tests"
+qat.test.author="WebHiker"
+qat.test.description="This test verifies the QASH syntax of the QASHParser"
+qat.test.buginfo=""
+qat.test.keywords="pass"
+
+###############################################################
+beforeinclude.qat.qash.filepath = qat.qash.filepath
+beforeinclude.qat.qash.path = qat.qash.path
+
+###############################################################
+# set up default paths and settings
+###############################################################
+QAT_ROOT=qat.qash.path+file.separator+".."+file.separator+".."+file.separator+"settings"
+INCLUDE QAT_ROOT+file.separator+"default.qinc"
+INCLUDE QAT_ROOT+file.separator+"zips.qinc"
+###############################################################
+
+agent_test_class  = "qa.syntax_tests.SyntaxTest"
+agent_test_params = "-dummy dummy_value"
+agent_index       = 1
+agent_test_key    = "STDERRCONTAINS"
+
+
+PRINT "Running INCLUDE tests"
+INCLUDE qat.qash.path+file.separator+"generic_qash_tests.qinc"
+
+afterinclude.qat.qash.filepath = qat.qash.filepath
+afterinclude.qat.qash.path = qat.qash.path
+
+PRINT "Before INCLUDE :qat.qash.filepath=" + beforeinclude.qat.qash.filepath
+PRINT "Before INCLUDE :qat.qash.path" + beforeinclude.qat.qash.path
+PRINT "Inside INCLUDE :qat.qash.filepath=" + insideinclude.qat.qash.filepath
+PRINT "Inside INCLUDE :qat.qash.path" + insideinclude.qat.qash.path
+PRINT "After  INCLUDE :qat.qash.filepath=" + afterinclude.qat.qash.filepath
+PRINT "After  INCLUDE :qat.qash.path" + afterinclude.qat.qash.path
+
+IF(beforeinclude.qat.qash.filepath != afterinclude.qat.qash.filepath)
+	THEN
+		PRINT "1) Incorrect values set for private variables qat.qash.filepath"
+		REPORTSTATUS(1)
+END
+IF(beforeinclude.qat.qash.path != afterinclude.qat.qash.path)
+	THEN
+		PRINT "2) Incorrect values set for private variables qat.qash.path"
+		REPORTSTATUS(1)
+END
+IF(beforeinclude.qat.qash.filepath == insideinclude.qat.qash.filepath)
+	THEN
+		PRINT "3) Incorrect values set for private variables qat.qash.filepath"
+		REPORTSTATUS(1)
+END
+IF(beforeinclude.qat.qash.path != insideinclude.qat.qash.path)
+	THEN
+		PRINT "4) Incorrect values set for private variables qat.qash.path"
+		REPORTSTATUS(1)
+END
+IF(afterinclude.qat.qash.filepath == insideinclude.qat.qash.filepath)
+	THEN
+		PRINT "5) Incorrect values set for private variables qat.qash.filepath"
+		REPORTSTATUS(1)
+END
+IF(afterinclude.qat.qash.path != insideinclude.qat.qash.path)
+	THEN
+		PRINT "6) Incorrect values set for private variables qat.qash.path"
+		REPORTSTATUS(1)
+END
+PRINT "Internal variables were correctly set"
+###############################################################
+REPORTSTATUS(0)

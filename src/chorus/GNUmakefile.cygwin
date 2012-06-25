@@ -1,0 +1,75 @@
+ROOT=$(shell pwd)
+
+UNZIP_VERSION=unzip542
+
+####################################################################
+# These are the targets for building on Cygwin Win32 platforms
+####################################################################
+AGENT_COMPILE_FLAGS_WIN32=-Wall -DMULTI_THREADED -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS -DDLL -DSYMLINKS -I$(ROOT) -I$(ROOT)/$(UNZIP_VERSION)
+AGENT_LINK_FLAGS_WIN32=-L. -lstdc++ -lcrtdll -lcygwin -lwin32spl -lwinstrm -lwst -lmingw32 -lcrtdll -lmsvcrt -lcurses -lncurses -lcrypto
+CXXFLAGS=$(AGENT_COMPILE_FLAGS_WIN32)
+CFLAGS=$(AGENT_COMPILE_FLAGS_WIN32)
+LDFLAGS=$(AGENT_LINK_FLAGS_WIN32)
+
+AGENT_OBJS_WIN32 =  \
+	Utils.o \
+	Common.o \
+	ConsoleServer.o \
+	DiscoveryResponder.o \
+	TestObject.o \
+	ExecProcess.o \
+	AgentThread.o \
+	agent.o
+
+ZIP_OBJS_WIN32 = \
+	$(UNZIP_VERSION)/win32/win32.o \
+	$(UNZIP_VERSION)/unzip.o \
+	$(UNZIP_VERSION)/crc32.o \
+	$(UNZIP_VERSION)/crctab.o \
+	$(UNZIP_VERSION)/crypt.o \
+	$(UNZIP_VERSION)/envargs.o \
+	$(UNZIP_VERSION)/explode.o \
+	$(UNZIP_VERSION)/extract.o \
+	$(UNZIP_VERSION)/fileio.o \
+	$(UNZIP_VERSION)/globals.o \
+	$(UNZIP_VERSION)/inflate.o \
+	$(UNZIP_VERSION)/list.o \
+	$(UNZIP_VERSION)/match.o \
+	$(UNZIP_VERSION)/process.o \
+	$(UNZIP_VERSION)/ttyio.o \
+	$(UNZIP_VERSION)/unreduce.o \
+	$(UNZIP_VERSION)/unshrink.o \
+	$(UNZIP_VERSION)/zipinfo.o \
+	$(UNZIP_VERSION)/api.o
+
+all: zip agent
+
+agentclean:
+	rm -f *.o *~;\
+	rm -f agent
+
+run: agent
+	agent 9000 9
+
+
+zip: $(ZIP_OBJS)
+
+zipclean:
+	rm -rf $(ZIP_OBJS)
+
+clean: zipclean agentclean
+
+agent: $(AGENT_OBJS_WIN32)
+	$(CXX) $(AGENT_LINK_FLAGS_WIN32) $(AGENT_OBJS_WIN32) $(ZIP_OBJS_WIN32) -o $@
+
+zip: $(ZIP_OBJS_WIN32)
+
+all: zip agent
+
+####################################################################
+help:
+	@echo ""
+	@echo "make all - for Win32 Cygnus systems"
+	@echo "make clean - cleans all temporary files"
+	@echo ""
+

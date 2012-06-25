@@ -1,0 +1,36 @@
+#################################################
+# @(#)file    timeout_test_all_agents.qash
+# @(#)author  webhiker
+# @(#)version 1.2
+# @(#)date    00/12/13
+#################################################
+
+###############################################################
+# Set up details for this test
+###############################################################
+qat.test.name="timeout_test_all_agents"
+qat.test.author="WebHiker"
+qat.test.description="This is a simple test which will always return a negative result due to test timeout, and is run on all defined agents"
+qat.test.buginfo=""
+qat.test.keywords="fail"
+
+###############################################################
+
+###############################################################
+# set up default paths and settings
+###############################################################
+QAT_ROOT=qat.qash.path+file.separator+".."+file.separator+".."+file.separator+"settings"
+INCLUDE QAT_ROOT+file.separator+"default.qinc"
+INCLUDE QAT_ROOT+file.separator+"zips.qinc"
+###############################################################
+
+agent_test_class  = "qa.negative_tests.TimeOutTest"
+agent_test_params = "-dummy dummy_value"
+
+FOR I = 1 TO qat.agent.count DO
+	agent_index = I
+	INCLUDE qat.qash.path+file.separator+"generic_negative_tests.qinc"
+END
+
+###############################################################
+REPORTSTATUS(overall_result)

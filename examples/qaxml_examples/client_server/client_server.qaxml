@@ -1,0 +1,131 @@
+<test
+	name="Client server test"
+	author="WebHiker" 
+	description="This is a simple example of a client/server test.&lt;br&gt;This test will start a client and an server on agent 1 and 2 respectively. &lt;br&gt;You will need at least two agents defined for this test to run.">
+	<echo message="Starting the test run" />
+	<property name="zipfile" refid="${qaxml.basedir}${file.separator}zip${file.separator}client_server.zip" />
+
+	<!-- Use agent 1 as the client -->
+	<property name="client" value="1" />
+
+	<!-- Use agent 2 as the server -->
+	<property name="server" value="2" />
+
+	<!-- Specify port number for them to communicate on -->
+	<property name="common_port" value="9555" />
+
+	<!-- ==================== Start the server ==================== -->
+	<!-- Ensure the agent is alive, and retrieve it's environment variables -->
+	<checkagent
+		result="server_alive"
+		agentid="${server}" />
+
+	<!-- Reserve an agent to run our test on -->
+	<requestagent
+		agentid="${server}"
+		onlyif="${server_alive}" />
+
+	<!-- Send the zip file containing our test to the agent -->
+	<sendzip
+		agentid="${server}"
+		zipfile="${zipfile}" 
+		onlyif="${server_alive}" />
+
+	<!-- Define our classpath relative to the agent and where the file is unzipped -->
+	<property 
+		name="server_classpath" 
+		refid="${${server}.java.io.tmpdir}${${server}.file.separator}agent${server}${${server}.file.separator}classes"
+		onlyif="${server_alive}" />
+
+	<!-- Start the server process now -->
+	<start
+		processid="server_${server}"
+		agentid="${server}"
+		command="${${server}.java.home}${${server}.file.separator}bin${${server}.file.separator}java"
+		arguments="-classpath ${server_classpath} qa.client_server.ClientServer -server_host ${agent${server}.name} -server_port ${common_port} -client_port ${common_port} -test_name start_server"
+		onlyif="${server_alive}" />
+
+	<!-- Sleep 5 seconds to let the server start -->
+	<sleep seconds="5" />
+
+	<!-- ==================== Start the client ==================== -->
+	<!-- Ensure the agent is alive, and retrieve it's environment variables -->
+	<checkagent
+		result="client_alive"
+		agentid="${client}" />
+
+	<!-- Reserve an agent to run our test on -->
+	<requestagent
+		agentid="${client}"
+		onlyif="${client_alive}" />
+
+	<!-- Send the zip file containing our test to the agent -->
+	<sendzip
+		agentid="${client}"
+		zipfile="${zipfile}" 
+		onlyif="${client_alive}" />
+
+	<!-- Define our classpath relative to the agent and where the file is unzipped -->
+	<property 
+		name="client_classpath" 
+		refid="${${client}.java.io.tmpdir}${${client}.file.separator}agent${client}${${client}.file.separator}classes"
+		onlyif="${client_alive}" />
+
+	<!-- Start the client process now -->
+	<start
+		processid="client_${client}"
+		agentid="${client}"
+		command="${${client}.java.home}${${client}.file.separator}bin${${client}.file.separator}java"
+		arguments="-classpath ${client_classpath} qa.client_server.ClientServer -server_host ${agent${server}.name} -server_port ${common_port} -client_port ${common_port} -test_name start_client"
+		onlyif="${client_alive}" />
+
+	<!-- Wait until the process finishes -->
+	<status
+		processid="${client_${client}}"
+		status="status"
+		onlyif="${client_alive}" />
+
+	<!-- Clean up the client -->
+	<!-- Retrieve the output traces from the agent -->
+	<trace
+		processid="${client_${client}}"
+		onlyif="${client_alive}" />
+
+	<!-- Clean the output traces from the agent -->
+	<clean
+		processid="${client_${client}}"
+		onlyif="${client_alive}" />
+
+	<!-- Clean up the zip file and the files we unzipped -->
+	<cleanzip
+		agentid="${client}"
+		zipfile="${zipfile}" 
+		onlyif="${client_alive}" />
+
+	<!-- Release the agent, we are finished with it now. -->
+	<releaseagent
+		agentid="${client}" 
+		onlyif="${client_alive}" />
+
+	<!-- Clean up the server -->
+	<!-- Retrieve the output traces from the agent -->
+	<trace
+		processid="${server_${server}}"
+		onlyif="${server_alive}" />
+
+	<!-- Clean the output traces from the agent -->
+	<clean
+		processid="${server_${server}}"
+		onlyif="${server_alive}" />
+
+	<!-- Clean up the zip file and the files we unzipped -->
+	<cleanzip
+		agentid="${server}"
+		zipfile="${zipfile}" 
+		onlyif="${server_alive}" />
+
+	<!-- Release the agent, we are finished with it now. -->
+	<releaseagent
+		agentid="${server}" 
+		onlyif="${server_alive}" />
+</test>

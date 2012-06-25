@@ -1,0 +1,214 @@
+<project name="QAT" default="useage" basedir=".">
+
+      <property name="build.compiler" value="modern" />
+      <property name="gcj.compiler value" value="/usr/local/bin/gcj" />
+      <property name="java.api.href value" value="http://java.sun.com/j2se/1.4/docs/api" />
+
+      <property name="debug"            value="on" />
+      <property name="optimize"         value="on" />
+      <property name="deprecation"      value="on" />
+
+      <property name="version"          value="2.7.1" />
+      <property name="previous_version" value="2.7.0" />
+      <property name="year"             value="2003" />
+
+   <target name="useage">
+     <echo message="----------- ${ant.project.name} ${version} ${year} ------------"/>
+     <echo message="The following targets may be called :" />
+     <echo message="       clean         - clean all generated files, directories and archives" />
+     <echo message="       compile       - compile the QAT core classes" />
+     <echo message="       jar           - create the QAT jar file" />
+     <echo message="       javadoc       - Generate QAT javadocs" />
+     <echo message="       distrib       - Generate QAT binary distribution" />
+     <echo message="       distrib_src   - Generate QAT binary and source distribution" />
+   </target>
+
+   <target name="init">
+      <property name="external.dir" value="${basedir}/external" />
+      <property name="source.dir" value="${basedir}/src" />
+      <property name="lib.dir" value="${basedir}/lib" />
+      <property name="javadoc.dir" value="${basedir}/docs/api" />
+
+      <property name="build.dir" value="${basedir}/build" />
+      <property name="build.bin.dir" value="${build.dir}/bin" />
+      <property name="build.class.dir" value="${build.dir}/classes" />
+      <property name="build.javadoc.dir" value="${build.dir}/javadoc" />
+      <property name="build.jar.dir" value="${build.dir}/jar" />
+      <property name="build.distrib.dir" value="${build.dir}/distrib" />
+
+      <property name="distrib.prefix" value="qat-${version}" />
+      <property name="doc.dir" value="${basedir}/doc" />
+      <property name="examples.dir" value="${basedir}/examples" />
+      <property name="specification.dir" value="${basedir}/specification" />
+      <property name="qat.jar.name" value="${distrib.prefix}.jar" />
+      <property name="qat.zip.name" value="${distrib.prefix}.zip" />
+      <property name="qat.src.zip.name" value="${distrib.prefix}-src.zip" />
+      <property name="gcj.jar" value="/usr/local/share/libgcj.jar" />
+      <property name="jlf.jar" value="${external.dir}/jlfgr/jlfgr-1_0.jar" />
+      <property name="junit.jar" value="${external.dir}/junit3.8.1/junit.jar" />
+
+      <echo message="----------- Environment settings ------------"/>
+      <echo message="version         = ${version}" />
+      <echo message="os.name         = ${os.name}" />
+      <echo message="os.arch         = ${os.arch}" />
+      <echo message="source.dir      = ${source.dir}" />
+      <echo message="build.dir       = ${build.dir}" />
+      <echo message="java.home       = ${java.home}" />
+      <echo message="---------------------------------------------"/>
+
+    <path id="QAT.compile.classpath">
+      <pathelement location="${build.class.dir}"/>
+      <pathelement path="${junit.jar}"/>
+    </path>
+
+   </target>
+
+   <target name="clean"
+           depends="init"
+           description="clean all generated files, directories and archives.">
+      <delete dir="${build.dir}" />
+   </target>
+
+   <target name="prepare" depends="init">
+      <mkdir dir="${build.dir}" />
+      <mkdir dir="${build.class.dir}" />
+      <mkdir dir="${build.javadoc.dir}" />
+      <mkdir dir="${build.jar.dir}" />
+      <mkdir dir="${build.distrib.dir}" />
+      <!-- Next replace is to change a line such as
+           public static final String VERSION = "<value_to_update"; -->
+      <replace file="${source.dir}/qat/common/Common.java"
+               token="${previous_version}"
+               value="${version}">
+      </replace>
+   </target>
+
+   <target name="compile"
+           depends="prepare,init"
+           description="compile the QAT core classes."> 
+     <javac 
+	    debug="${debug}"
+            optimize="${optimize}"
+	    srcdir="${source.dir}" 
+	    destdir="${build.class.dir}" 
+	    includes="**/*.java"
+     >
+       <classpath refid="QAT.compile.classpath"/>
+     </javac>
+   </target>
+
+   <target name="jar"
+           depends="compile"
+           description="create the QAT jar file.">
+	<jar jarfile="${build.jar.dir}/${qat.jar.name}" update="yes">
+         <fileset dir="${build.class.dir}" />
+         <fileset dir="${source.dir}" casesensitive="yes" >
+          <include name="**/*.png"/>
+          <include name="**/*.properties"/>
+          <exclude name="**/*.java"/>
+         </fileset>
+
+         <manifest>
+           <attribute name="Built-By" value="${user.name}"/>
+           <attribute name="Main-class" value="QAT"/>
+           <attribute name="Class-path" value="lib/jlfgr-1_0.jar lib/junit.jar"/>
+         </manifest>
+        </jar>
+      
+        <mkdir dir="${build.jar.dir}/lib" />
+        <copy todir="${build.jar.dir}/lib" file="${jlf.jar}"/> 
+        <copy todir="${build.jar.dir}/lib" file="${junit.jar}"/> 
+   </target>
+
+   <target name="run" depends="jar">
+	<java fork="true" 
+	     classname="QAT" 
+	     classpath="${build.jar.dir}/${qat.jar.name}">
+       </java>
+   </target>
+
+   <target name="distrib"
+           depends="jar"
+           description="generate QAT binary distribution.">
+     <!-- compile and build the examples zip/classes -->
+     <ant dir="${examples.dir}/qash_examples" target="build"/>
+     <ant dir="${examples.dir}/qaxml_examples" target="build"/>
+
+     <zip destfile="${build.distrib.dir}/${qat.zip.name}" >
+         <zipfileset dir="${build.jar.dir}" prefix="${distrib.prefix}/jar" />
+         <zipfileset dir="${doc.dir}" prefix="${distrib.prefix}/doc" />
+         <zipfileset dir="${examples.dir}" prefix="${distrib.prefix}/examples" />
+         <zipfileset dir="${specification.dir}" prefix="${distrib.prefix}/specification" />
+         <zipfileset dir="${build.javadoc.dir}" prefix="${distrib.prefix}/doc/api" />
+     </zip>
+   </target>
+
+   <target name="distrib_src"
+           depends="distrib"
+           description="generate QAT binary and source distribution.">
+     <zip destfile="${build.distrib.dir}/${qat.src.zip.name}"
+           >
+         <zipfileset dir="${basedir}" excludes="build/**" />
+     </zip>
+   </target>
+ 
+   <target name="javadoc"
+           depends="init"
+           description="generate QAT javadoc.">
+     <setproxy proxyhost="cornillon" proxyport="8000"/>
+     <javadoc packagenames="* ,qat.gui.* ,qat.common.* ,qat.parser.* ,qat.qashparser.* ,qat.agent.* ,qat.components.* ,qat.plugins.*"
+              sourcepath="${source.dir}"
+              defaultexcludes="yes"
+              destdir="${build.javadoc.dir}"
+              author="true"
+              version="true"
+              use="true"
+              windowtitle="QAT">
+       <classpath refid="QAT.compile.classpath"/>
+       <doctitle><![CDATA[<h1>QAT</h1>]]></doctitle>
+       <bottom><![CDATA[<i>See sourceforge for licensing details</i>]]></bottom>
+       <tag name="todo" scope="all" description="To do:" />
+       <link href="${java.api.href}"/>
+     </javadoc>
+   </target>
+
+   <target name="binary" depends="compile">
+	<echo message="Compiling binary agent" />
+        <exec executable="${gcj.compiler}">
+         <arg line="--main=Agent 
+                    -I/usr/local/lib 
+                    --classpath=${gcj.jar}:${build.class.dir}
+                    -d ${build.bin.dir}
+              	    -Dos.name=${os.name}
+	            -Dos.arch=${os.arch}
+            	    -Dos.version=${os.version}
+            	    -o ${build.bin.dir}/agent
+            	    ${source.dir}/qat/common/Common.java
+            	    ${source.dir}/qat/common/TestObject.java
+            	    ${source.dir}/qat/common/ConsoleServer.java
+            	    ${source.dir}/qat/common/ProtocolConstants.java
+             	    ${source.dir}/qat/common/Utils.java
+            	    ${source.dir}/Agent.java
+            	    ${source.dir}/qat/agent/Agent.java
+            	    ${source.dir}/qat/agent/ExecProcess.java
+            	    ${source.dir}/qat/agent/AgentThread.java
+            	    ${source.dir}/qat/agent/ReaderThread.java
+            	    ${source.dir}/qat/agent/DiscoveryResponder.java" />
+        </exec>
+   </target>
+
+   <target name="test" depends="compile">
+	<java fork="true"
+	     classname="qat.qaxmlparser.QAXMLParser" 
+	     classpath="${build.class.dir}">
+       </java>
+   </target>
+
+   <target name="test2" depends="compile">
+	<java fork="false"
+	     classname="qat.qaxmlparser.QAXMLExpression" 
+	     classpath="${build.class.dir}">
+       </java>
+   </target>
+
+</project>

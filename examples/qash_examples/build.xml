@@ -1,0 +1,162 @@
+<project name="Examples" default="useage" basedir=".">
+
+   <property file="build.properties.common"/>
+
+   <target name="useage">
+     <echo message="----------- ${ant.project.name} ${version} ${year} ------------"/>
+     <echo message="The following targets may be called :" />
+     <echo message="       clean         - clean all generated files, directories and archives" />
+     <echo message="       build         - build the qash_xamples workspace" />
+   </target>
+
+   <target name="init">
+      <property name="source.dir" value="${basedir}/src" />
+      <property name="bin.dir" value="${basedir}/bin" />
+      <property name="lib.dir" value="${basedir}/lib" />
+      <property name="javadoc.dir" value="${basedir}/docs/api" />
+
+      <property name="build.dir" value="${basedir}/build" />
+      <property name="build.bin.dir" value="${build.dir}/bin" />
+      <property name="build.class.dir" value="${build.dir}/classes" />
+      <property name="build.javadoc.dir" value="${build.dir}/javadoc" />
+      <property name="build.jar.dir" value="${build.dir}/jar" />
+      <property name="build.distrib.dir" value="${build.dir}/distrib" />
+
+      <property name="distrib.prefix" value="examples-${version}" />
+      <property name="doc.dir" value="${basedir}/doc" />
+      <property name="examples.dir" value="${basedir}/examples" />
+      <property name="specification.dir" value="${basedir}/specification" />
+      <property name="examples.jar.name" value="${distrib.prefix}.jar" />
+      <property name="examples.zip.name" value="${distrib.prefix}.zip" />
+      <property name="examples.src.zip.name" value="${distrib.prefix}-src.zip" />
+      <property name="gcj.jar" value="/usr/local/share/libgcj.jar" />
+      <property name="jlf.jar" value="${basedir}/lib/jlfgr-1_0.jar" />
+
+      <echo message="----------- Environment settings ------------"/>
+      <echo message="version         = ${version}" />
+      <echo message="os.name         = ${os.name}" />
+      <echo message="os.arch         = ${os.arch}" />
+      <echo message="source.dir      = ${source.dir}" />
+      <echo message="build.dir       = ${build.dir}" />
+      <echo message="java.home       = ${java.home}" />
+      <echo message="---------------------------------------------"/>
+
+    <path id="Examples.compile.classpath">
+      <pathelement location="${build.class.dir}"/>
+    </path>
+
+   </target>
+
+   <target name="clean" depends="init">
+      <delete dir="${basedir}/positive_tests/classes" />
+      <delete dir="${basedir}/positive_tests/zip" />
+      <delete dir="${basedir}/negative_tests/classes" />
+      <delete dir="${basedir}/negative_tests/zip" />
+      <delete dir="${basedir}/syntax_tests/classes" />
+      <delete dir="${basedir}/syntax_tests/zip" />
+      <delete dir="${basedir}/client_server/classes" />
+      <delete dir="${basedir}/client_server/zip" />
+      <delete dir="${basedir}/stress_tests/classes" />
+      <delete dir="${basedir}/stress_tests/zip" />
+   </target>
+
+   <target name="prepare" depends="init">
+      <mkdir dir="${basedir}/positive_tests/classes" />
+      <mkdir dir="${basedir}/positive_tests/zip" />
+      <mkdir dir="${basedir}/negative_tests/classes" />
+      <mkdir dir="${basedir}/negative_tests/zip" />
+      <mkdir dir="${basedir}/syntax_tests/classes" />
+      <mkdir dir="${basedir}/syntax_tests/zip" />
+      <mkdir dir="${basedir}/client_server/classes" />
+      <mkdir dir="${basedir}/client_server/zip" />
+   </target>
+
+   <target name="build" depends="positive_tests, negative_tests, client_server, syntax_tests">
+      <echo message="Finished compiling classes" />
+   </target>
+
+   <target name="positive_tests" depends="prepare" > 
+     <property name="positive_tests.node.name" value="positive_tests" />
+     <echo message="Compiling ${positive_tests.node.name}" />
+     <javac 
+	    debug="${debug}"
+            optimize="${optimize}"
+	    srcdir="${basedir}/${positive_tests.node.name}/src" 
+	    destdir="${basedir}/${positive_tests.node.name}/classes" 
+     >
+       <classpath refid="Examples.compile.classpath"/>
+     </javac>
+     <zip destfile="${basedir}/${positive_tests.node.name}/zip/${positive_tests.node.name}.zip" >
+         <zipfileset dir="${basedir}/${positive_tests.node.name}/classes" prefix="classes" />
+     </zip>
+   </target>
+
+   <target name="negative_tests" depends="prepare" > 
+     <property name="negative_tests.node.name" value="negative_tests" />
+     <echo message="Compiling ${negative_tests.node.name}" />
+     <javac 
+	    debug="${debug}"
+            optimize="${optimize}"
+	    srcdir="${basedir}/${negative_tests.node.name}/src" 
+	    destdir="${basedir}/${negative_tests.node.name}/classes" 
+     >
+       <classpath refid="Examples.compile.classpath"/>
+     </javac>
+     <zip destfile="${basedir}/${negative_tests.node.name}/zip/${negative_tests.node.name}.zip" >
+         <zipfileset dir="${basedir}/${negative_tests.node.name}/classes" prefix="classes" />
+     </zip>
+   </target>
+
+   <target name="client_server" depends="prepare" > 
+     <property name="client_server.node.name" value="client_server" />
+     <echo message="Compiling ${client_server.node.name}" />
+     <javac 
+	    debug="${debug}"
+            optimize="${optimize}"
+	    srcdir="${basedir}/${client_server.node.name}/src" 
+	    destdir="${basedir}/${client_server.node.name}/classes" 
+     >
+       <classpath refid="Examples.compile.classpath"/>
+     </javac>
+     <zip destfile="${basedir}/${client_server.node.name}/zip/${client_server.node.name}.zip" >
+         <zipfileset dir="${basedir}/${client_server.node.name}/classes" prefix="classes"/>
+     </zip>
+   </target>
+
+   <target name="syntax_tests" depends="prepare" > 
+     <property name="syntax_tests.node.name" value="syntax_tests" />
+     <echo message="Compiling ${client_server.node.name}" />
+     <javac 
+	    debug="${debug}"
+            optimize="${optimize}"
+	    srcdir="${basedir}/${syntax_tests.node.name}/src" 
+	    destdir="${basedir}/${syntax_tests.node.name}/classes" 
+     >
+       <classpath refid="Examples.compile.classpath"/>
+     </javac>
+     <zip destfile="${basedir}/${syntax_tests.node.name}/zip/${syntax_tests.node.name}.zip" >
+         <zipfileset dir="${basedir}/${syntax_tests.node.name}/classes" prefix="classes"/>
+     </zip>
+   </target>
+
+   <target name="distrib" >
+     <zip destfile="${build.distrib.dir}/${examples.zip.name}" >
+         <zipfileset dir="${build.jar.dir}" prefix="${distrib.prefix}/lib" includes="**/${examples.jar.name}"/>
+         <zipfileset dir="${doc.dir}" prefix="${distrib.prefix}/doc" />
+         <zipfileset dir="${examples.dir}" prefix="${distrib.prefix}/examples" />
+         <zipfileset dir="${specification.dir}" prefix="${distrib.prefix}/specification" />
+         <zipfileset dir="${build.javadoc.dir}" prefix="${distrib.prefix}/doc/api" />
+     </zip>
+   </target>
+
+   <target name="distrib_src" depends="distrib">
+     <zip destfile="${build.distrib.dir}/${examples.src.zip.name}" >
+         <zipfileset src="${build.distrib.dir}/${examples.zip.name}" />
+         <zipfileset dir="${source.dir}" prefix="${distrib.prefix}/src" />
+         <zipfileset dir="${bin.dir}" prefix="${distrib.prefix}/bin" />
+         <zipfileset dir="${lib.dir}" prefix="${distrib.prefix}/lib" />
+         <zipfileset dir="${basedir}" prefix="${distrib.prefix}" includes="**/build.*"/>
+     </zip>
+   </target>
+ 
+</project>

@@ -1,0 +1,1604 @@
+<!DOCTYPE doctype PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="GENERATOR"
+ content="Mozilla/4.7 [en] (X11; I; SunOS 5.9 sun4u) [Netscape]">
+  <meta name="Author" content="webhiker">
+  <title>QASH Syntax Specification</title>
+</head>
+<body text="#000000" bgcolor="#ffffff" link="#0000ee" vlink="#551a8b"
+ alink="#ff0000">
+<table cols="1"
+ style="width: 100%; background-color: rgb(102, 102, 153); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr>
+      <td>
+      <h1> QASH Syntax 2.7.x</h1>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This file describes
+the allowed syntax for the QASH syntax as used by the QASHParser class. </p>
+<p style="font-family: helvetica,arial,sans-serif;">Quick links:
+<table style="background-color: rgb(204, 204, 204);" nosave=""
+ border="1">
+  <tbody>
+    <tr nosave="">
+      <td nosave=""><a href="#AUTOCLEAN_ON">AUTOCLEAN_ON</a></td>
+      <td><a href="#AUTOCLEAN_OFF">AUTOCLEAN_OFF,</a></td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#FUNCTION%28FUNCTION_NAME%29">CALLFUNCTION</a></td>
+      <td><a href="#CHECKAGENT">CHECKAGENT</a></td>
+      <td><a href="#CMDCLEAN">CMDCLEAN</a></td>
+      <td><a href="#CHECKFILE">CHECKFILE</a></td>
+      <td><a href="#CHECKFILE_LOCAL">CHECKFILE_LOCAL</a></td>
+      <td><a href="#CMDGETTRACE">CMDGETTRACE</a></td>
+      <td><a href="#CMDSTART">CMDSTART</a></td>
+      <td><a href="#CMDSTATUS">CMDSTATUS</a></td>
+      <td><a href="#CMDSTOP">CMDSTOP</a></td>
+    </tr>
+    <tr nosave="">
+      <td nosave=""><a href="#DELAGENT">DELAGENT</a></td>
+      <td><a href="#DELFILE">DELFILE</a></td>
+      <td nosave=""><a href="#DELFILE_LOCAL">DELFILE_LOCAL</a></td>
+      <td><a href="#DELPROP">DELPROP</a></td>
+      <td><a href="#DELSTATIC">DELSTATIC</a></td>
+      <td><a href="#DAEMONSTART">DAEMONSTART</a></td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr nosave="">
+      <td><a href="#ENVTRACECONTAINS">ENVTRACECONTAINS</a></td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td nosave=""><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#FUNCTION%28FUNCTION_NAME%29">FUNCTION</a></td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#GETFILE">GETFILE</a></td>
+      <td><a href="#GETSTATIC">GETSTATIC</a></td>
+      <td><a href="#GETTRACEPATHS">GETTRACEPATHS</a></td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#KILLAGENT">KILLAGENT</a></td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr nosave="">
+      <td><a href="#MKDIR">MKDIR</a></td>
+      <td><a href="#MKDIR_LOCAL">MKDIR_LOCAL</a></td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td nosave=""><br>
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#PRINT">PRINT</a></td>
+      <td><a href="#PRINTENV">PRINTENV</a></td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#RANDOM%28RID%29">RANDOM</a></td>
+      <td><a href="#REPORTSTATUS">REPORTSTATUS</a></td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#SENDFILE">SENDFILE</a></td>
+      <td><a href="#SETPROP">SETPROP</a></td>
+      <td><a href="#SETAGENT">SETAGENT</a></td>
+      <td><a href="#SETSTATIC">SETSTATIC</a></td>
+      <td><a href="#SLEEP">SLEEP</a></td>
+      <td><a href="#STDERRCONTAINS">STDERRCONTAINS</a></td>
+      <td><a href="#STDOUTCONTAINS">STDOUTCONTAINS</a></td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#ZIPSEND">ZIPSEND</a></td>
+      <td><a href="#ZIPCLEAN">ZIPCLEAN</a></td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+      <td><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+&nbsp;
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3> <a name="STRING_CONSTANT"></a>STRING_CONSTANT</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Denoted by quotes <br>
+e.g. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><i><font
+ color="#009900">"This is a string constant"</font></i></b></blockquote>
+<span style="font-family: helvetica,arial,sans-serif;"> String constants
+may not extend across multiple lines. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <h3> <a name="OPERATORS"></a>OPERATORS</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<span style="font-family: helvetica,arial,sans-serif;"> The following
+boolean operators are allowed : </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table border="1" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <center><b>&gt;</b></center>
+      </td>
+      <td>
+      <center>Greater than</center>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <center><b>&lt;</b></center>
+      </td>
+      <td>
+      <center>Less than</center>
+      </td>
+    </tr>
+    <tr nosave="">
+      <td nosave="">
+      <center><b>&gt;=</b></center>
+      </td>
+      <td>
+      <center>Greater than or equal to</center>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <center><b>&gt;=</b></center>
+      </td>
+      <td>
+      <center>Less than or equal to</center>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <center><b>==</b></center>
+      </td>
+      <td>
+      <center>Equal to</center>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <center><b>!=</b></center>
+      </td>
+      <td>
+      <center>Not equal to</center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">They may be applied
+to Strings or to numerical constants. If either the left side or the
+right side of an expression is found to be non numerical, <br>
+both sides are treated as String values. </p>
+<p style="font-family: helvetica,arial,sans-serif;">The following
+assignment operators are allowed : <br>
+&nbsp;
+<table border="1" nosave="">
+  <tbody>
+    <tr>
+      <td><b>=</b></td>
+      <td>Simple assignment operator, assigning the value on the right
+side to the key specified on the left. <br>
+If the current file is a properties file, standard java properties
+conventions are used. <br>
+e.g. :
+      <blockquote><b><font color="#009900">Test=Test string</font></b></blockquote>
+      <font color="#000000">If the currently parsed file is not a
+properties file, all non quoted portions of the right side are expected
+to be&nbsp;</font> <br>
+      <font color="#000000">variables.</font> <br>
+      <font color="#000000">e.g.:</font>
+      <blockquote><b><font color="#009900">Test1 = "Test string"</font></b> <br>
+        <b><font color="#009900">Test2 = "Another Test string"+Test1</font></b></blockquote>
+      </td>
+    </tr>
+    <tr>
+      <td><b>+=</b></td>
+      <td>If both sides of the operator are numerical values, the
+result is a numerical addition of the two values,&nbsp; <br>
+otherwise it is treated as a String concatenation</td>
+    </tr>
+    <tr>
+      <td><b>?</b></td>
+      <td>This is a soft set operator. The assignment is only applied
+if the Left side is not yet defined. <br>
+e.g.:
+      <blockquote><b><font color="#009900">Test = "Test string"</font></b> <br>
+        <b><font color="#009900">Test ? "New test string"</font></b> <br>
+        <b><font color="#009900">Test2 ? "New test string"</font></b></blockquote>
+The variable Test will still contain the value <b><font color="#009900">"Test
+string"</font></b> and variable <br>
+Test2 will contain <b><font color="#009900">"New test string"</font></b></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+&nbsp;
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave="">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="VARIABLE DEFINITION"></a>VARIABLE DEFINITION</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</p>
+<p style="font-family: helvetica,arial,sans-serif;">A variable is
+defined by a statement of the form <br>
+VAR_NAME &lt;assignment operator&gt; VALUE </p>
+<p style="font-family: helvetica,arial,sans-serif;">Lets look at a code
+segment : </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><font
+ color="#009900"># create and sets a variable called INDEX to zero</font></b> <br>
+  <b><font color="#009900">INDEX = 0</font></b> <br>
+  <b><font color="#009900"># increment the value of INDEX by 5.</font></b> <br>
+  <b><font color="#009900">INDEX += 5</font></b> <br>
+  <b><font color="#009900"># append the string "abc" to index, so it
+will now contain "5abc"</font></b> <br>
+  <b><font color="#009900">INDEX = INDEX + "abc"</font></b></blockquote>
+<p style="font-family: helvetica,arial,sans-serif;"><br>
+<i>Note: variables are global, so nested changes to loop variables will
+be visible everywhere in the instance of the QASHParser object.</i> </p>
+<p style="font-family: helvetica,arial,sans-serif;">Complex references
+of variables are allowed, so after the above definitions we could say : </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><font
+ color="#009900">TEMP1 = "Test String"</font></b> <br>
+  <b><font color="#009900">TEMP2 = TEMP+"1"</font></b> <br>
+  <b><font color="#009900">TEMP3 = (TEMP+"1")+"2"</font></b></blockquote>
+<span style="font-family: helvetica,arial,sans-serif;"> The variable </span><b
+ style="font-family: helvetica,arial,sans-serif;">TEMP2</b><span
+ style="font-family: helvetica,arial,sans-serif;"> will now contain the
+value </span><font color="#006600"
+ style="font-family: helvetica,arial,sans-serif;">"Test String"</font><span
+ style="font-family: helvetica,arial,sans-serif;"> and </span><b
+ style="font-family: helvetica,arial,sans-serif;">TEMP3</b><span
+ style="font-family: helvetica,arial,sans-serif;"> will contain </span><font
+ color="#006600" style="font-family: helvetica,arial,sans-serif;">"Test
+String 2"</font><span style="font-family: helvetica,arial,sans-serif;"> </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> The shell parser
+first checks if the variable </span><b
+ style="font-family: helvetica,arial,sans-serif;">TEMP</b><span
+ style="font-family: helvetica,arial,sans-serif;"> is defined, if not it
+checks for </span><br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> a variable
+called </span><b style="font-family: helvetica,arial,sans-serif;">TEMP1</b><span
+ style="font-family: helvetica,arial,sans-serif;">, which IS defined,
+and uses this value to initialize </span><b
+ style="font-family: helvetica,arial,sans-serif;">TEMP2</b><span
+ style="font-family: helvetica,arial,sans-serif;">. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="IF"></a>IF Statements</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">These are of the
+form </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><font
+ color="#009900">IF (agent1.os.name == "Windows NT")</font></b> <br>
+  <b><font color="#009900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+THEN</font></b> <br>
+  <b><font color="#009900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+FILE_SEPARATOR="\"</font></b> <br>
+  <b><font color="#009900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+KEYWORDS = "windows"</font></b> <br>
+  <b><font color="#009900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TMP_DIR = "c:\tmp"</font></b> <br>
+  <b><font color="#009900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ELSE</font></b> <br>
+  <b><font color="#009900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+FILE_SEPARATOR="/"</font></b> <br>
+  <b><font color="#009900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+KEYWORDS = "solaris"</font></b> <br>
+  <b><font color="#009900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TMP_DIR = "/tmp"</font></b> <br>
+  <b><font color="#009900">END</font></b></blockquote>
+<span style="font-family: helvetica,arial,sans-serif;"> Each statement
+of the matching </span><b
+ style="font-family: helvetica,arial,sans-serif;">THEN</b><span
+ style="font-family: helvetica,arial,sans-serif;"> and </span><b
+ style="font-family: helvetica,arial,sans-serif;">ELSE</b><span
+ style="font-family: helvetica,arial,sans-serif;"> statements may
+contain further nested </span><b
+ style="font-family: helvetica,arial,sans-serif;">IF</b><span
+ style="font-family: helvetica,arial,sans-serif;"> statements. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> The boolean
+expression may use any of the boolean operators listed in the section </span><a
+ href="#OPERATORS" style="font-family: helvetica,arial,sans-serif;">OPERATORS</a><span
+ style="font-family: helvetica,arial,sans-serif;"> but no assignment may
+be made in this statement. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> The </span><b
+ style="font-family: helvetica,arial,sans-serif;">ELSE</b><span
+ style="font-family: helvetica,arial,sans-serif;"> statement is
+optional, and may be left out. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="FOR"></a>FOR Statements</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">For statements can
+be used to save repeating code blocks within your .qash files. <br>
+Here are some examples : </p>
+<p style="font-family: helvetica,arial,sans-serif;">Example 1: </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><font
+ color="#009900">FOR I = 0 TO 10 BY 2 DO</font></b> <br>
+  <b><font color="#009900">&nbsp;&nbsp;&nbsp; PRINT I</font></b> <br>
+  <b><font color="#009900">END</font></b>
+  <p>Will print out the numbers 0, 2, 4, 6, 8, 10</p>
+</blockquote>
+<p style="font-family: helvetica,arial,sans-serif;"><br>
+Example 2: </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><font
+ color="#009900">FOR I = 1 TO 4 DO</font></b> <br>
+  <b><font color="#009900">&nbsp;&nbsp;&nbsp; FOR J = 1 TO 4 DO</font></b> <br>
+  <b><font color="#009900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+PRINT "I is "+I+" and J is "+J</font></b> <br>
+  <b><font color="#009900">&nbsp;&nbsp;&nbsp; END</font></b> <br>
+  <b><font color="#009900">END</font></b>
+  <p>Will print out&nbsp; : </p>
+  <blockquote>I is 1 and J is 1 <br>
+I is 1 and J is 2 <br>
+... <br>
+I is 1 and J is 3 <br>
+I is 4 and J is 4</blockquote>
+</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="WHILE"></a>WHILE</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">The <b>WHILE</b>
+statement allows us to execute a particular code block until a certain
+expression evaluates to TRUE. </p>
+<p style="font-family: helvetica,arial,sans-serif;">e.g. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><font
+ color="#009900">I = 0;</font></b> <br>
+  <b><font color="#009900">WHILE (I &lt; 10) DO</font></b> <br>
+  <b><font color="#009900">&nbsp;&nbsp;&nbsp; PRINT I</font></b> <br>
+  <b><font color="#009900">&nbsp;&nbsp;&nbsp; I += 1</font></b> <br>
+  <b><font color="#009900">END</font></b></blockquote>
+<span style="font-family: helvetica,arial,sans-serif;"> Which will print
+out the numbers 0 through to 9. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> The statement
+portion of a </span><b style="font-family: helvetica,arial,sans-serif;">WHILE</b><span
+ style="font-family: helvetica,arial,sans-serif;"> loop may contain
+nested </span><b style="font-family: helvetica,arial,sans-serif;">WHILE</b><span
+ style="font-family: helvetica,arial,sans-serif;"> loops. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<p style="font-family: helvetica,arial,sans-serif;">We now come to the
+set of commands available to the .qash script files. <br>
+They will be discussed in order of usage, rather than alphabetically,
+to simplify the explanations. <br>
+&nbsp;
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave="">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="Mandatory variable definitions"></a>Mandatory
+variable definitions</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+Several properties are mandatory for each .qash file, TEST_NAME and
+KEYWORDS. <br>
+TEST_NAME is the string you will see beside the node entry in the test
+tree of the Harness. <br>
+The KEYWORDS property is a list of keywords used for test selection. <br>
+e.g.: </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><font
+ color="#009900">qat.test.name = "Robustness Test"</font></b> <br>
+  <b><font color="#009900">qat.test.keywords = "robustness windows
+solaris"</font></b> <br>
+  <b><font color="#009900">qat.test.description = "This is a robustness
+test for Windows and Solaris"</font></b> <br>
+  <b><font color="#009900">qat.test.author = "webhiker"</font></b> <br>
+  <b><font color="#009900">qat.test.buginfo = ""</font></b></blockquote>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="Available System variables"></a>Available System
+variables</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<span style="font-family: helvetica,arial,sans-serif;"> The are a number
+of variables available to the .qash scripts </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> The </span><b
+ style="font-family: helvetica,arial,sans-serif;">x</b><span
+ style="font-family: helvetica,arial,sans-serif;"> indicates this
+variable exists for each agent defined for a particular project, so X
+will vary from 1 to qat.agent.count</span><b
+ style="font-family: helvetica,arial,sans-serif;">.</b><span
+ style="font-family: helvetica,arial,sans-serif;"> </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table border="1" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td><b>qat.agent.count</b></td>
+      <td>The number of agents defined for this project. <br>
+Useful for use in <b>FOR</b> loops defining properties for each agent,
+as well as the total number of agents which have been defined.</td>
+    </tr>
+    <tr>
+      <td><b>agentx_name</b></td>
+      <td>The name of the machine running the agent</td>
+    </tr>
+    <tr nosave="">
+      <td><b>agentx_port</b></td>
+      <td nosave="">The port number of the agent running on the machine <b>AGENTx_NAME</b></td>
+    </tr>
+    <tr>
+      <td><b>agentx_os.name</b></td>
+      <td>This is the operating system reported by the Java Virtual
+machine running the agent on machine <b>AGENTx_NAME</b>. <br>
+Care should be taken since different JVM implementations report
+different values for the same OS. e.g. <i>Solaris</i>/<i>SunOS</i> etc. <br>
+It is retrieved by checking the value of java.lang.System <b>os.name</b></td>
+    </tr>
+    <tr>
+      <td><b>agentx_os.architecture</b></td>
+      <td>This is the underlying architecture type of the machine
+running the agent. <br>
+Care should be taken since different JVM implementations report
+different values for the same architecture. e.g. <i>x86</i>/<i>Intel </i>etc.<br>
+It is retrieved by checking the value of java.lang.System <b>os.arch</b></td>
+    </tr>
+    <tr>
+      <td><b>qat.project.path</b></td>
+      <td>This is the root path to the directory containing the tests
+displayed in the test tree</td>
+    </tr>
+    <tr>
+      <td><b>qat.qash.filepath</b></td>
+      <td>The path to the file currently being parsed, including the
+name of the file itself</td>
+    </tr>
+    <tr>
+      <td><b>qat.qash.path</b></td>
+      <td>The path to the file currently being parsed, excluding the
+name of the file itself</td>
+    </tr>
+  </tbody>
+</table>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="INCLUDE"></a>INCLUDE &lt;<i>INCLUDEFILE&gt;</i></h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">The include keyword
+is used to include a properties file (<i>*.properties</i>) of the
+format specified by <i>java.util.Properties,</i> or a file containing
+QASH syntax designated by it's extension (<i><b>*.qinc </b>or<b>*.qash</b></i>).<br>
+By default, all files are treated as QASH syntax unless they
+specifically have a .properties extension. <br>
+It should be noted however, that parsing a Properties file is many
+orders of magnitude faster than parsing a QASH syntax file, and so
+should be used wherever possible. </p>
+<p style="font-family: helvetica,arial,sans-serif;">e.g. : </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><font
+ color="#009900">QAT_ROOT="/home/webhiker/QAT"</font></b> <br>
+  <b><font color="#009900">INCLUDE
+QAT_ROOT+"/examples/settings/agent_setup.qinc"</font></b></blockquote>
+<span style="font-family: helvetica,arial,sans-serif;"> A good hint is
+to try and avoid using explicit paths as in the example above, since
+this limits your Harness to running on a single architecture. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> Have a look at
+the examples to see how to define .qash scripts which run across a
+variety of platforms. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="SETAGENT"></a>SETAGENT(<font color="#cc0000">AGENT_ID</font>,
+AGENT_NAME, AGENT_PORT, WORK_DIR)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This command sets
+up an agent for use by a .qash file,&nbsp; gets a handle to a running
+agent, and sets the value of this handle in <b>AGENT_ID</b>.</p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>AGENT_NAME</b>
+- the name of the machine running the agent (use one of the AGENTx_NAME
+variables here) <br>
+  <b>AGENT_PORT </b>- the port number of the agent running on machine
+(use one of the AGENTx_PORT variable here) <br>
+  <b>WORK_DIR </b>- a directory to place any files sent to this agent
+via the <b><a href="#ZIPSEND">ZIPSEND</a></b> command. This paramter is
+a file path relative to the agent.</blockquote>
+<span style="font-family: helvetica,arial,sans-serif;"> If the variable </span><b
+ style="font-family: helvetica,arial,sans-serif;">AGENT_ID </b><span
+ style="font-family: helvetica,arial,sans-serif;">exists prior to this
+call, an exception is generated. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> Each call to the </span><b
+ style="font-family: helvetica,arial,sans-serif;">SETAGENT</b><span
+ style="font-family: helvetica,arial,sans-serif;"> command should be
+matched by a call to </span><b
+ style="font-family: helvetica,arial,sans-serif;"><a href="#DELAGENT">DELAGENT</a> </b><span
+ style="font-family: helvetica,arial,sans-serif;">when the .qash file
+has finished using the agent. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> If the directory
+specified by </span><b style="font-family: helvetica,arial,sans-serif;">WORK_DIR</b><span
+ style="font-family: helvetica,arial,sans-serif;">does not exist prior
+to the call to </span><a href="#SETAGENT"
+ style="font-family: helvetica,arial,sans-serif;">SETAGENT</a><span
+ style="font-family: helvetica,arial,sans-serif;">, then it will be
+automatically created. When the corresponding DELAGENT command is
+called, the entire directory and it's contents will be deleted if the </span><a
+ href="#AUTOCLEAN_ON" style="font-family: helvetica,arial,sans-serif;">AUTOCLEAN_ON</a><span
+ style="font-family: helvetica,arial,sans-serif;"> command was called. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="SETSTATIC"></a>SETSTATIC(KEY,VALUE)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This command will
+set a static variable which will be visible to all QASH scripts for the
+lifetime of the JVM, or until it is explicitly deleted by a call to
+DELSTATIC. It allows rudimentary exchange of information between tests. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>KEY</b>-
+the name of the variable to be used for use in later calls to <a
+ href="#GETSTATIC">GETSTATIC</a> <br>
+  <b>VALUE</b>- the value to place in this variable
+  <p>e.g. : </p>
+  <blockquote><b><font color="#009900">SETSTATIC(MYVAR,"300")</font></b> <br>
+    <b><font color="#009900">GETSTATIC(RESULT,MYVAR)</font></b></blockquote>
+The variable <i>RESULT</i> will then contain the value "300".
+Furthermore, the call to <a href="#GETSTATIC">GETSTATIC</a> may be made
+at any time during the lifetime of the JVM and it will still contain
+this value.</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="DELSTATIC"></a>DELSTATIC(KEY,VALUE)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This command will
+delete a static variable set in a prior call to <a href="#SETSTATIC">SETSTATIC</a>.
+If the variable does not exist, it will not complain. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>KEY</b>-
+the name of the static variable to remove <br>
+  <b>VALUE</b>- the value to place in this variable</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="GETSTATIC"></a>GETSTATIC(<font color="#cc0000">RESULT</font>,KEY)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This command will
+get a static variable which must have been set by a prior call to
+DELSTATIC. If the variable does not exist, KEY will not be set. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>RESULT</b>-
+the result will be stored in a variable of this name <br>
+  <b>KEY</b>- the name of the static variable to be retrieved</blockquote>
+<hr width="100%" style="font-family: helvetica,arial,sans-serif;"> <br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="ZIPSEND"></a>ZIPSEND(AGENT_ID, <font
+ color="#cc0000">ZIP_ID</font>, ZIP_FILENAME)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This command sends
+a zip file to the agent specified in <b>AGENT_ID </b>(created by a
+call to <b><a href="#SETAGENT">SETAGENT</a></b>) and unzips the file
+in the selected <b>WORK_DIR</b> for this <b>AGENT_ID.</b> </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>AGENT_ID
+- </b>which agent to send the zip file to, created by a previous call
+to <b><a href="#SETAGENT">SETAGENT</a></b> <br>
+  <b>ZIP_ID</b> - the handle to the zip file will be created in this
+variable, so it must be undefined at this point. It will be used later
+when the call is made to <b><a href="#ZIPDEL">ZIPDEL</a></b> <br>
+  <b>ZIP_FILENAME </b>- the full path to the zip file you want to send
+(relative to the harness)</blockquote>
+<span style="font-family: helvetica,arial,sans-serif;"> This command
+will transfer to requested file to the relative agent, and the agent
+will then unzip this file in the </span><b
+ style="font-family: helvetica,arial,sans-serif;">WORK_DIRECTORY </b><span
+ style="font-family: helvetica,arial,sans-serif;">you specified in the
+call to </span><b style="font-family: helvetica,arial,sans-serif;"><a
+ href="#SETAGENT">SETAGENT</a></b><span
+ style="font-family: helvetica,arial,sans-serif;"> </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="SETPROP"></a>SETPROP(AGENT_ID, KEY, VALUE) or
+SETPROP(AGENT_ID,KEY)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This command sets a
+property value on the specified <b>AGENT_ID</b>, which will be visible
+to any subsequent <a href="#CMDSTART">CMDSTART</a> commands called on
+this <b>AGENT_ID</b>. <br>
+<i>Note: If form two of this command is used, no resolving of the
+parameters will be done, they will be set on the agent exactly as they
+appear here. Leading and trailing spaces in the parameters are ignored.</i> </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>AGENT_ID</b>
+- the agent on which the property must be set <br>
+  <b>KEY </b>- the key name of the property <br>
+  <b>VALUE</b> - the value of the property. If omitted, it will be
+retrieved from the .<i>qash </i>environment. If it is not defined here
+either, it will be assigned to the same value as <b>KEY</b>.</blockquote>
+<span style="font-family: helvetica,arial,sans-serif;"> e.g.. </span>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><font
+ color="#000000">Form 1:</font></b> <br>
+  <b><font color="#009900">KEY="VALUE"</font></b> <br>
+  <b><font color="#009900">SETPROP(AgentID,KEY);</font></b> <br>
+  <font color="#000000">will result in an environment variable pair "<i>KEY=VALUE</i>"
+being visible to any process executing on the agent specified by
+AgentID.</font> <br>
+  <b><font color="#009900">SETPROP(AgentID,KEY,"VALUE");</font></b>
+  <p><b><font color="#000000">Form 2:</font></b> <br>
+  <b><font color="#009900">KEY="VALUE"</font></b> <br>
+  <b><font color="#009900">SETPROP(AgentID,KEY,"VALUE");</font></b> <br>
+  <font color="#000000">will result in an environment variable pair "<i>VALUE=VALUE</i>"
+being visible to any process executing on the agent specified by
+AgentID.</font> <br>
+&nbsp; </p>
+  <p><b><font color="#009900">SETPROP(myAgent, "SystemRoot","c:\winnt")</font></b> <br>
+  <font color="#000000"><b>&nbsp;&nbsp;&nbsp; </b>will set the value "<i>SystemRoot=c:\winnt</i>"</font></p>
+</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="DELPROP"></a>DELPROP(AGENT_ID, KEY, VALUE) or
+DELPROP(AGENT_ID, KEY)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This command
+removes a property from the agent <b>AGENT_ID</b>, so it will no
+longer be visible to any subsequent calls to <a href="#CMDSTART">CMDSTART</a>.<br>
+It does not matter if the property <b>KEY </b>existed previously or
+not. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>AGENT_ID</b>
+- the agent on which the property must be deleted <br>
+  <b>KEY </b>- the key name of the property to be deleted <br>
+  <b>VALUE</b> - the value of the property to be deleted. Not neccesary
+to use this form.</blockquote>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="CMDSTART"></a>CMDSTART(AGENT_ID, <font
+ color="#cc0000">CMD_ID</font>, CMD_STRING, TIMEOUT) or
+CMDSTART(AGENT_ID, <font color="#cc0000">CMD_ID</font>, CMD_STRING)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This spawns an
+execute process on the agent, using an environment built from any calls
+to <a href="#SETPROP">SETPROP</a>, and then executing the command
+specified in <b>CMD_STRING</b>. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>AGENT_ID</b>-
+the agent on which the command is to be executed <br>
+  <b>CMD_ID </b>- a handle to be used for further communication of
+this started process <br>
+  <b>CMD_STRING</b> - the command to be executed on the agent (must be
+relative to the agent's OS and architecture) <br>
+  <b>TIME_OUT</b> - after this value, specified in seconds, the process
+will be killed if it does not exit normally. Warning :If this value is
+omitted, and a call is made to <a href="#CMDSTATUS">CMDSTATUS,</a> the
+agent will block until the process exits!</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="CMDSTOP"></a>CMDSTOP(CMD_ID) or CMDSTOP(CMD_ID ,<font
+ color="#cc0000">STATUS_CODE</font>)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This command stops
+a previously started process if it is still running. If it had
+previously exited normally, this method has no effect. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>CMD_ID </b>-
+the handle of the process whom we are trying to stop. <br>
+  <font color="#cc0000">STATUS_CODE </font><font color="#000000">- the
+return value of the process if it already finished, or a negative value
+if had to be killed.</font></blockquote>
+<span style="font-family: helvetica,arial,sans-serif;"> Warning: A
+common programming error is to do the following : </span>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><font
+ color="#009900">CMDSTART(agent_id, cmd_id, cmd_string, cmd_timeout)</font></b> <br>
+  <b><font color="#009900">CMDSTOP(cmd_id)</font></b></blockquote>
+<span style="font-family: helvetica,arial,sans-serif;"> Due to the speed
+of the parser executing these statements, the STOP command usually
+kills the process before it has had a chance to start, so it would be
+better to use the following code : </span>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><font
+ color="#009900">CMDSTART(agent_id, cmd_id, cmd_string, cmd_timeout)</font></b> <br>
+  <b><font color="#009900">SLEEP(10)</font></b> <br>
+  <b><font color="#009900">CMDSTOP(cmd_id)</font></b></blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="CMDSTATUS"></a>CMDSTATUS(CMD_ID, <font
+ color="#cc0000">STATUS_CODE</font>)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This command tries
+to receive the exit value of the process started by the <a
+ href="#CMDSTART">CMDSTART </a>command. <br>
+A call to this command will block until such time as the process exits,
+or times out, so it is suggested that every call to <a href="#CMDSTART">CMDSTART</a>
+use a reasonable <b>TIMEOUT</b> value, or makes a call to <a
+ href="#CMDSTOP">CMDSTOP</a> prior to the call to <a href="#CMDSTATUS">CMDSTATUS</a>.</p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>CMD_ID </b>-
+the handle of the process who's value we are interested in <br>
+  <b>STATUS_CODE </b>- the process exit value will be placed in this
+variable. It may not exist prior to this call. A value of 0 indicates
+success, any other value indicates the process exited abnormally.</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="CMDCLEAN"></a>CMDCLEAN(CMD_ID)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This command cleans
+any temporary files associated with a process started by the <a
+ href="#CMDSTART">CMDSTART </a>command. <br>
+Failure to correctly clean a command may result in a parser warning
+being printed, indicating cleaning was not completely realised. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>CMD_ID </b>-
+the handle of the process who's files we want to clean.</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="CMDGETTRACE"></a>CMDGETTRACE(CMD_ID)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This is used to
+retrieve the standard output and standard error streams produced by the
+process started in a previous call to <a href="#CMDSTART">CMDSTART.</a> <br>
+It should typically be called only after a process has exited, i.e.
+make a call to <a href="#CMDSTATUS">CMDSTATUS</a> before trying to get
+it's trace files. <br>
+These files are stored on the Harness project settings, and may be
+viewed by right clicking on a test node in the test tree of the GUI. <br>
+You do not have to call this method, so you need only use it for
+processes who's output is of interest. These files are all deleted by a
+call to <a href="#DELAGENT">DELAGENT,</a> and will not be retrievable
+afterwards. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>CMD_ID </b>-
+the command identifier of the process who's trace you wish to retrieve.</blockquote>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="DAEMONSTART"></a>DAEMONSTART(AGENT_ID,
+CMD_STRING)&nbsp;</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This spawns an
+execute process on the agent, using an environment built from any calls
+to <a href="#SETPROP">SETPROP</a>, and then executing the command
+specified in <b>CMD_STRING</b>. The command is expected to be a daemon
+process, and because of this, there is no way to either stop the
+process or retrieve any of it's output traces. This is in line with
+standard daemon behaviour. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>AGENT_ID</b>-
+the agent on which the daemon is to be executed <br>
+  <b>CMD_STRING</b> - the daemon to be executed on the agent (must be
+relative to the agent's OS and architecture)</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="ZIPCLEAN"></a>ZIPCLEAN(<font color="#cc0000">ZIP_ID</font>)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This command cleans
+up all files previously created by a call to <a href="#ZIPSEND">ZIPSEND</a>,
+as well as the zip file itself. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;">&nbsp; <br>
+  <b>ZIP_ID</b> - the handle of the zipfile returned by the <a
+ href="#ZIPSEND">ZIPSEND </a>command</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="DELAGENT"></a>DELAGENT(<font color="#cc0000">AGENT_ID</font>)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function frees
+resources associated with <b>AGENT_ID</b>, and releases the <b>AGENT_ID</b>
+variable. <br>
+Any started processes not explicitly killed will be killed by this
+call, and their respective trace files will be deleted. <br>
+If the <b>AGENT_ID</b> is not defined, or does not match any previous
+calls to <b><a href="#SETAGENT">SETAGENT</a></b>, an exception is
+thrown. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>AGENT_ID</b>-
+the agent whom we want to cleanup</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="KILLAGENT"></a>KILLAGENT(<font color="#cc0000">RESULT</font>,
+AGENT_NAME, AGENT_PORT)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This command
+instructs the agent to commit suicide. If the requests suceeds, RESULT
+will contain 0, if it fails, RESULT will be non-zero. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>AGENT_NAME</b>
+- the name of the machine running the agent. <br>
+  <b>AGENT_PORT </b>- the port number of the agent running on machine. <br>
+  <b>RESULT </b>- the status of the request (0 = succeeded, 1 = failed)</blockquote>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="REPORTSTATUS"></a>REPORTSTATUS(STATUS_CODE)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This is the final
+value which will be reported to the test harness, to decide whether a
+test passed or failed. <br>
+A value of 0 indicates a test passed, any other value indicates a
+failure. <br>
+In this way, the results of multiple processes on multiple agents can
+be combined by the .qash file, and then a test result <br>
+can be decided upon. <br>
+Note: Any parsing problems encountered will always cause a test to have
+an UNRESOLVED status, over-riding any actual passes or failures. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>STATUS_CODE</b>-
+any integer value, with 0 signifying a test passed, any other value
+indicates test failure.</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="SLEEP"></a>SLEEP(SECONDS)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function
+causes the parser execution to pause for the specified number of
+seconds. All processes started on the agents are unaffected. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>SECONDS</b>
+- the number of seconds to sleep for</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="PRINT"></a>PRINT PRINT_STATEMENT</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function
+prints information to the standard out console of the QAT harness, if
+there is one. Starting a JVM via the -jar command on Microsoft Windows
+generally starts the Harness with a hidden console, and so it will not
+be visible. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;">PRINT_STATEMENT
+- the statement to be printed</blockquote>
+<span style="font-family: helvetica,arial,sans-serif;"> Complex print
+statements are allowed : </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> e.g. </span>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><font
+ color="#009900">PRINT "The value of i="+i</font></b> <br>
+  <b><font color="#009900">PRINT "Agent name :"+AGENT+" Agent
+port:"+PORT</font></b></blockquote>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="AUTOCLEAN_ON"></a>AUTOCLEAN_ON</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This enables the
+parser action of automatically cleaning any uncleaned agents and
+commands upon calling the <a href="#REPORTSTATUS">REPORTSTATUS</a>
+command. It is disabled by default. <br>
+No parameters are required. If set to true, the contents of the
+directory as well as the directory itself, specified in the <a
+ href="#SETAGENT">SETAGENT</a> command, will be deleted if <a
+ href="#SETAGENT">SETAGENT</a> was responsible for creating this
+directory. <br>
+&nbsp;
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave="">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="AUTOCLEAN_OFF"></a>AUTOCLEAN_OFF</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</p>
+<p style="font-family: helvetica,arial,sans-serif;">This disables the
+parser action of automatically cleaning any uncleaned agents and
+commands upon calling the <a href="#REPORTSTATUS">REPORTSTATUS</a>
+command. It is disabled by default. <br>
+No parameters are required. <br>
+&nbsp; <br>
+&nbsp;
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave="">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="PRINTENV"></a>PRINTENV</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</p>
+<p style="font-family: helvetica,arial,sans-serif;">This function is
+for debugging purposes, and will print out all the current defined
+properties at this point in the parsing process. <br>
+No parameters are required. <br>
+&nbsp; <br>
+&nbsp;
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave="">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="GETFILE"></a>GETFILE(AGENT_ID, SRC_PATH, DEST_PATH)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</p>
+<p style="font-family: helvetica,arial,sans-serif;">This function
+retrieves an arbitrary file from the agent. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>AGENT_ID</b>
+- the agent we want to retrieve the file from <br>
+  <b>SRC_PATH</b> - the path to the file to be retrieved, relative to
+the agent <br>
+  <b>DEST_PATH</b> - where to place the file once it is retrieved,
+relative to the harness</blockquote>
+<span style="font-family: helvetica,arial,sans-serif;"> Bear in mind
+that the agent may be running on various platforms, so it is advised to
+use platform independent methods for specifying paths. For paths
+relative to the harness, you may make use of the standard java
+properties variables, such as </span><b
+ style="font-family: helvetica,arial,sans-serif;"><i>file.separator.</i></b><span
+ style="font-family: helvetica,arial,sans-serif;"> </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="SENDFILE"></a>SENDFILE(AGENT_ID, SRC_PATH,
+DEST_PATH)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function sends
+an arbitrary file to the agent. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>AGENT_ID</b>
+- the agent we want to send the file to. <br>
+  <b>SRC_FILE</b> - the path to the file to be sent, relative to the
+harness <br>
+  <b>DEST_FILE</b>- full path to place the sent file relative to the
+agent</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="CHECKFILE"></a>CHECKFILE(AGENT_ID, <font
+ color="#cc0000">RESULT</font>, FILENAME)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function
+checks for the existence of an arbitrary file on the agent. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>AGENT_ID</b>
+- the agent on whom we we want to check the file. <br>
+  <b>RESULT</b> - the result of the operation : 0 indicates the file
+exists, 1 indicates the file does exist. <br>
+  <b>FILENAME</b>- the full path to the file to be checked,&nbsp;
+relative to the agent</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="CHECKFILE_LOCAL"></a>CHECKFILE_LOCAL(<font
+ color="#cc0000">RESULT</font>, FILENAME)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function
+checks for the existence of an arbitrary file on the harness machine. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>RESULT</b>
+- the result of the operation : 0 indicates the file exists, 1 indicates
+the file does exist. <br>
+  <b>FILENAME</b>- the full path to the file to be checked,&nbsp;
+relative to the agent</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="MKDIR"></a>MKDIR(AGENT_ID, FILENAME)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function
+creates an arbitrary directory on the agent. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>AGENT_ID</b>
+- the agent on whom we we want to create the directory. <br>
+  <b>FILENAME</b>- the full path to the file to be checked,&nbsp;
+relative to the agent</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="MKDIR_LOCAL"></a>MKDIR_LOCAL(FILENAME)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function
+creates an arbitrary directory on the harness machine. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>FILENAME</b>-
+the full path to the file to be checked,&nbsp; relative to the agent</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="CHECKAGENT"></a>CHECKAGENT(RESULT,&nbsp;
+AGENT_NAME, AGENT_PORT)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function
+checks for the existence of an arbitrary agent. If the agent
+exists,&nbsp; all it's standard environment properties will then be
+available in the script with the prefix of the agent name. <br>
+e.g..&nbsp; If <b>AGENT1_NAME="machine1"</b> then we will have <b>machine1.os.name="Solaris".</b> <br>
+Some of the variables are listed here : <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>os.name</i> - Operating system name <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>os.arch</i> - Operating system
+architecture <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>os.version</i>&nbsp; - Operating
+system version <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>file.separator</i>&nbsp; - File
+separator ("/" on UNIX) <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>path.separator</i> - Path separator
+(":" on UNIX) <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>line.separator </i>- Line separator
+("\n" on UNIX) <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>user.name</i> - User's account name <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>user.home</i> - User's home directory <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>user.dir</i> - User's current working
+directory </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>RESULT</b>
+- the result of the operation - zero indicates the agent was found,
+non-zero indicates agent not contactable. <br>
+  <b>AGENT_NAME</b> - the name of the machine running the agent <br>
+  <b>AGENT_PORT </b>- the port number the agent is registered to.</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="DELFILE_LOCAL"></a>DELFILE_LOCAL(FILE_PATH)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function will
+delete an arbitrary file from the harness machine. If the parameter is
+a directory, it and all it's sub directories will also be deleted so BE
+CAREFUL! </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>FILE_PATH</b>
+- the path to the file/directory to be deleted, relative to the harness</blockquote>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="DELFILE"></a>DELFILE(AGENT_ID, FILE_PATH)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function will
+delete an arbitrary file/directory from the agent machine. If the
+parameter is a directory, it and all it's sub directories will also be
+deleted so BE CAREFUL! If the file/directory specified by FILE_PATH
+does not exist, a parser error will be generated. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>AGENT_ID</b>
+- the agent where the file to be deleted resides <br>
+  <b>FILE_PATH </b>- the path to the file to be deleted, relative to
+this agent</blockquote>
+<br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="RANDOM(RID)"></a>RANDOM(RID)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function will
+generate a positive random integer value and place it into the variable
+specified by RID. <br>
+RID does not need to exists prior to this call, but if it does, it will
+be overwritten. RID may not be a complex expression. <br>
+&nbsp; </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><font
+ color="#009900">RANDOM(toto)</font></b> <br>
+  <b><font color="#009900">PRINT toto</font></b>
+  <p><b><font color="#000000">may set the value </font><font
+ color="#009900">toto</font><font color="#000000"> to </font><font
+ color="#009900">54324554</font></b></p>
+</blockquote>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="FUNCTION(FUNCTION_NAME)"></a>FUNCTION(FUNCTION_NAME,ARG1,...)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This allows you to
+define reusable blocks of code into callable functions. All statements
+up until the ENDFUNCTION keyword will be executed each time a matching
+call is made to CALLFUNCTION. <br>
+The function definition will be valid for the lifetime of the root node
+being parsed. Variable visibility is the same as that for <a
+ href="#INCLUDE">INCLUDE</a> statements. <br>
+A function must be defined with at least one argument. These arguments
+can be considered as "var" arguments, ie their value may be altered by
+the call to the function. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>FUNCTION_NAME</b>
+- the name for this function which we will later use to reference it. <br>
+  <b>ARG1 </b>- one or more arguments to be passed when calling the
+function
+  <p>eg:</p>
+</blockquote>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b><font
+ color="#009900">FUNCTION(PRINT, STRING)</font></b>
+  <blockquote><b><font color="#009900">PRINT STRING</font></b></blockquote>
+  <b><font color="#009900">ENDFUNCTION</font></b>
+  <p>... </p>
+  <p><b><font color="#009900">CALLFUNCTION(PRINT,"Hello World");</font></b> </p>
+  <p><b><font color="#000000">will generate the output :</font></b> <br>
+  <b><font color="#009900">Hello World</font></b></p>
+</blockquote>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="CALLFUNCTION(FUNCTION_NAME)"></a>CALLFUNCTION(FUNCTION_NAME,
+ARG1,...)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This allows you to
+call a previously defined function. See <a
+ href="#FUNCTION%28FUNCTION_NAME%29">FUNCTION(...) </a>for details. <br>
+&nbsp;
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave="">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="ENVTRACECONTAINS"></a>ENVTRACECONTAINS(COMMAND_ID, <font
+ color="#cc0000">RESULT</font>, STRING)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</p>
+<p style="font-family: helvetica,arial,sans-serif;">This function
+checks for the existence of string in the trace file output by the
+process COMMAND_ID. The check is done by a case-sensitive comparison. <br>
+This command must be preceded by a call to CMDGETTRACE(..), since the
+check is done on the QAT side, not an the agent side, so the file first
+needs to be retrieved from the agent. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>COMMAND_ID</b>
+- the command whose trace file we want to check. <br>
+  <b>RESULT</b> - the result of the operation : 0 indicates the string
+exists, 1 indicates the string does exist. <br>
+  <b>STRING</b>- the string to look for.</blockquote>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="STDOUTCONTAINS"></a>STDOUTCONTAINS(COMMAND_ID, <font
+ color="#cc0000">RESULT</font>, STRING)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function
+checks for the existence of string in the trace file output by the
+process COMMAND_ID. The check is done by a case-sensitive comparison. <br>
+This command must be preceded by a call to CMDGETTRACE(..), since the
+check is done on the QAT side, not an the agent side, so the file first
+needs to be retrieved from the agent. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>COMMAND_ID</b>
+- the command whose trace file we want to check. <br>
+  <b>RESULT</b> - the result of the operation : 0 indicates the file
+exists, 1 indicates the string does exist. <br>
+  <b>STRING</b>- the string to look for.</blockquote>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="STDERRCONTAINS"></a>STDERRCONTAINS(COMMAND_ID, <font
+ color="#cc0000">RESULT</font>, STRING)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function
+checks for the existence of string in the trace file output by the
+process COMMAND_ID. The check is done by a case-sensitive comparison. <br>
+This command must be preceded by a call to CMDGETTRACE(..), since the
+check is done on the QAT side, not an the agent side, so the file first
+needs to be retrieved from the agent. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>COMMAND_ID</b>
+- the command whose trace file we want to check. <br>
+  <b>RESULT</b> - the result of the operation : 0 indicates the string
+exists, 1 indicates the string does exist. <br>
+  <b>STRING</b>- the string to look for.</blockquote>
+<table cols="1" width="100%" bgcolor="#ffcc00" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr>
+      <td>
+      <h3> <a name="GETTRACEPATHS"></a>GETTRACEPATHS(COMMAND_ID, <font
+ color="#cc0000">ENVFILENAME</font>, <font color="#cc0000">STDOUTFILENAME</font><font
+ color="#000000">,</font><font color="#cc0000"> STDERRFILENAME</font>)</h3>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-family: helvetica,arial,sans-serif;">This function
+retrieves the actual path, relative to the agent, of the trace files
+being generated by the previously started process with id COMMAND_ID.
+The paths are stored in the variables&nbsp; ENVFILENAME, STDOUTFILENAME
+and STDERRFILENAME. <br>
+Note, however, these paths will no longer be valid after a call to
+CMDCLEAN(...) has been made. </p>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>COMMAND_ID</b>
+- the command whose trace file paths we require. <br>
+  <b>ENVFILENAME,STDOUTFILENAME,STDERRFILENAME </b>- the result of the
+operation will populate these variables with the expected values.</blockquote>
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.5 [en] (X11; I; SunOS 5.6 sun4m) [Netscape]">
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#330033" alink="#FF0000">
+
+<h1>
+Test Harness - Client Part.</h1>
+<i>Author: Jean-Emile Debais</i>
+<br><i>Last Update: xxxx</i>
+<br>
+<hr WIDTH="100%">
+<p>The Client Part of the test harness is responsible for:
+<blockquote>
+<ul>
+<li>
+parsing a <i>test description</i> file for checking its syntax</li>
+
+<li>
+executing semantic actions, <a href="#<local action>">local</a> to the
+client (mainly variables definition/evaluation)</li>
+
+<li>
+executing semantic actions on remote <b><i>agents</i></b> (send commands
+to be executed on remote agents and getting back the results of the execution).
+The protocol&nbsp; between the client and an agent is described in the
+<a href="Protocol.html">Agent
+Specification</a></li>
+</ul>
+</blockquote>
+
+<h2>
+Syntax of the <i>test description </i>file</h2>
+A test description file is an ascii file composed of a sequence of statements,
+each statement may be an variable assignement or a action statement.
+<br>&nbsp;
+<h3>
+Basic Definitions of the language:</h3>
+
+<p><br>The language doesn't require any specific variable declaration:
+The declaration of a variable is done when it is assigned a value.
+<br>The language doesn't require any type declaration. Only 1 type exists:
+the string type. A variable can be assigned only string values.
+<br>The language predefined keywords are case-insensitive. String and Names
+defined by user are case-sensitive.
+<br>&nbsp;
+<ol>
+<li>
+&nbsp;Set of characters</li>
+
+<br>A&nbsp;<a NAME="<Letter>"></a>&lt;Letter> is one character from the
+subset:&nbsp; ["a-z", "A-Z", "_", "-", ".", "/", "\\", "'", ",", ":"]
+<br>A&nbsp;<a NAME="<Digit>"></a>&lt;Digit> is one character from the subset:
+[ "0"-"9"]
+<br>A&nbsp;<a NAME="<Space>"></a>&lt;Space> is one character from the subset:
+[ " ", "\t"]
+<br>&nbsp;
+<br>&nbsp;
+<li>
+String of characters</li>
+
+<br>A&nbsp;<a NAME="<String>"></a>&lt;String> is a sequence of&nbsp; <a href="#<Letter>">&lt;Letter></a>
+,&nbsp;&nbsp; <a href="#<Digit>">&lt;Digit></a>&nbsp; ,&nbsp; <a href="#<Space>">&lt;Space></a>
+,&nbsp;&nbsp; or ":" or ","
+<br>There is no limitation of the length of a &lt;String>
+<br>example:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#993399">This
+is a simple-string number 1</font>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;
+that string number 2 starts with 3 spaces and ends with 1 tab</font>
+<br>&nbsp;
+<li>
+<a NAME="<Variable Identifier>"></a>Variable Identifier</li>
+
+<br>A &lt;Variable Identifier> is a <a href="#<String>">&lt;String></a>,
+which doesn't start nor end by <a href="#<Space>">&lt;Space></a> , but
+which can include any number of <a href="#<Space>">&lt;Space></a>
+<br>example:&nbsp; <font color="#993399">My-Tel.Number_is</font>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#993399">This is an ident. prefixed and suffixed by 0 space.</font>
+<br>&nbsp;
+<li>
+A&nbsp;<a NAME="<Variable Occurence>"></a>&lt;Variable Occurence> has the
+syntax:&nbsp; ${<a href="#<Variable Value >">&lt;Value></a>}.&nbsp; First,
+the value is evaluated to produce a <a href="#<Variable Identifier>">&lt;Variable
+Identifier></a> , and finally the&nbsp; &lt;Variable Occurence> is substitued
+by the value of the variable, if exists, or by the "" string, if the variable
+has not been assigned.</li>
+
+<br>example:&nbsp;&nbsp;&nbsp;&nbsp; <font color="#993399">${My-Tel.Number_is:x11254}</font>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#993399">${This is an ident. prefixed and suffixed by 0 space.}</font>
+<br>&nbsp;
+<li>
+&nbsp;A&nbsp;<a NAME="< Value >"></a>&lt;Value > is a sequence of <a href="#<String>">&lt;String></a>
+or&nbsp; <a href="#<Variable Occurence>">&lt;Variable Occurence></a>.</li>
+
+<br>example:&nbsp;&nbsp;&nbsp; <font color="#993399">Hello, my phone number
+is ${My-Tel.Number_is}</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+A bit more complicated: ${X${Y}Z},&nbsp; ${123 ${456 ${7} 8} 9} , and so
+on</font>
+<li>
+A&nbsp;<a NAME="<String Value >"></a>&lt;SValue > is a sequence of <a href="#<Variable Value >">&lt;Value>s</a>,
+each one starting and ending with <b>"</b> character, and each separated
+by the + character to concatenate&nbsp; all the &lt;Value>s into a single
+&lt;StringValue>.</li>
+
+<br>example:&nbsp;&nbsp;&nbsp; <font color="#993399">"Hello, "&nbsp; +
+"my phone number" +&nbsp; "is ${My-Tel.Number_is}"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"A &lt;String Value> can be a &lt;value> itself""</font>
+<br>&nbsp;
+<li>
+<a NAME="<assign operator>"></a>An &lt;Assign Operator> may have one of
+the following value:</li>
+
+<ol>
+<li>
+=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Assign a value to a variable.</li>
+
+<li>
++=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Append a value to&nbsp; a variable.</li>
+
+<br>&nbsp;</ol>
+
+<li>
+<a NAME="<String Value >"></a>&lt;Condition></li>
+
+<br>A &lt;Condition> has the syntax:&nbsp; <a href="#<String Value >">&lt;SValue
+1></a>&nbsp;&nbsp; &lt;cond_operator>&nbsp; <a href="#<String Value >">&lt;SValue2
+></a>
+<br>The 2&nbsp; &lt;SValue>s are interpreted to finally provide 2 strings.
+<br>The &lt;Condition> returns the boolean value resulting from the string
+comparison of the 2&nbsp; &lt;SValue>s.
+<br>The&nbsp; existing &lt;cond_operator>s&nbsp; are <b>==</b>&nbsp; and
+<b>!=</b> .
+<br>example:&nbsp;&nbsp; <font color="#993399">"A" + "B ${C} D "&nbsp;
+== "mangez du vea</font>u"&nbsp;&nbsp; returns false.</ol>
+
+<h3>
+Variable Assignement Statement:</h3>
+
+<blockquote><a NAME="<assignement>"></a>An assignement statement may have
+one of the 2 forms:</blockquote>
+
+<ol>
+<ol>
+<li>
+<a href="#<Variable Identifier>">&lt;Variable Identifier></a>&nbsp; <a href="#<assign operator>">&lt;Assign
+Operator></a>&nbsp; <a href="#<String Value >">&lt;SValue ></a></li>
+
+<br>&lt;SValue> is evaluated and assigned / appended to the variable identified
+by &lt;Variable Identifier>, according to the &lt;Assign operator> value.
+<p>example:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#993399">My-Tel.Number_is
+= "x11254"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+My-External-Phone-Number = "33" +&nbsp; "4 76 41 42 54"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+My-Name = "Jean-Emile "</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+My-Name += "Debais"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Phone-Me = "${My-Name} at ${My-Tel.Number_is}"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+My-Tel.Number_is += " or " + "${My-External-Phone-Number}"</font>
+<br>&nbsp;
+<li>
+<a href="#<Variable Identifier>">&lt;Variable Identifier></a>&nbsp; <a href="#<assign operator>">&lt;Assign
+Operator></a>&nbsp; ( <a href="#<String Value >">&lt;SValue1.1 ></a> :
+<a href="#<String Value >">&lt;SValue
+1.2></a>) ...&nbsp; ( <a href="#<String Value >">&lt;SValuei.1 ></a> :&nbsp;
+<a href="#<String Value >">&lt;SValue i.2></a>)&nbsp; ...</li>
+
+<br>After evaluation of all &lt;SValuei.1> and &lt;SValuei.2>,&nbsp; this
+statement builds a string equal to a sequence of:
+<br>&lt;Variable Identifier>&lt;SValuei.1> =&lt;SValuei.2>
+<br>That string is assigned / appended to the variable identified by &lt;Variable
+Identifier>, according to the &lt;Assign operator> value.
+<br>So that statement produces the same result as:
+<br>&nbsp;&nbsp;&nbsp; &lt;Variable Identifier>&nbsp; &lt;Assign Operator>&nbsp;
+&lt;Variable Identifier>&lt;SValuei.1> =&lt;SValuei.2>..."
+<p>example:&nbsp;&nbsp;&nbsp;&nbsp; <font color="#993399">LEVEL = 7</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-D = ("DEBUG":"${LEVEL}") ("NB" + "CNX":"20")</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+assigns to the variable -D the string -DDEBUG=7&nbsp; -DNBCNX=20</font></ol>
+</ol>
+
+<h3>
+<br>
+<a NAME="<Action statements>"></a><b>Action Statements:</b></h3>
+
+<h3>
+<a NAME="<local action>"></a><b>Local Action Statements</b></h3>
+Local actions are performed only on the host running the Client part of
+the harness. They don't involve any remote Agent, but allow to configure/control
+the behaviour of the client harness.
+<blockquote>
+<h4>
+File Inclusion</h4>
+.INCLUDE&nbsp; <a href="#<String Value >">&lt;SValue ></a>
+<blockquote>The .INCLUDE statement&nbsp; allows to add to the current definitions
+the ones contained in another test description file. It's a way to group
+common definitions in a same location and include them in multiple test
+description files.
+<br>Multiple embraced inclusions are accepted.
+<br>&nbsp;
+<p>example:&nbsp;&nbsp;&nbsp;&nbsp; in <i>file1:</i>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<font color="#993399">.INCLUDE "file2.txt"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.PRINT "${A}"</font>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+in <i>file2.txt</i>:
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<font color="#993399">A = "Hello"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+file = "/tmp/f"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.INCLUDE "xyz" + "${file}1.txt"</font></blockquote>
+
+<h4>
+Printing</h4>
+.PRINT&nbsp; <a href="#<String Value >">&lt;SValue ></a>
+<blockquote>Evaluate the &lt;SValue> prints it out to the standard output.
+<br>example:&nbsp;&nbsp;&nbsp;<font color="#993399"> .PRINT "Hello " +
+"${everybody}"</font></blockquote>
+
+<h4>
+Sleeping</h4>
+.SLEEP&nbsp; <a href="#<String Value >">&lt;SValue ></a>
+<blockquote>Evaluate the &lt;SValue> as a integer value X and sleeps X
+seconds.
+<br>example:&nbsp;&nbsp;&nbsp;<font color="#993399"> .SLEEP "${GROS-DODO}"</font></blockquote>
+
+<h4>
+Conditional&nbsp; Statement</h4>
+.IF&nbsp; &lt;Condition>&nbsp; .THEN&nbsp; <a href="#<Action statements>">&lt;Action
+Statements1></a> .ELSE&nbsp;&nbsp; <a href="#<Action statements>">&lt;Action
+Statements2></a> .FI
+<br>.IF&nbsp; &lt;Condition>&nbsp; .THEN&nbsp; <a href="#<Action statements>">&lt;Action
+Statements></a>&nbsp; .FI
+<blockquote>If &lt;Condition> returns true, the &lt;Action Statements1>
+are executed,.
+<br>If it returns false,&nbsp; &lt;Action Statements2> are executed, if
+the .ELSE clause provided.
+<br>example:
+<blockquote><font color="#993399">.IF "${A1}" == "1"</font>
+<br><font color="#993399">.THEN .PRINT "A1 is 1"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp; .IF "${A2}" == "1"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp; .THEN</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .PRINT
+"A2 is 1"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .IF
+"${A3}" == "1" .THEN .PRINT "&nbsp;&nbsp; A3 is&nbsp; 1" .FI</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp; .ELSE&nbsp;&nbsp; .PRINT "A2
+is not 1"&nbsp;&nbsp;&nbsp; .FI</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp; .PRINT "in main then"</font>
+<br><font color="#993399">.ELSE</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp; .PRINT "A1 is not 1"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp; .IF "${A3}" == "1"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp; .THEN</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .PRINT
+"A3 is 1"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp; .ELSE</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .PRINT
+"A3 is not 1"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .IF
+"${A2}" == "1"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .THEN
+.PRINT "&nbsp;&nbsp; A2 is 1"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .FI</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp; .FI</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp; .PRINT "in main else"</font>
+<br><font color="#993399">.FI</font></blockquote>
+</blockquote>
+</blockquote>
+
+<h3>
+<a NAME="<local action>"></a><b>Remote Action Statements</b></h3>
+These statements asks a remote Agent to execute specific ations.
+<blockquote>
+<h4>
+Agent declaration</h4>
+.SETAGENT( <a href="#<String Value >">&lt;SValue1 ></a>)&nbsp; <a href="#<String Value >">&lt;SValue2
+></a> :&nbsp; <a href="#<String Value >">&lt;SValue 3></a>
+<blockquote>Declare an Agent the client will be interacting with. &lt;Svalue1>
+is the identifier of the Agent, choosen by the user. &lt;SValue2> is the
+IP hostname/address, &lt;Svalue3> is the port the Agent is waiting connexion
+on. (Communication between Agent and Client is handled by socket).
+<p>example:&nbsp;&nbsp;&nbsp; <font color="#993399">.SETAGENT("Agent1")&nbsp;
+"ontano" : "9999"</font></blockquote>
+
+<h4>
+Command Starting</h4>
+.STARTCMD( <a href="#<String Value >">&lt;SValue1 ></a>)&nbsp; <a href="#<String Value >">&lt;SValue2
+></a>
+<br>.STARTCMD( <a href="#<String Value >">&lt;SValue1 ></a> ,&nbsp; <a href="#<String Value >">&lt;SValuetimeout
+></a>)&nbsp; <a href="#<String Value >">&lt;SValue2 ></a>
+<blockquote>Start the&nbsp; command &lt;Svalue2> on the &lt;Svalue1> Agent.
+A maximum execution time on the Agent for the command may be set&nbsp;
+providing &lt;SValuetimeout>.
+<br>The command is run on the Agent in a asynchronous way: the client is
+not blocked until the end of the command.
+<br>Current restriction: only one command at a time running on a same Agent.
+(will be canceled soon).
+<p>example:&nbsp;&nbsp;&nbsp; <font color="#993399">.STARTCMD("Agent1")&nbsp;
+"${INTERP} ${INTERP_OPTION}&nbsp; ${PROG} ${ARGS}"</font>
+<br><font color="#993399">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.STARTCMD("Agent1", 10 )&nbsp; "/bin/ls " + "${file}"</font></blockquote>
+
+<h4>
+Command Stopping</h4>
+.STOPCMD( <a href="#<String Value >">&lt;SValue1></a>)
+<blockquote>Stop the last command running on the &lt;Svalue> Agent.&nbsp;
+No effect if the command has already completed.
+<br>example:&nbsp;&nbsp;&nbsp; <font color="#993399">.STOPCMD("Agent1")</font></blockquote>
+
+<h4>
+Command Status</h4>
+.GETSTATUS( <a href="#<String Value >">&lt;SValue1></a>&nbsp; .. , 
+<a href="#<String Value >">&lt;SValuei>)</a>
+<blockquote>Wait for the completion of the last command executed on each
+of the &lt;Svaluei> Agent. Store the execution status of each command,
+to compute the test verdict.
+<br>If the exit code of a command equal:
+<blockquote>0:&nbsp; the status of the command is PASS.
+<br>&lt;0: the status of the command is UNRESOLVED.
+<br>>0: the status of the command is FAIL.</blockquote>
+The final test verdict is merged of all the commands status get during
+the test.
+<br>The verdict is sequentially computed as follow:
+<br>1. UNRESOLVED, if at least one command status equal UNRESOLVED.
+<br>2. else FAIL, if at least one commnad status equal FAIL.
+<br>3. else PASS.
+<p>example:&nbsp;&nbsp;&nbsp; <font color="#993399">.GETSTATUS("Agent1",
+"Agent2")</font>
+<br>&nbsp;</blockquote>
+
+<h4>
+<a NAME="<zip transfer>"></a>ZIP Transfer</h4>
+.ZIPSEND( <a href="#<String Value >">&lt;SValue1></a>)&nbsp; <a href="#<String Value >">&lt;SValueDir></a>&nbsp;
+:&nbsp; <a href="#<String Value >">&lt;SValuePath></a>
+<blockquote>Sends a zip file on the Agent &lt;SValue>. The local zip filepath
+is &lt;SValuePath>. The remote zip filename is "&lt;SValueDir>/${TEST_NAME}/basename
+of &lt;SValuePath>".
+<br>The file will be unzipped on the Agent in the directory &lt;SValueDir>/${TEST_NAME}.
+<br>example:&nbsp;&nbsp;&nbsp; <font color="#993399">.ZIPSEND("Agent1")&nbsp;
+"${tmp}" : "./hello.zip"</font></blockquote>
+
+<h4>
+ZIP Removal</h4>
+.ZIPCLEAN( <a href="#<String Value >">&lt;SValue1></a>)
+<blockquote>Remove the last zip file sent on the &lt;Svalue1> Agent, as
+well as the unzipped directories/files.
+<br>example:&nbsp;&nbsp;&nbsp; <font color="#993399">.ZIPCLEAN("Agent1")</font></blockquote>
+
+<h4>
+Property setting</h4>
+.SETPROP( <a href="#<String Value >">&lt;SValue></a>)&nbsp; (<a href="#<String Value >">&lt;SValueN1></a>&nbsp;
+:&nbsp; <a href="#<String Value >">&lt;SValueV1></a>) ..&nbsp; (<a href="#<String Value >">&lt;SValueNi></a>&nbsp;
+:&nbsp; <a href="#<String Value >">&lt;SValueVi></a>)
+<blockquote>Set&nbsp; the variable/property &lt;SValueNi> to the value&nbsp;
+&lt;SValueVi> on the Agent ,&nbsp; so that it becomes available to the
+next command to be executed on the Agent (availability from the unix shell
+env() or as a java property).
+<br>example:&nbsp;&nbsp;&nbsp; <font color="#993399">.SETPROP ("Agent1")&nbsp;
+("CLASSPATH" : "/tmp/qa_tester.jar") ("DEBUG" : "7")</font>
+<br><font color="#993399"></font>&nbsp;</blockquote>
+</blockquote>
+
+<h3>
+<font color="#330000">Special Variables</font></h3>
+
+<blockquote>
+<h4>
+TEST_NAME</h4>
+
+<blockquote>That variable defines the Name of the test implemented into
+the description file, and is usefull in <a href="#<zip transfer>">ZIP Transfer</a>.
+<br>example:&nbsp;&nbsp;&nbsp;<font color="#993399"> TEST_NAME = "Test
+number 1"</font></blockquote>
+
+<h4>
+<br>
+.MANDATORY = <a href="#<String Value >">&lt;SValue></a></h4>
+
+<blockquote>That variable defines the variable Names that should be defined
+into the test description before sending command to Agents. That checking
+is done before any .SETAGENT statement. The mandatory&nbsp; names are sepatared
+by , or spaces in the &lt;SValue>.
+<br>example:&nbsp;&nbsp;&nbsp;<font color="#993399"> .MANDATORY= "CLASSPATH,&nbsp;
+PROG"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.MANDATORY += " JAVA"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+STARTCMD("Agent1") "${JAVA} -classpath ${CLASSPATH} ${PROG} ${ARGS}"</font></blockquote>
+</blockquote>
+
+</body>
+</html>

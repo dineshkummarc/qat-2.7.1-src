@@ -1,0 +1,288 @@
+#################################################
+# @(#)file   default.func
+# @(#)author  webhiker
+# @(#)version 1.45
+# @(#)date   00/12/19
+#################################################
+
+#################################################
+# CHMOD
+#################################################
+FUNCTION(CHMOD,agent_id,filename)
+	CMDSTART(agent_id, tmp_id,"/usr/bin/chmod a+x "+filename,5)
+	CMDSTATUS(tmp_id,tmp_result);
+	CMDCLEAN(tmp_id);
+	IF (tmp_result!=0)
+	 THEN
+		PRINT "ERROR IN FUNCTION CHMOD"
+		REPORTSTATUS(1)
+	END
+ENDFUNCTION
+
+#################################################
+# CHECK_AGENT_COUNT
+#################################################
+FUNCTION(CHECK_AGENT_COUNT,count,expected)
+IF ( count < expected )
+	THEN
+		PRINT "Mandatory AGENT_COUNT is "+expected+" for this test"
+		PRINT "You have defined only "+count
+		REPORTSTATUS(1)
+END
+ENDFUNCTION
+
+
+#################################################
+# DEFINE_DEBUG_FLAG
+#################################################
+FUNCTION(DEFINE_DEBUG_FLAG, DEBUG, JIT)
+
+    JIT_COMPILER=""
+    IF (JIT == "ON")
+    THEN
+        JIT_COMPILER=" -Djava.compiler=none "
+    END
+
+    DEBUG_ARGS=JIT_COMPILER + " " + DEBUG
+ENDFUNCTION
+
+#################################################################
+# STARTAGENT on agent i
+#################################################################
+FUNCTION(STARTAGENT, i, agent_id, zip_file, agent_class, agent_cmd_args)
+
+	# send zip for agent
+	ZIPSEND(agent_id, i+"agent_zip_id", zip_file);
+	agent_zip_id = (i+"agent_zip_id")
+	agent_classpath       = ("agent"+i+"_classpath")
+
+	agent_args            =  DEBUG_ARGS + " -classpath " + agent_classpath
+	agent_cmd             = ("agent"+i+"_java")+" "+ agent_args + " " + agent_class + " " + agent_cmd_args
+
+	# start the agent
+	CMDSTART(agent_id, "agent_cmd_id"+i, agent_cmd, default_agent_timeout);
+
+	PRINT "START on AGENT " + i + " DONE !"
+
+ENDFUNCTION
+
+#################################################################
+# STARTSERVER on agent i
+#################################################################
+FUNCTION(STARTSERVER, i, server_id, zip_file, server_class, server_cmd_args)
+
+	# send zip for agent
+	ZIPSEND(server_id, server_zip_id, zip_file);
+
+	agent_classpath       = ("agent"+i+"_classpath")
+
+	agent_args            =  DEBUG_ARGS + " -classpath " + agent_classpath
+	server_cmd             = ("agent"+i+"_java")+" "+ agent_args + " " + server_class + " " + server_cmd_args
+
+	# start the agent
+	CMDSTART(server_id, "server_cmd_id"+i, server_cmd, default_server_timeout);
+
+	PRINT "START on AGENT " + i + " DONE !"
+
+ENDFUNCTION
+
+#################################################################
+# STARTAGENTTRACETEST on agent i
+#################################################################
+FUNCTION(STARTAGENTTRACETEST, i, agent_id, zip_file, agent_class, agent_cmd_args)
+
+	# send zip for agent
+	ZIPSEND(agent_id, agent_zip_id, zip_file);
+
+	agent_classpath       = ("agent"+i+"_classpath")
+
+	agent_args            =  DEBUG_ARGS + " -classpath " + agent_classpath
+	agent_cmd             = ("agent"+i+"_java")+" "+ agent_args + " " + agent_class + " " + agent_cmd_args
+
+	# start the agent
+	CMDSTART(agent_id, "agent_cmd_id"+i, agent_cmd, default_agent_timeout);
+
+	PRINT "START on AGENT " + i + " DONE !"
+
+ENDFUNCTION
+
+#################################################################
+# STOPAGENT on agent i
+#################################################################
+FUNCTION(STOPAGENT, i, agent_id)
+
+	PRINT "STOP AGENT on AGENT " + i
+
+	# retrieve it's exit value
+	CMDSTATUS("agent_cmd_id"+i, agent_cmd_result);
+
+	# retrieve it's stdout/stderr traces
+	CMDGETTRACE("agent_cmd_id"+i);
+
+	# clean it's traces off the agent
+	CMDCLEAN("agent_cmd_id"+i);
+
+	# clean the zip from agent
+	agent_zip_id = (i+"agent_zip_id")
+	ZIPCLEAN(agent_zip_id);
+
+ENDFUNCTION
+
+#################################################################
+# STOPSERVER on agent i
+###############################################################
+FUNCTION(STOPSERVER, i, server_id)
+
+	PRINT "STOPSERVER on AGENT " + i
+
+	# retrieve it's exit value
+	CMDSTOP("server_cmd_id"+i, server_cmd_result);
+
+	# retrieve it's stdout/stderr traces
+	CMDGETTRACE("server_cmd_id"+i);
+
+	# clean it's traces off the agent
+	CMDCLEAN("server_cmd_id"+i);
+
+	# clean the zip from agent
+	ZIPCLEAN(server_zip_id);
+
+ENDFUNCTION
+
+#################################################################
+# STOPAGENTTRACETEST on agent i
+# This method retrieves the process traces BEFORE the process
+# is stopped.
+#################################################################
+FUNCTION(STOPAGENTTRACETEST, i, agent_id)
+
+	PRINT "TRYING TO RETRIEVE TRACES"
+	SLEEP(4)
+
+	# retrieve it's exit value
+	CMDSTATUS("agent_cmd_id"+i, agent_cmd_result);	
+
+	# retrieve it's stdout/stderr traces
+	CMDGETTRACE("agent_cmd_id"+i);
+
+	# clean it's traces off the agent
+	CMDCLEAN("agent_cmd_id"+i);
+ 
+	# clean the zip from agent
+	ZIPCLEAN(agent_zip_id);
+
+ENDFUNCTION
+
+#################################################################
+# REALSTOPAGENT on agent i
+#################################################################
+FUNCTION(REALSTOPAGENT, i, agent_id)
+
+	PRINT "REALSTOPAGENT on AGENT " + i
+
+	# retrieve it's exit value
+	CMDSTOP("agent_cmd_id"+i, agent_cmd_result);
+
+	# retrieve it's stdout/stderr traces
+	CMDGETTRACE("agent_cmd_id"+i);
+
+	# clean it's traces off the agent
+	CMDCLEAN("agent_cmd_id"+i);
+
+	# clean the zip from agent
+	ZIPCLEAN(agent_zip_id);
+
+ENDFUNCTION
+
+#################################################################
+# SYNTAX_TEST_STARTAGENT on agent i
+#################################################################
+FUNCTION(SYNTAX_TEST_STARTAGENT, i, agent_id, zip_file, agent_class, agent_cmd_args)
+
+	# send zip for agent
+	ZIPSEND(agent_id, agent_zip_id, zip_file);
+
+	agent_classpath       = ("agent"+i+"_classpath")
+
+	agent_args            =  DEBUG_ARGS + " -classpath " + agent_classpath
+	agent_cmd             = ("agent"+i+"_java")+" "+ agent_args + " " + agent_class + " " + agent_cmd_args
+
+	# start the agent
+	CMDSTART(agent_id, "agent_cmd_id"+i, agent_cmd, default_agent_timeout);
+
+	PRINT "START on AGENT " + i + " DONE !"
+
+ENDFUNCTION
+
+#################################################################
+# SYNTAX_TEST_STOPAGENT on agent i
+#################################################################
+FUNCTION(SYNTAX_TEST_STOPAGENT, i, agent_id)
+
+	PRINT "STOPAGENT on AGENT " + i
+
+	# retrieve it's exit value
+	curr_cmd_id = ("agent_cmd_id"+i);
+	CMDSTATUS(curr_cmd_id, agent_cmd_result);
+
+	# retrieve it's stdout/stderr traces
+	CMDGETTRACE(curr_cmd_id);
+
+	IF(agent_test_key=="ENVTRACECONTAINS")
+		THEN 
+			ENVTRACECONTAINS(curr_cmd_id, syntax_result, "qa.syntax_tests.SyntaxTest");
+			PRINT "ENVTRACECONTAINS form1 result was " + syntax_result
+			str_to_check = "qa.syntax_tests.SyntaxTest"
+			ENVTRACECONTAINS(curr_cmd_id, syntax_result, str_to_check);
+			PRINT "ENVTRACECONTAINS form2 result was " + syntax_result		
+	END
+	IF(agent_test_key=="STDOUTCONTAINS")
+		THEN 
+			STDOUTCONTAINS(curr_cmd_id, syntax_result, "SyntaxTest object has been created");
+			PRINT "STDOUTCONTAINS form1 result was " + syntax_result
+			str_to_check = "SyntaxTest object has been created"
+			STDOUTCONTAINS(curr_cmd_id, syntax_result, str_to_check);
+			PRINT "STDOUTCONTAINS form2 result was " + syntax_result
+	END
+	IF(agent_test_key=="STDERRCONTAINS")
+		THEN 
+			STDERRCONTAINS(curr_cmd_id, syntax_result, "No errors to report for SyntaxTest");
+			PRINT "STDERRCONTAINS form1 result was " + syntax_result
+			str_to_check = "No errors to report for SyntaxTest"
+			STDERRCONTAINS(curr_cmd_id, syntax_result, str_to_check);
+			PRINT "STDERRCONTAINS form2 result was " + syntax_result
+	END
+	IF(agent_test_key=="GETTRACEPATHS")
+		THEN 
+			GETTRACEPATHS(curr_cmd_id, envfile, stdoutfile, stderrfile);
+			PRINT "GETTRACEPATHS reported:"
+			PRINT "envfile :"+envfile
+			PRINT "stdoutfile :"+stdoutfile
+			PRINT "stderrfile :"+stderrfile
+			CHECKFILE(agent_id, env_result   , envfile);
+			CHECKFILE(agent_id, stdout_result, stdoutfile);
+			CHECKFILE(agent_id, stderr_result, stderrfile);
+			syntax_result = 0;
+			IF (env_result!=0)
+				THEN
+					PRINT "Error retrieving env file path";
+					syntax_result = 1;
+			END
+			IF (stdout_result!=0)
+				THEN
+					PRINT "Error retrieving stdout file path";
+					syntax_result = 1;
+			END
+			IF (stderr_result!=0)
+				THEN
+					PRINT "Error retrieving stderr file path";
+					syntax_result = 1;
+			END
+	END
+	# clean it's traces off the agent
+	CMDCLEAN("agent_cmd_id"+i);
+
+	# clean the zip from agent
+	ZIPCLEAN(agent_zip_id);
+
+ENDFUNCTION

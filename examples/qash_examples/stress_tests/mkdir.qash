@@ -1,0 +1,60 @@
+#################################################
+# @(#)file    mkdir.qash
+# @(#)author  webhiker
+# @(#)version 1.2
+# @(#)date    00/12/13
+#################################################
+
+###############################################################
+# Set up details for this test
+###############################################################
+qat.test.name="mkdir"
+qat.test.author="WebHiker"
+qat.test.description="This test does a loop MKDIR and DELFILE commands to check for any problems or memory leaks in the parser or agent"
+qat.test.buginfo=""
+qat.test.keywords="stress"
+
+
+###############################################################
+# set up default paths and settings
+###############################################################
+QAT_ROOT=qat.qash.path+file.separator+".."+file.separator+"settings"
+INCLUDE QAT_ROOT+file.separator+"default.qinc"
+INCLUDE QAT_ROOT+file.separator+"zips.qinc"
+###############################################################
+
+###############################################################
+# start of the test
+###############################################################
+PRINT "Will use stress level="+stress_level
+
+FOR I = 1 TO qat.agent.count DO
+	agent_index = I
+	agent_tmp_dir = ("agent"+agent_index+"_tmp_dir")
+	agent_fs = ("agent"+agent_index+"_fs")
+	agent_name = ("agent"+agent_index+".name")
+	agent_port = ("agent"+agent_index+".port")
+	test_dir = agent_tmp_dir+agent_fs+"stress_test_directory"
+
+	SETAGENT(agent_id, agent_name, agent_port, agent_tmp_dir);
+
+	FOR J = 1 TO stress_level DO
+		MKDIR(agent_id, test_dir);
+		CHECKFILE(agent_id,result,test_dir)
+		IF (result!=0)
+			THEN
+				PRINT "The file did not exist! "+test_dir
+				REPORTSTATUS(1)
+		END
+		DELFILE(agent_id,test_dir)
+		CHECKFILE(agent_id,result,test_dir)
+		IF (result==0)
+			THEN
+				PRINT "The directory was not deleted! "+test_dir
+				REPORTSTATUS(1)
+		END
+	END
+
+	DELAGENT(agent_id);
+END
+REPORTSTATUS(0)

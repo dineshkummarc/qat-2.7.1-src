@@ -1,0 +1,448 @@
+<!DOCTYPE doctype PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="GENERATOR"
+ content="Mozilla/4.7 [en] (X11; I; SunOS 5.9 sun4u) [Netscape]">
+  <meta name="Author" content="webhiker">
+  <meta name="Description" content="Quick Start Guide for QA Tester">
+  <title>Quick Start Guide</title>
+</head>
+<body text="#000000" bgcolor="#ffffff" link="#0000ee" vlink="#551a8b"
+ alink="#ff0000">
+<table cols="1"
+ style="width: 100%; background-color: rgb(102, 102, 153); font-family: helvetica,arial,sans-serif;"
+ nosave="">
+  <tbody>
+    <tr>
+      <td>
+      <h1>User Guide</h1>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<table border="1" nosave=""
+ style="font-family: helvetica,arial,sans-serif;">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">
+      <center>Author</center>
+      </td>
+      <td>
+      <center>webhiker, <a href="mailto:webhiker@free.fr">webhiker@free.fr</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="Introduction"></a>Introduction</h2>
+<span style="font-family: helvetica,arial,sans-serif;"> This tool was
+developed specifically for testing products running across a wide
+variety of hardware and software platforms. Since it is completely
+written in Java, any machine capable of supporting a J</span><i
+ style="font-family: helvetica,arial,sans-serif;">ava Virtual Machine</i><span
+ style="font-family: helvetica,arial,sans-serif;"> (JVM) can be used. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> The QAT tool can
+be divided into two main sections, the Agent, responsible for actually
+running each test or group of tests, and the Harness, which is
+responsible for test selection, management, result and agent
+co-ordination. All that is required to run a test on a given machine,
+is an Agent running in a compatible JVM. </span>
+<p style="font-family: helvetica,arial,sans-serif;">This document
+covers the following areas <br>
+&nbsp; </p>
+<ul style="font-family: helvetica,arial,sans-serif;">
+  <li> <a href="#System%20Requirements">System requirements</a></li>
+  <li> <a href="#Environment%20settings">Environment settings</a></li>
+  <li> <a href="#Starting%20an%20Agent">Starting an agent</a></li>
+  <li> <a href="#Starting%20the%20QAT%20Harness">Starting the harness</a></li>
+  <li> <a
+ href="#Connecting%20to%20a%20running%20instance%20of%20QAT%20via%20a%20browser">Connecting
+to a running instance of QAT via a browser</a></li>
+  <li> <a href="#Configuring%20GUI%20Project%20Properties">Configuring
+GUI project properties</a></li>
+  <li> <a href="#Running%20tests%20via%20the%20commandline%20interface">Running
+tests via the command line</a></li>
+</ul>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="System Requirements"></a>System Requirements</h2>
+<span style="font-family: helvetica,arial,sans-serif;"> The Agent
+portion of the QAT tool will run on any JVM supporting Java
+Specification 1.1.x or later. If you cannot run this version of the JVM,
+you may compile a binary version of the agent from the sources, for
+your particular platform. It is currently written as a POSIX compliant
+bundle of C++ classes, and has been validated on Chorus and Solaris. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> Since the result
+reporting functions of the Agent are file based, a file system is
+mandatory. </span><br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> The Harness
+requires at least Java 2, and is currently maintained on JDK1.3 FCS. </span>
+<p style="font-family: helvetica,arial,sans-serif;">Since the harness
+is a GUI application, some X-window or Window server is required,
+unless you choose to use only the command line interface to the
+harness. <br>
+Whether the harness runs on NT or Solaris or any other platform (or all
+of them) depends on how portably the tests are written. <br>
+&nbsp; </p>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="Environment settings"></a>Environment settings</h2>
+<span style="font-family: helvetica,arial,sans-serif;"> Ensure the jar
+file </span><b style="font-family: helvetica,arial,sans-serif;">qat.jar</b><span
+ style="font-family: helvetica,arial,sans-serif;"> is visible via the </span><b
+ style="font-family: helvetica,arial,sans-serif;">CLASSPATH </b><span
+ style="font-family: helvetica,arial,sans-serif;">environment variable (</span><b
+ style="font-family: helvetica,arial,sans-serif;"><i>setenv CLASSPATH
+./qat.jar </i></b><span
+ style="font-family: helvetica,arial,sans-serif;">), or directly upon
+invoking the </span><b style="font-family: helvetica,arial,sans-serif;">JVM</b><span
+ style="font-family: helvetica,arial,sans-serif;"> via the "-classpath"
+option. </span><br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<blockquote style="font-family: helvetica,arial,sans-serif;">e.g.</blockquote>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <blockquote><b><i>java -classpath ./qat.jar ClassName</i></b></blockquote>
+</blockquote>
+<blockquote style="font-family: helvetica,arial,sans-serif;">or
+  <blockquote><b><i>setenv CLASSPATH /home/user/qat.jar</i></b></blockquote>
+</blockquote>
+<blockquote style="font-family: helvetica,arial,sans-serif;">
+  <blockquote><b><i>java &lt;ClassName&gt;</i></b></blockquote>
+If you are using Windows and have installed Java 1.2, you can double
+click the qat.jar file to directly launch the QAT GUI interface, or via
+commandline using <br>
+the form : <b><i>java -jar qat.jar</i></b></blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="Starting an Agent"></a>Starting an Agent</h2>
+<span style="font-family: helvetica,arial,sans-serif;"> You can start an
+agent by typing </span>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>java
+Agent </b>&lt;<i>port number</i>&gt; [<i>debug level</i>]
+  <p>where </p>
+  <blockquote><i>port number </i>= the port which will be used for
+communicating / transferring files to and from the harness <br>
+d<i>ebug level </i>= the debug level (0..10) to control which, if any,
+messages are sent to the <i>stdout</i> and <i>stderr</i> streams of the
+Agent (default value is 0)</blockquote>
+</blockquote>
+<span style="font-family: helvetica,arial,sans-serif;"> Any temporary or
+other such files created by the agent will be placed in the directory </span><b
+ style="font-family: helvetica,arial,sans-serif;"><i>&lt;user.home&gt;/.qat/agent</i></b><span
+ style="font-family: helvetica,arial,sans-serif;">. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> Repeat this
+process for as many machines and agents as you require. </span>
+<p style="font-family: helvetica,arial,sans-serif;">To kill the agent,
+simply type <i>Control-C</i> in the terminal window to send a KILL
+signal to the <b>JVM</b>. </p>
+<p style="font-family: helvetica,arial,sans-serif;">Note: Each agent
+requires a unique port number, but one or all of the agents may be run
+on the same machine as the harness. <br>
+Each agent, however, has to be run in a separate <b>JVM</b>. <br>
+Furthermore, one agent may be used by as many harnesses as required, so
+instead of two separate agents, you may configure your test to use the
+same agent. <br>
+In this case, be sure to ensure each agent uses a unique temporary
+directory to store it's files, by making use of the RANDOM script
+command when you call&nbsp; SETAGENT to prevent agents messing with each
+others files. <br>
+No windowing system is required by the agent. </p>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="Starting the QAT Harness"></a>Starting the QAT Harness</h2>
+<span style="font-family: helvetica,arial,sans-serif;"> You can start
+the GUI harness by typing </span>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>java
+QAT [language]</b></blockquote>
+<span style="font-family: helvetica,arial,sans-serif;"> The language
+option currently only supports French (</span><b
+ style="font-family: helvetica,arial,sans-serif;">-FR</b><span
+ style="font-family: helvetica,arial,sans-serif;">) and Afrikaans (</span><b
+ style="font-family: helvetica,arial,sans-serif;">-AF)</b><span
+ style="font-family: helvetica,arial,sans-serif;">, and if omitted,
+defaults to English. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> If this is the
+first time you are running the tool, you will get some warnings that
+previous settings file have not been found, but you may ignore them,
+they will be created for you. (default.prj and default.ser). Each time
+you exit and restart the Harness, your previous project settings will
+be restored from these files. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> In addition,
+screen size and placement of the QAT gui will be saved in the </span><i
+ style="font-family: helvetica,arial,sans-serif;">session.properties</i><span
+ style="font-family: helvetica,arial,sans-serif;"> file. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> These settings
+are stored in the &lt;user.home&gt;/.qat/harness directory. </span>
+<p style="font-family: helvetica,arial,sans-serif;">You will now see
+the screen displayed in <a href="#Figure%201">Figure 1.</a> <br>
+&nbsp; <br>
+&nbsp;
+<table border="1" nosave="">
+  <tbody>
+    <tr>
+      <td><a name="Figure 1"></a><img src="images/figure1.png"
+ height="480" width="640"></td>
+    </tr>
+  </tbody><caption align="bottom">Figure 1<br>
+  <br>
+  <br>
+  </caption>
+</table>
+<br>
+&nbsp; <br>
+&nbsp; </p>
+<p style="font-family: helvetica,arial,sans-serif;">Let's use the
+example tests provided with this tool in the examples directory, and
+set up some tests to run on Solaris and NT. <br>
+There are three steps to set up the harness to run the examples. <br>
+&nbsp; </p>
+<h4 style="font-family: helvetica,arial,sans-serif;"> 1)Define our
+agents.</h4>
+<blockquote style="font-family: helvetica,arial,sans-serif;">From the
+system menu, select <b>Edit</b> -&gt; <b>Agent Settings.</b> <br>
+This will display the window displayed in <a href="#Figure%202">Figure
+2</a>, with which you can graphically configure your agents. <br>
+Initially there are obviously none, so select the "<b>Add agent</b>"
+option, and fill in the machine name and port number. The port number is
+the same value you used when starting the agent as outlined in the above
+section <a href="#Starting%20an%20Agent">Starting an Agent</a>. <br>
+If the agent is currently running, you can click on the "<b>Detect"</b>
+button to automatically fill in the "<b>Architecture</b>" and "<b>Operating
+System</b>" fields. <br>
+The "<b>Agent number</b>" is used within your test scripts to
+differentiate between the different agents. <br>
+Any agents defined&nbsp; here are accessible in the .qash files as <b>agent1.name</b>,<b>agent2.port</b>
+etc. This will be covered in more detail later. <br>
+&nbsp;
+  <table border="1" nosave="">
+    <tbody>
+      <tr nosave="">
+        <td nosave=""><a name="Figure 2"></a><img
+ src="images/figure2.png" height="490" width="655"></td>
+      </tr>
+    </tbody><caption align="bottom">Figure 2<br>
+    <br>
+    <br>
+    </caption>
+  </table>
+</blockquote>
+<h4 style="font-family: helvetica,arial,sans-serif;"> 2)Define project
+settings</h4>
+<blockquote style="font-family: helvetica,arial,sans-serif;">Now we
+have our agents defined, we need to set up our project for the first
+time. <br>
+From the system menu, select Edit -&gt; Edit Project to bring up the
+Project settings window. <br>
+You will see a blank text area - this is where you define specific
+properties for your test suite. <br>
+&nbsp;
+  <p>Ensure the following two properties are defined and correct for
+your particular system :</p>
+</blockquote>
+<center style="font-family: helvetica,arial,sans-serif;">
+<table border="1" bgcolor="#cccccc" nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave="">JAVAHOME_SOLARIS=/usr/java1.2 <br>
+JAVAHOME_NT=c:\jdk1.2.1</td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<p style="font-family: helvetica,arial,sans-serif;">So your project
+properties should look something like <a href="#Figure%203">Figure 3</a>
+: <br>
+&nbsp;
+<table border="1" nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave=""><a name="Figure 3"></a><img src="images/figure3.png"
+ height="433" width="725"></td>
+    </tr>
+  </tbody><caption align="bottom">Figure 3<br>
+  <br>
+  <br>
+  </caption>
+</table>
+</p>
+<h4 style="font-family: helvetica,arial,sans-serif;"> 3)Select test
+directory</h4>
+<span style="font-family: helvetica,arial,sans-serif;"> Next, we tell
+the harness where to look for the .qash files which constitute our test
+suite. </span><br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> Click on the tab
+"Project Settings" (see </span><a href="#Figure%203"
+ style="font-family: helvetica,arial,sans-serif;">Figure 3</a><span
+ style="font-family: helvetica,arial,sans-serif;">), and you will see
+an entry for selecting the test directory path. Ensure this points to
+the </span><i style="font-family: helvetica,arial,sans-serif;">&lt;qat_home&gt;/examples</i><span
+ style="font-family: helvetica,arial,sans-serif;"> directory, and then
+click the OK button to start loading the tests. You can also tweak
+various other settings here, such as Look and Feel, custom plugins and
+parsers, but for the moment we just need to point to the examples. </span>
+<p style="font-family: helvetica,arial,sans-serif;">Once selected,
+choose OK to load all the tests in the selected examples directory : </p>
+<p style="font-family: helvetica,arial,sans-serif;"><img
+ src="images/figure3a.png" height="433" width="725"> </p>
+<p style="font-family: helvetica,arial,sans-serif;">You should now see
+a tree structure similar to <a href="#Figure%204">Figure 4</a> : <br>
+&nbsp;
+<table border="1" nosave="">
+  <tbody>
+    <tr nosave="">
+      <td nosave=""><a name="Figure 4"></a><img src="images/figure4.png"
+ height="630" width="829"></td>
+    </tr>
+  </tbody><caption align="bottom">Figure 4<br>
+  <br>
+  <br>
+  </caption>
+</table>
+</p>
+<h1 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="Running the tests"></a>Running the tests</h1>
+<span style="font-family: helvetica,arial,sans-serif;"> Your harness
+should now be ready to run the example tests, so you may now either
+right click on the test you wish to run, or use the system menu to
+start a test run. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> The test(s)
+should run without any problems. If for some reason there are errors,
+consult the console traces (by clicking on the "ParserOutput Viewer"
+tab of the main window) to see what went wrong. For this reason it is
+recommended you start your agents with a debug level of 9 until you are
+sure your settings are all correct. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> Exiting the
+Harness will save all you current settings, and they will be resumed on
+your next setting. </span>
+<p style="font-family: helvetica,arial,sans-serif;">To change which
+agents to use, simply edit the relevant agents from the system menu
+"Edit"-&gt;"Edit agents" until you have the configuration you want. <br>
+In this way you can build up different test scenarios using the project
+Save As option. </p>
+<p style="font-family: helvetica,arial,sans-serif;">For more details on
+how to use the GUI interface, you should now be ready for the <a
+ href="QASHHarness.html">QAT Harness Manual.</a> <br>
+If you are ready to write your own tests, you can go directly to the <a
+ href="QASHSyntax.html">QASH Syntax page.</a> <br>
+&nbsp; <br>
+&nbsp; </p>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="Connecting to a running instance of QAT via a browser"></a>Connecting
+to a running instance of QAT via a web browser</h2>
+<span style="font-family: helvetica,arial,sans-serif;"> It is possible
+to use a standard web browser to connect to a running instance of the
+QAT harness, by pointing your browser to </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<a href="http://localhost:9080"
+ style="font-family: helvetica,arial,sans-serif;">http://localhost:9080</a><span
+ style="font-family: helvetica,arial,sans-serif;"> . You may change the
+port used by the Http server by editing the project properties. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> This interface
+gives a limited access to functions of the QAT tool, such as
+starting/stopping tests, as well as viewing live test results. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> &nbsp; </span>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="Configuring GUI Project Properties"></a>Configuring GUI project
+properties</h2>
+<span style="font-family: helvetica,arial,sans-serif;"> You can
+configure project properties to appears as GUI components in the Edit
+Project Properties window by assigning them with special name prefixes.
+Currently you can make use of TextField, ComboBox and CheckBox
+components. </span><br style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> The following
+conventions are used : </span>
+<blockquote style="font-family: helvetica,arial,sans-serif;">This will
+produce a CheckBox called Example1 with default value of unchecked. The
+tooltip text will be set to the complete variable name.
+  <blockquote><b>qat.project.guiproperty.checkbox.Example1=false&nbsp;</b><img
+ src="images/guip1.png" height="126" width="322"></blockquote>
+  <br>
+&nbsp; <br>
+&nbsp;
+  <p>This will produce a TextField called Example2 with text containing
+"Hello World". The tooltip text will be set to the complete variable
+name. </p>
+  <blockquote><b>qat.project.guiproperty.textfield.Example2=Hello
+World&nbsp;</b><img src="images/guip3.png" height="28" width="245"></blockquote>
+  <br>
+&nbsp; <br>
+&nbsp; <br>
+&nbsp;
+  <p>This will produce a ComboBox called Example3 with selected item
+"a", and possible values of "a" through "g". The tooltip text will be
+set to the complete variable name. </p>
+  <blockquote><b>qat.project.guiproperty.combobox.Example3=a</b> <br>
+    <b>qat.project.guiproperty.combobox.Example3.values=a,b,c,d,e,f,g&nbsp;</b><img
+ src="images/guip2.png" height="43" width="123"></blockquote>
+If any GUI properties are detected in the project properties, or added
+by editing the project properties, the next time the project properties
+window is displayed, a new tab will appear displaying by default these
+properties as GUI components. <br>
+If the OK button is selected, the value of the GUI components is
+accepted as the required value, however if the text version tab is
+currently being displayed, the text version of the properties (which are
+still displayed) will be taken and will override any GUI properties.</blockquote>
+<h2 style="font-family: helvetica,arial,sans-serif;"> <a
+ name="Running tests via the commandline interface"></a>Running tests
+via the command line interface</h2>
+<span style="font-family: helvetica,arial,sans-serif;"> There are two
+ways to launch tests via the command line interface. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> The first way
+uses the QAT gui, but doesn't actually display it, and drives the test
+run according the parameters specified on the commandline. This method
+allows more detailed control over test selection, and allows the test
+run to be archived into html reoprts. </span><br
+ style="font-family: helvetica,arial,sans-serif;">
+<span style="font-family: helvetica,arial,sans-serif;"> The second
+method is to launch each test by invoking the QASHParser directly. </span>
+<h4 style="font-family: helvetica,arial,sans-serif;"> Method
+1(Recommended) :</h4>
+<blockquote style="font-family: helvetica,arial,sans-serif;">java
+-classpath &lt;qat.jar&gt; QAT <b>-cmdline</b> <b>-project</b>
+&lt;projectFileName&gt; [<b>-reportdir</b> &lt;reportDirectory&gt;]
+[-rescan] [<b>+keyword</b> keyword1] [<b>-keyword</b> keyword2]
+  <p><b>-cmdline </b>- indicates we want to launch the harness in
+commandline mode only <br>
+  <b>-project </b><i>&lt;projectFileName&gt;</i> - mandatory parameter
+specifying the full path to a QAT project file for the specified test
+run <br>
+  <b>-reportdir </b><i>&lt;reportDirectory&gt;</i> - optional parameter
+which is the full path to the directory in which to store the generated
+html report of the test run. The directory must already exist. If this
+parameter is omitted, no report will be generated. <br>
+  <b>-rescan </b>- optional parameter, if specified, the QAT will
+perform a complete rescan off disk in case new tests have been added
+since the project was last parsed. <br>
+  <b>+keyword </b><i>&lt;keyword&gt;</i><b> </b>- all tests containing
+this keyword will be selected for the test run <br>
+  <b>-keyword </b><i>&lt;keyword&gt; </i>- all tests containing this
+keyword will be excluded for the test run <br>
+The [(+/-)keyword] parameter may be repeated several times. If no
++keyword or -keyword is found, all tests in the project will be run.</p>
+</blockquote>
+<h4 style="font-family: helvetica,arial,sans-serif;"> Method 2:</h4>
+<blockquote style="font-family: helvetica,arial,sans-serif;"><b>java
+QASHParser <i>sessionName propertiesFile test1Path test2Path ....
+testNPath</i></b>
+  <blockquote><i>sessionName </i>- the number of this run, which will
+be used to store the results retrieved from the agents under the correct
+offset in the QAT home directory <br>
+    <i>propertiesFile </i>- a properties file containing all the
+variables required to parse the tests to be run. You may pass the name
+of a previously saved project file if you don't want to reconfigure one
+by hand. <br>
+    <i>testXPath</i> - this is the full path to each QASH file to be run.</blockquote>
+The exit code will be zero if no errors occurred, or non-zero if one or
+more errors occurred.</blockquote>
+</body>
+</html>

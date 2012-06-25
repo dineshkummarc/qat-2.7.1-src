@@ -1,0 +1,86 @@
+<test
+	name="Positive test all agents"
+	author="WebHiker" 
+	description="This is a simple example of a test which will be run on all agents defined in the harness.&lt;br&gt;You will need at least one agent defined for this test to run.&lt;br&gt;The tests will be started simultaneously on all agents.">
+
+	<echo message="Starting the test run" />
+	<property name="zipfile" refid="${qaxml.basedir}${file.separator}zip${file.separator}positive_tests.zip" />
+
+	<!-- Loop through all defined agents, and run the same test on each of them. -->
+	<loop name="i" start="1" end="${qat.agent.count}" inc="1">
+		<echo message="Starting the test on agent ${i} of ${qat.agent.count}" />
+
+		<!-- Ensure the agent is alive, and retrieve it's environment variables -->
+		<checkagent
+			result="agent_alive"
+			agentid="${i}" />
+
+		<!-- Reserve an agent to run our test on -->
+		<requestagent
+			agentid="${i}"
+			onlyif="${agent_alive}" />
+
+		<!-- Send the zip file containing our test to the agent -->
+		<sendzip
+			agentid="${i}"
+			zipfile="${zipfile}" 
+			onlyif="${agent_alive}" />
+
+		<!-- Define our classpath relative to the agent and where the file is unzipped -->
+		<property 
+			name="classpath" 
+			refid="${${i}.java.io.tmpdir}${${i}.file.separator}agent${i}${${i}.file.separator}classes"
+			onlyif="${agent_alive}" />
+
+		<!-- Start the process now -->
+		<start
+			processid="processid_${i}"
+			agentid="${i}"
+			command="${${i}.java.home}${${i}.file.separator}bin${${i}.file.separator}java"
+			arguments="-classpath ${classpath} qa.positive_tests.PassTestHtml"
+			onlyif="${agent_alive}" />
+	</loop>
+
+	<!-- Loop through all defined agents, and retrieve the test results -->
+	<loop name="i" start="1" end="${qat.agent.count}" inc="1">
+		<echo message="Retrieving status of test from agent ${i} of ${qat.agent.count}" />
+
+		<!-- Wait until the process finishes -->
+		<status
+			processid="${processid_${i}}"
+			status="status"
+			onlyif="${agent_alive}" />
+
+		<!-- Retrieve the output traces from the agent -->
+		<trace
+			processid="${processid_${i}}"
+			onlyif="${agent_alive}" />
+
+		<!-- Report the status we recieved -->
+		<report
+			status="${status}"
+			onlyif="${agent_alive}" />
+	
+	</loop>
+
+	<!-- Loop through all defined agents, and clean upnour tests and temporary files. -->
+	<loop name="i" start="1" end="${qat.agent.count}" inc="1">
+		<echo message="Cleaning agent ${i} of ${qat.agent.count}" />
+
+		<!-- Clean the output traces from the agent -->
+		<clean
+			processid="${processid_${i}}"
+			onlyif="${agent_alive}" />
+
+		<!-- Clean up the zip file and the files we unzipped -->
+		<cleanzip
+			agentid="${i}"
+			zipfile="${zipfile}" 
+			onlyif="${agent_alive}" />
+
+		<!-- Release the agent, we are finished with it now. -->
+		<releaseagent
+			agentid="${i}" 
+			onlyif="${agent_alive}" />
+	</loop>
+</test>

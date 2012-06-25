@@ -1,0 +1,32 @@
+#################################################
+# @(#)file    pass_test.qash
+# @(#)author  webhiker
+# @(#)version 1.2
+# @(#)date    00/12/13
+#################################################
+
+###############################################################
+# Set up details for this test
+###############################################################
+qat.test.name="simple_connect"
+qat.test.author="WebHiker"
+qat.test.description="This is a simple test which connects one or more clients to a single server"
+qat.test.buginfo=""
+qat.test.keywords="pass"
+agent_index = 2
+###############################################################
+
+###############################################################
+# set up default paths and settings
+###############################################################
+QAT_ROOT=qat.qash.path+file.separator+".."+file.separator+".."+file.separator+"settings"
+INCLUDE QAT_ROOT+file.separator+"default.qinc"
+INCLUDE QAT_ROOT+file.separator+"zips.qinc"
+###############################################################
+
+agent_test_class  = "qa.client_server.ClientServer"
+
+INCLUDE qat.qash.path+file.separator+"generic_client_server.qinc"
+
+###############################################################
+REPORTSTATUS(overall_result)

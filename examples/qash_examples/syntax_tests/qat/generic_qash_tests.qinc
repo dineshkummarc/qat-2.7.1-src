@@ -1,0 +1,31 @@
+#################################################
+# @(#)file    misc_generic.qinc
+# @(#)author  webhiker
+# @(#)version 1.2
+# @(#)date    00/12/01
+#################################################
+overall_result ? 0
+
+insideinclude.qat.qash.filepath = qat.qash.filepath
+insideinclude.qat.qash.path = qat.qash.path
+
+###############################################################
+# check the agent count expected for that test
+###############################################################
+CALLFUNCTION(CHECK_AGENT_COUNT, qat.agent.count, agent_index);
+ 
+###############################################################
+# Set up the required agents
+###############################################################
+this_agent_tmp_dir = ("agent"+agent_index+"_tmp_dir")
+SETAGENT(agent_id, ("agent"+agent_index+".name"), ("agent"+agent_index+".port"), this_agent_tmp_dir);
+
+###############################################################
+# Clean up the agents themselves now
+###############################################################
+DELAGENT(agent_id);
+
+###############################################################
+# report result only if all the tests passed
+###############################################################
+overall_result=0

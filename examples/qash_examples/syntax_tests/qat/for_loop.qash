@@ -1,0 +1,35 @@
+#################################################
+# @(#)file    for_loop.qash
+# @(#)author  webhiker
+# @(#)version 1.2
+# @(#)date    2002/11/20
+#################################################
+
+###############################################################
+# Set up details for this test
+###############################################################
+qat.test.name="for_loop"
+qat.test.author="WebHiker"
+qat.test.description="This test verifies the QASH syntax of the QASHParser"
+qat.test.buginfo=""
+qat.test.keywords="pass"
+
+RANDOM(seed)
+
+J=0
+WHILE ( J < 10 ) DO
+	PRINT "J : "+J
+	J+=1
+END 
+
+PRINT "Running FOR loop test 1"
+MAX_VALUE = 10
+START_VALUE = 0
+FOR I = START_VALUE TO MAX_VALUE DO
+	PRINT "I : "+I
+END 
+PRINT "Finished running FOR loop test 1"
+
+REPORTSTATUS(0)
+
+END

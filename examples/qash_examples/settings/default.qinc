@@ -1,0 +1,113 @@
+###############################################################
+# @(#)file   default.qinc
+# @(#)author  webhiker
+# @(#)version 1.55
+# @(#)date   00/12/19
+###############################################################
+
+###############################################################
+# This indicates we want the agent to automatically clean
+# temp files of the test run is interupted
+###############################################################
+AUTOCLEAN_ON
+###############################################################
+solaris_sparc_setup = qat.qash.path+file.separator+"solaris_sparc_setup.qinc"
+windows_x86_setup   = qat.qash.path+file.separator+"windows_x86_setup.qinc"
+linux_x86_setup   = qat.qash.path+file.separator+"linux_x86_setup.qinc"
+
+###############################################################
+# define variables per agent
+###############################################################
+FOR I = 1 TO qat.agent.count DO
+	setup_detected = "FALSE"
+	curr_agent_runid=user.name
+	curr_agent_number  = I
+	curr_agent_name = ("agent"+curr_agent_number+".name")
+	curr_agent_port = ("agent"+curr_agent_number+".port")
+	curr_agent="agent"+curr_agent_number
+	curr_agent_arch = ("agent"+curr_agent_number+".os.architecture")
+	curr_agent_os   = ("agent"+curr_agent_number+".os.name")
+	CHECKAGENT(result, curr_agent_name, curr_agent_port);
+	IF ((curr_agent_arch=="sparc")|(curr_agent_arch=="sun4u"))
+		THEN 
+			PRINT "Using setup for solaris_sparc_setup for agent "+I
+			INCLUDE solaris_sparc_setup
+			setup_detected = "TRUE"
+	END
+	IF ((curr_agent_arch=="x86")|(curr_agent_arch=="i686")|(curr_agent_arch=="i386"))
+		THEN 
+			IF (curr_agent_os=="Windows 2000")
+				THEN 
+					PRINT "Using setup for windows_x86_setup for agent "+I
+					INCLUDE windows_x86_setup
+					setup_detected = "TRUE"
+			END
+			IF (curr_agent_os=="Windows NT")
+				THEN 
+					PRINT "Using setup for windows_x86_setup for agent "+I
+					INCLUDE windows_x86_setup
+					setup_detected = "TRUE"
+			END
+			IF (curr_agent_os=="Windows XP")
+				THEN 
+					PRINT "Using setup for windows_x86_setup for agent "+I
+					INCLUDE windows_x86_setup
+					setup_detected = "TRUE"
+			END
+			IF (curr_agent_os=="SunOS")
+				THEN 
+					PRINT "Using setup for solaris_x86_setup for agent "+I
+					INCLUDE solaris_x86_setup
+					setup_detected = "TRUE"
+			END
+			IF (curr_agent_os=="Linux")
+				THEN 
+					PRINT "Using setup for linux_x86_setup for agent "+I
+					INCLUDE linux_x86_setup
+					setup_detected = "TRUE"
+			END
+	END
+	IF (setup_detected=="FALSE")
+		THEN
+			PRINT "ERROR - The tests can not be run on this architecture ("+curr_agent_arch+")"
+			REPORTSTATUS(1)
+	END
+END
+###############################################################
+
+###############################################################
+# Include function definitions
+###############################################################
+INCLUDE qat.qash.path+file.separator+"default.func"
+###############################################################
+
+###############################################################
+# These are the possible project property settings
+# Copy and paste them into the QAT properties window
+# if you want GUI project settings for this project.
+###############################################################
+#qat.project.guiproperty.combobox.stress_level=50
+#qat.project.guiproperty.combobox.stress_level.values=10,20,30,40,50
+#qat.project.guiproperty.combobox.jdk_root_solaris_sparc=/usr/lang/JAVA/jdk1.2.2
+#qat.project.guiproperty.combobox.jdk_root_solaris_sparc.values=/usr/lang/JAVA/jdk1.3,/usr/lang/JAVA/jdk1.2.2
+#qat.project.guiproperty.combobox.jdk_root_solaris_x86=/usr/lang/JAVA/jdk1.2.2
+#qat.project.guiproperty.combobox.jdk_root_solaris_x86.values=/usr/lang/JAVA/jdk1.3,/usr/lang/JAVA/jdk1.2.2
+
+qat.project.guiproperty.combobox.stress_level?50
+qat.project.guiproperty.combobox.jdk_root_solaris_sparc?"/usr/lang/JAVA/jdk1.2.2"
+qat.project.guiproperty.combobox.jdk_root_solaris_x86?"/usr/lang/JAVA/jdk1.2.2"
+
+###############################################################
+# define debug flags : DEBUG + JIT variables
+###############################################################
+DEBUG ? ""
+JIT   ? "NO"
+CALLFUNCTION (DEFINE_DEBUG_FLAG, DEBUG, JIT)
+
+###############################################################
+default_agent_timeout  ? 10 # time to wait for agent to finish
+default_server_timeout ? 20 # time to wait for server to finish
+default_client_timeout ? 10 # time to wait for client to finish
+# number of iterations for stress tests
+stress_level ? qat.project.guiproperty.combobox.stress_level
+###############################################################

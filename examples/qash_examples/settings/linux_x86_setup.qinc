@@ -1,0 +1,49 @@
+#################################################
+# @(#)file   linux_x86_setup.qinc
+# @(#)author  webhiker
+# @(#)version 1.22
+# @(#)date   00/12/19
+#################################################
+
+###############################################################
+# This is a set of commands to set up all temporary
+# directories and variables specific to a Linux x86
+# agent.
+###############################################################
+
+###############################################################
+# File variables
+###############################################################
+curr_agent+"_fs" = "/"
+curr_agent+"_ps" = ":"
+###############################################################
+
+###############################################################
+# root external deliveries
+###############################################################
+jdk_root_linux_x86        ? "/usr/java/jdk1.3.1"
+gnu_root_linux_x86        ? "/usr/gnu"
+###############################################################
+
+###############################################################
+# Jdk settings
+###############################################################
+curr_agent_jdk_root               = jdk_root_linux_x86
+curr_agent+"_java"                = curr_agent_jdk_root+"/bin/java"
+curr_agent+"_javac"               = curr_agent_jdk_root+"/bin/javac"
+curr_agent+"_jdk_ld_library_path" = curr_agent_jdk_root+"/lib:"+curr_agent_jdk_root+"/jre/lib/sparc"
+###############################################################
+
+###############################################################
+# Gnu settings
+###############################################################
+curr_agent+"_gnu_ld_library_path" = gnu_root_linux_x86+"/lib"
+###############################################################
+
+###############################################################
+# Miscellaneous settings
+###############################################################
+RANDOM(seed)
+curr_agent_runid   += "/agent"+curr_agent_number+"/"+seed
+curr_agent+"_tmp_dir" = "/tmp/agent/"+curr_agent_runid
+curr_agent+"_classpath"           = (curr_agent+"_tmp_dir")+"/classes"
